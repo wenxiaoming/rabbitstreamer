@@ -88,8 +88,8 @@ void RsTimer::add_timer(int64_t timeout, int64_t timerid, ITimerHandler* callbac
     assert(callback!=NULL);
     if(!thread_start_flag)
     {
-        run("RsTimer");
         thread_start_flag = true;
+        run("RsTimer");        
     }
     timer_item item;
     item.timeout = timeout;
