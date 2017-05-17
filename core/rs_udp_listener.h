@@ -12,12 +12,12 @@
 
 using namespace std;
 
-class RsUdpListener: public RsThread
+class RsUdpAcceptor: public RsThread
 {
 
 public:
-    RsUdpListener(string ip, int port, IUdpHandler* handler);
-    ~RsUdpListener();
+    RsUdpAcceptor(string ip, int port, IUdpHandler* handler);
+    ~RsUdpAcceptor();
 
 public:
     int start_listen();
