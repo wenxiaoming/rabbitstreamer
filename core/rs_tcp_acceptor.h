@@ -2,22 +2,21 @@
   Copyright (c) 2016-2017 Kevin Wen <listream@126.com>
 */
 
-#ifndef CORE_RS_UDP_ACCEPTOR_H_
-#define CORE_RS_UDP_ACCEPTOR_H_
+#ifndef RS_TCP_ACCEPTOR_H
+#define RS_TCP_ACCEPTOR_H
 
 #include <string>
-#include <st.h>
+#include "st.h"
 #include "rs_thread.h"
 #include "rs_socket_handler.h"
 
 using namespace std;
 
-class RsUdpAcceptor: public RsThread
+class RsTcpAcceptor: public RsThread
 {
-
 public:
-    RsUdpAcceptor(string ip, int port, IUdpHandler* handler);
-    ~RsUdpAcceptor();
+    RsTcpAcceptor(string ip, int port, ITcpHandler* handler);
+    ~RsTcpAcceptor();
 
 public:
     int start_listen();
@@ -37,11 +36,7 @@ private:
     string ip_addr;
     int listen_port;
 
-    char* recv_buffer;
-    int buffer_size;
-    IUdpHandler* udp_handler;
+    ITcpHandler* tcp_handler;
 };
 
-
-
-#endif /* CORE_RS_UDP_LISTENER_H_ */
+#endif
