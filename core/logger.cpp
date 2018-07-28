@@ -20,42 +20,46 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CORE_THREAD_H_
-#define CORE_THREAD_H_
+#include "logger.h"
 
-#include "st.h"
-//every thread must inherit from this class to support actual threading operation
-class RsThread
+RsLogBase::RsLogBase()
 {
-public:
-	RsThread();
-	virtual ~RsThread();
-public:
-	int start_thread();
-	void stop_thread();       
-	//inherited class must implement those functions
-	virtual int on_thread_start() = 0;
-	virtual int on_before_loop() = 0;
-	virtual int loop() = 0;
-	virtual int on_end_loop() = 0;
-	virtual int on_thread_stop() = 0;
-private:
-    virtual void dispose();
-    static void* thread_intermediary(void* arg);
-    void thread_loop();
-public:
-    bool loop_flag;
-private:
-    st_thread_t tid;
-    int _cid;
+}
 
-    bool can_run;
-    bool really_terminated;
-    bool _joinable;
-    const char* _name;
-    bool disposed;
-public:
-    int64_t cycle_interval_us;
-};
+RsLogBase::~RsLogBase()
+{
+}
 
-#endif
+int RsLogBase::initialize()
+{
+    return ERROR_SUCCESS;
+}
+
+void RsLogBase::log(LogLevel level, const char* tag, int context_id, const char* fmt, ...)
+{
+
+}
+
+
+RsContextBase::RsContextBase()
+{
+}
+
+RsContextBase::~RsContextBase()
+{
+}
+
+int RsContextBase::generate_id()
+{
+    return 0;
+}
+
+int RsContextBase::get_id()
+{
+    return 0;
+}
+
+int RsContextBase::set_id(int v)
+{
+    return 0;
+}

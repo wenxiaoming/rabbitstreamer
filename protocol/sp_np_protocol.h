@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 RabbitStreamer
+Copyright (c) 2016-2017 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -20,53 +20,28 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CORE_TIMER_H_
-#define CORE_TIMER_H_
-#include <vector>
+
+#ifndef PROTOCOL_SP_NP_PROTOCOL_H_
+#define PROTOCOL_SP_NP_PROTOCOL_H_
+
+#include "core/thread.h"
+#include "core/socket.h"
+#include "core/buffer.h"
+#include "core/p2p_protocol.h"
+#include "core/bitrate_calculator.h"
+#include <st.h>
+#include <string.h>
 #include <stdint.h>
-#include "thread.h"
 
-using namespace std;
-
-class ITimerHandler
+class RsNpSpProtocol : public RsThread
 {
 public:
-    ITimerHandler()
-    {
-    }
-    virtual ~ITimerHandler()
-    {
-    }
-
+    RsNpSpProtocol(st_netfd_t stfd);
+    virtual ~RsNpSpProtocol();
 public:
-    virtual int handle_timeout(int64_t timerid) = 0;
-};
-
-typedef struct timer_item
-{
-    int64_t timeout;
-    int64_t timerid;
-    int64_t last_signal_time;
-    ITimerHandler* callback;
-    bool operator==(const timer_item& rhs)
-    {
-        if((callback==rhs.callback)&&(timeout==rhs.timeout)
-            &&(timerid==rhs.timerid))
-            return true;
-        return false;
-    }
-}timer_item;
-
-class RsTimer : public RsThread
-{
-private:
-    static RsTimer* p;
-public:
-    RsTimer();
-    virtual ~RsTimer();
-public:
-    //for single instance
-    static RsTimer* instance();
+    int get_push_list(char* msg, int size);
+    int send_push_list(char* resource_hash, uint8_t count, uint32_t* array);
+    int send_media_type(char* resource_hash);
 public:
     //implement rs_thread's virtual function
     virtual int on_thread_start();
@@ -74,16 +49,14 @@ public:
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
-public:
-    //for others to get timer service
-    void add_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback);
-    void delete_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback);
 private:
-    void check_timeout();
+    int send_one_block(char* resource_hash, uint8_t count, uint32_t id);
 private:
-    bool thread_start_flag;
-    int64_t last_thread_time;
-    vector<timer_item> timer_vector;
+    st_netfd_t st_fd;
+    RsSocket* io_socket;
+    RsBuffer* np_buffer;
+    bool media_type_flag;
+    RsBitrateCalculator* calculator;
 };
 
-#endif /* CORE_TIMER_H_ */
+#endif /* PROTOCOL_SP_NP_PROTOCOL_H_ */

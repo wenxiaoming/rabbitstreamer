@@ -20,42 +20,38 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CORE_THREAD_H_
-#define CORE_THREAD_H_
 
-#include "st.h"
-//every thread must inherit from this class to support actual threading operation
-class RsThread
+#ifndef APP_SP_NP_MANAGER_H_
+#define APP_SP_NP_MANAGER_H_
+
+#include "core/tcp_listener.h"
+#include "protocol/sp_np_protocol.h"
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class SpNpManager : public ITcpHandler
 {
-public:
-	RsThread();
-	virtual ~RsThread();
-public:
-	int start_thread();
-	void stop_thread();       
-	//inherited class must implement those functions
-	virtual int on_thread_start() = 0;
-	virtual int on_before_loop() = 0;
-	virtual int loop() = 0;
-	virtual int on_end_loop() = 0;
-	virtual int on_thread_stop() = 0;
-private:
-    virtual void dispose();
-    static void* thread_intermediary(void* arg);
-    void thread_loop();
-public:
-    bool loop_flag;
-private:
-    st_thread_t tid;
-    int _cid;
 
-    bool can_run;
-    bool really_terminated;
-    bool _joinable;
-    const char* _name;
-    bool disposed;
 public:
-    int64_t cycle_interval_us;
+    SpNpManager(string ip, int port);
+    ~SpNpManager();
+
+public:
+    int start_listener();
+
+public:
+    //implement interface ITcpHandler
+    virtual int handle_tcp_connect(st_netfd_t stfd);
+
+private:
+    RsTcpListener* tcp_listener;
+    string ip_addr;
+    int listen_port;
+    vector<RsNpSpProtocol*> np_sp_protocol_vector;
 };
 
-#endif
+
+
+#endif /* APP_SP_NP_MANAGER_H */

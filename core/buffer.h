@@ -20,42 +20,46 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CORE_THREAD_H_
-#define CORE_THREAD_H_
 
-#include "st.h"
-//every thread must inherit from this class to support actual threading operation
-class RsThread
-{
-public:
-	RsThread();
-	virtual ~RsThread();
-public:
-	int start_thread();
-	void stop_thread();       
-	//inherited class must implement those functions
-	virtual int on_thread_start() = 0;
-	virtual int on_before_loop() = 0;
-	virtual int loop() = 0;
-	virtual int on_end_loop() = 0;
-	virtual int on_thread_stop() = 0;
-private:
-    virtual void dispose();
-    static void* thread_intermediary(void* arg);
-    void thread_loop();
-public:
-    bool loop_flag;
-private:
-    st_thread_t tid;
-    int _cid;
+#ifndef CORE_BUFFER_H_
+#define CORE_BUFFER_H_
 
-    bool can_run;
-    bool really_terminated;
-    bool _joinable;
-    const char* _name;
-    bool disposed;
+#include "socket.h"
+
+class RsBuffer {
+
 public:
-    int64_t cycle_interval_us;
+    RsBuffer();
+    virtual ~RsBuffer();
+
+public:
+    int current_size();
+    char* bytes();
+    void set_buffer(int size);
+
+public:
+    char read_byte();
+
+    char* read_nbytes(int size);
+
+    void skip(int size);
+
+    int fill_buffer(RsSocket* io, int size);
+
+private:
+    /*****************************************
+	               buffer_size
+	    ________________|________________
+	   |                                 |
+	 buffer     curr_ptr   end_ptr       |
+	   |____________|___________|________|
+
+    ******************************************/
+    char* curr_ptr; //the pointer for the current position of the using buffer
+    char* end_ptr; //the pointer for the end position of the using buffer
+
+    char* buffer;//the pointer for the base position of the buffer
+    int buffer_size;//the total size of the buffer
 };
 
-#endif
+#endif /* CORE_BUFFER_H_ */

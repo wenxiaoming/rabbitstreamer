@@ -20,53 +20,26 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CORE_TIMER_H_
-#define CORE_TIMER_H_
-#include <vector>
-#include <stdint.h>
+#ifndef CORE_UDP_LISTENER_H_
+#define CORE_UDP_LISTENER_H_
+
+#include <string>
+#include "st.h"
 #include "thread.h"
+#include "socket_handler.h"
 
 using namespace std;
 
-class ITimerHandler
+class RsUdpListener: public RsThread
 {
-public:
-    ITimerHandler()
-    {
-    }
-    virtual ~ITimerHandler()
-    {
-    }
 
 public:
-    virtual int handle_timeout(int64_t timerid) = 0;
-};
+	RsUdpListener(string ip, int port, IUdpHandler* handler);
+    ~RsUdpListener();
 
-typedef struct timer_item
-{
-    int64_t timeout;
-    int64_t timerid;
-    int64_t last_signal_time;
-    ITimerHandler* callback;
-    bool operator==(const timer_item& rhs)
-    {
-        if((callback==rhs.callback)&&(timeout==rhs.timeout)
-            &&(timerid==rhs.timerid))
-            return true;
-        return false;
-    }
-}timer_item;
+public:
+    int start_listen();
 
-class RsTimer : public RsThread
-{
-private:
-    static RsTimer* p;
-public:
-    RsTimer();
-    virtual ~RsTimer();
-public:
-    //for single instance
-    static RsTimer* instance();
 public:
     //implement rs_thread's virtual function
     virtual int on_thread_start();
@@ -74,16 +47,17 @@ public:
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
-public:
-    //for others to get timer service
-    void add_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback);
-    void delete_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback);
+
 private:
-    void check_timeout();
-private:
-    bool thread_start_flag;
-    int64_t last_thread_time;
-    vector<timer_item> timer_vector;
+    int socket_fd;
+    st_netfd_t st_socket_fd;
+
+    string ip_addr;
+    int listen_port;
+
+    char* recv_buffer;
+    int buffer_size;
+    IUdpHandler* udp_handler;
 };
 
-#endif /* CORE_TIMER_H_ */
+#endif /* CORE_UDP_LISTENER_H_ */

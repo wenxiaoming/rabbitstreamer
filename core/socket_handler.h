@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 RabbitStreamer
+Copyright (c) 2016-2018 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -21,8 +21,8 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef CORE_RS_SOCKET_HANDLER_H_
-#define CORE_RS_SOCKET_HANDLER_H_
+#ifndef CORE_SOCKET_HANDLER_H_
+#define CORE_SOCKET_HANDLER_H_
 
 #include <arpa/inet.h>
 
@@ -37,22 +37,21 @@ public:
     }
 
 public:
-    virtual int handle_tcp_connect(st_netfd_t tcp_stfd) = 0;
+    virtual int handle_tcp_connect(st_netfd_t stfd) = 0;
 };
 
 class IUdpHandler
 {
 public:
     IUdpHandler()
-    {
-    }
+	{
+	}
     virtual ~IUdpHandler()
-    {
-    }
+	{
+	}
 
 public:
-    virtual int handle_udp_packet(sockaddr_in* from, char* buf, int size) = 0;
+    virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf) = 0;
 };
-
 
 #endif /* CORE_RS_SOCKET_HANDLER_H_ */

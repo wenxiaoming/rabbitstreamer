@@ -20,42 +20,17 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CORE_THREAD_H_
-#define CORE_THREAD_H_
 
-#include "st.h"
-//every thread must inherit from this class to support actual threading operation
-class RsThread
-{
-public:
-	RsThread();
-	virtual ~RsThread();
-public:
-	int start_thread();
-	void stop_thread();       
-	//inherited class must implement those functions
-	virtual int on_thread_start() = 0;
-	virtual int on_before_loop() = 0;
-	virtual int loop() = 0;
-	virtual int on_end_loop() = 0;
-	virtual int on_thread_stop() = 0;
-private:
-    virtual void dispose();
-    static void* thread_intermediary(void* arg);
-    void thread_loop();
-public:
-    bool loop_flag;
-private:
-    st_thread_t tid;
-    int _cid;
+#ifndef APP_RS_SERVER_BASE_H
+#define APP_RS_SERVER_BASE_H
 
-    bool can_run;
-    bool really_terminated;
-    bool _joinable;
-    const char* _name;
-    bool disposed;
+class RsBaseServer {
 public:
-    int64_t cycle_interval_us;
+	RsBaseServer();
+	virtual ~RsBaseServer();
+
+public:
+	void loop();
 };
 
-#endif
+#endif /* APP_RS_SERVER_BASE_H */

@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 RabbitStreamer
+Copyright (c) 2016-2018 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -20,112 +20,118 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-#include "rs_thread.h"
-#include "rs_error_code.h"
-#include "rs_logger.h"
+#include "thread.h"
+#include "st.h"
+#include "error_code.h"
+#include "logger.h"
 
 RsThread::RsThread()
 {
-    context_id = -1;
+    _cid = -1;
     tid = 0;
-    thread_name = "";
-    joinable = false;
-    can_run = false;
-    loop_flag = false;
-    loop_interval_us = 0;
+    cycle_interval_us = 0;
 }
 
 RsThread::~RsThread()
 {
-
+    tid = 0;
 }
 
-int RsThread::run(string name)
+int RsThread::start_thread()
 {
     int ret = ERROR_SUCCESS;
 
-    thread_name = name;
-
     if(tid) {
-        RSLOGD("thread %s already running.", thread_name.c_str());
+        RSLOGE("thread %s already running.", _name);
         return ret;
     }
 
-    if((tid = st_thread_create(thread_loop, this, (joinable? 1:0), 0)) == NULL){
-        ret = ERROR_CREATE_ST_THREAD;
-        RSLOGD("st_thread_create failed. ret=%d", ret);
+    if((tid = st_thread_create(thread_intermediary, this, (_joinable? 1:0), 0)) == NULL){
+        ret = ERROR_ST_CREATE_CYCLE_THREAD;
+        RSLOGE("st_thread_create failed. ret=%d", ret);
         return ret;
     }
 
+    disposed = false;
+    // we set to loop to true for thread to run.
     loop_flag = true;
 
-    //wait for thread_loop is ready.
-    while (context_id < 0) {
+    // wait for cid to ready, for parent thread to get the cid.
+    while (_cid < 0) {
         st_usleep(10 * 1000);
     }
 
-    //thread loop can run.
+    // now, cycle thread can run.
     can_run = true;
 
     return ret;
 }
 
-void* RsThread::thread_loop(void* user)
+void RsThread::thread_loop()
 {
     int ret = ERROR_SUCCESS;
 
-    RsThread* self = (RsThread*)user;
 
-    rs_context->generate_id();
-    RSLOGD("thread %s loop start", self->thread_name);
+    _cid = 0;//hard code;
 
-    self->thread_start();
 
-    self->context_id = rs_context->get_id();
+    on_thread_start();
 
-    while (!self->can_run && self->loop_flag) {
+    // thread is running now.
+    really_terminated = false;
+
+    // wait for cid to ready, for parent thread to get the cid.
+    while (!can_run && loop_flag) {
         st_usleep(10 * 1000);
     }
 
-    while (self->loop_flag) {
-        if ((ret = self->before_loop()) != ERROR_SUCCESS) {
-            RSLOGD("thread %s before loop failed, ret=%d", self->thread_name.c_str(), ret);
+    while (loop_flag) {
+        if ((ret = on_before_loop()) != ERROR_SUCCESS) {
+            RSLOGE("thread %s on before cycle failed, ignored and retry, ret=%d", _name, ret);
+            goto failed;
+        }
+        RSLOGE("thread %s on before cycle success", _name);
+
+        if ((ret = loop()) != ERROR_SUCCESS) {
             goto failed;
         }
 
-        if ((ret = self->loop()) != ERROR_SUCCESS) {
+        if ((ret = on_end_loop()) != ERROR_SUCCESS) {
+            RSLOGE("thread %s on end cycle failed, ignored and retry, ret=%d", _name, ret);
             goto failed;
         }
-
-        if ((ret = self->end_loop()) != ERROR_SUCCESS) {
-            RSLOGD("thread %s on end loop failed, ret=%d", self->thread_name.c_str(), ret);
-            goto failed;
-        }
+        RSLOGE("thread %s on end cycle success", _name);
 
     failed:
-        if (!self->loop_flag) {
+        if (!loop_flag) {
             break;
         }
 
-        if (self->loop_interval_us != 0) {
-            st_usleep(self->loop_interval_us);
+        if (cycle_interval_us != 0) {
+            st_usleep(cycle_interval_us);
         }
     }
 
-    self->thread_stop();
-    RSLOGD("thread %s loop finished", self->thread_name.c_str());
+    // readly terminated now.
+    really_terminated = true;
+
+    on_thread_stop();
 }
 
-//set the flag to exit the thread
-void RsThread::stop()
+void RsThread::stop_thread()
 {
 
 }
 
-//set the exit flag of thread then wait for the exit of the thread
-void RsThread::stop_wait()
+//the thread loop
+void* RsThread::thread_intermediary(void* arg)
+{
+    RsThread* obj = (RsThread*)arg;
+
+    obj->thread_loop();
+}
+
+void RsThread::dispose()
 {
 
 }
-

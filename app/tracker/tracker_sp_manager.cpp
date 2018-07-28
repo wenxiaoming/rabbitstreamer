@@ -20,42 +20,31 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CORE_THREAD_H_
-#define CORE_THREAD_H_
+#include "tracker_sp_manager.h"
 
-#include "st.h"
-//every thread must inherit from this class to support actual threading operation
-class RsThread
+TrackerSpManager::TrackerSpManager(string ip, int port)
 {
-public:
-	RsThread();
-	virtual ~RsThread();
-public:
-	int start_thread();
-	void stop_thread();       
-	//inherited class must implement those functions
-	virtual int on_thread_start() = 0;
-	virtual int on_before_loop() = 0;
-	virtual int loop() = 0;
-	virtual int on_end_loop() = 0;
-	virtual int on_thread_stop() = 0;
-private:
-    virtual void dispose();
-    static void* thread_intermediary(void* arg);
-    void thread_loop();
-public:
-    bool loop_flag;
-private:
-    st_thread_t tid;
-    int _cid;
+    ip_addr = ip;
+    listen_port = port;
+}
 
-    bool can_run;
-    bool really_terminated;
-    bool _joinable;
-    const char* _name;
-    bool disposed;
-public:
-    int64_t cycle_interval_us;
-};
+TrackerSpManager::~TrackerSpManager()
+{
 
-#endif
+}
+
+int TrackerSpManager::start_listener()
+{
+    udp_listener = new RsUdpListener(ip_addr, listen_port, this);
+    udp_listener->start_listen();
+    sp_tracker= new RsSpTracker();
+    return 0;
+}
+
+int TrackerSpManager::handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf)
+{
+    sp_tracker->handle_udp_packet(st_fd, from, buf, nb_buf);
+    return 0;
+}
+
+

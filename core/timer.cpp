@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 RabbitStreamer
+Copyright (c) 2016-2018 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -20,10 +20,9 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-#include "rs_timer.h"
-#include "rs_error_code.h"
-#include "rs_core_utility.h"
+#include "timer.h"
+#include "error_code.h"
+#include "core_utility.h"
 #include <st.h>
 #include <assert.h>
 #include <algorithm>
@@ -47,28 +46,28 @@ RsTimer::~RsTimer()
 
 }
 
-int RsTimer::end_loop()
+int RsTimer::on_end_loop()
 {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsTimer::thread_stop()
+int RsTimer::on_thread_stop()
 {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsTimer::thread_start()
+int RsTimer::on_thread_start()
 {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsTimer::before_loop()
+int RsTimer::on_before_loop()
 {
     int ret = ERROR_SUCCESS;
 
@@ -82,14 +81,13 @@ int RsTimer::loop()
     st_usleep(SYS_TIMER_LOOP_INTERVAL * 1000);
     return ret;
 }
-
 void RsTimer::add_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback)
 {
     assert(callback!=NULL);
     if(!thread_start_flag)
     {
+        start_thread();
         thread_start_flag = true;
-        run("RsTimer");        
     }
     timer_item item;
     item.timeout = timeout;

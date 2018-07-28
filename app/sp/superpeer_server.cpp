@@ -20,42 +20,42 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef CORE_THREAD_H_
-#define CORE_THREAD_H_
 
-#include "st.h"
-//every thread must inherit from this class to support actual threading operation
-class RsThread
-{
-public:
-	RsThread();
-	virtual ~RsThread();
-public:
-	int start_thread();
-	void stop_thread();       
-	//inherited class must implement those functions
-	virtual int on_thread_start() = 0;
-	virtual int on_before_loop() = 0;
-	virtual int loop() = 0;
-	virtual int on_end_loop() = 0;
-	virtual int on_thread_stop() = 0;
-private:
-    virtual void dispose();
-    static void* thread_intermediary(void* arg);
-    void thread_loop();
-public:
-    bool loop_flag;
-private:
-    st_thread_t tid;
-    int _cid;
+#include <stdio.h>
+#include "app/sp/sp_np_manager.h"
+#include "app/sp/sp_cs_manager.h"
+#include "app/sp/sp_tracker_manager.h"
+#include "app/common/server_base.h"
+#include "protocol/sp_source_manager.h"
+#include "core/async_logger.h"
 
-    bool can_run;
-    bool really_terminated;
-    bool _joinable;
-    const char* _name;
-    bool disposed;
-public:
-    int64_t cycle_interval_us;
-};
+RsLogBase* rs_log = new RsAsyncLogger();
+RsContextBase* rs_context = new RsThreadContext();
 
-#endif
+int main()
+{    
+    rs_st_init();
+
+    //start the listener of super peer server
+    SpNpManager* np_manager = new SpNpManager("68.168.137.118", 2222);
+    np_manager->start_listener();
+
+    //listen from capture server
+    SpCsManager* cs_manager = new SpCsManager("68.168.137.118", 12345);
+    cs_manager->start_listener();
+
+    //listen from normal peer or supoer peer
+    RsSourceManager::instance()->initialize("", "", "192.168.40.1:3333");
+
+    //update and check status with tracker server
+    SpTrackerManager* tracker_manager = new SpTrackerManager("192.168.40.1", 1111);
+    tracker_manager->start_connect();
+
+    RsBaseServer* server = new RsBaseServer;
+    server->loop();
+
+    printf("hello sp!\n");
+    return 0;
+}
+
+

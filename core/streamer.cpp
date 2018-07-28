@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 RabbitStreamer
+Copyright (c) 2016-2018 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -21,53 +21,53 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "rs_streamer.h"
+#include "streamer.h"
 
-Streamer::Streamer()
+RsStreamer::RsStreamer()
 {
     curr = base = NULL;
     size = 0;
 }
 
-Streamer::~Streamer()
+RsStreamer::~RsStreamer()
 {
 }
 
-void Streamer::initialize(char* buf, int nb)
+void RsStreamer::initialize(char* buf, int nb)
 {
     base = curr = buf;
     size = nb;
 }
 
-uint8_t Streamer::read_char()
+uint8_t RsStreamer::read_char()
 {
     uint8_t value = 0;
     get_as_type(value);
     return value;
 }
 
-uint16_t Streamer::read_short()
+uint16_t RsStreamer::read_short()
 {
     uint16_t value = 0;
     get_as_type(value);
     return value;
 }
 
-uint32_t Streamer::read_int()
+uint32_t RsStreamer::read_int()
 {
     uint32_t value = 0;
     get_as_type(value);
     return value;
 }
 
-uint64_t Streamer::read_long()
+uint64_t RsStreamer::read_long()
 {
     uint64_t value = 0;
     get_as_type(value);
     return value;
 }
 
-char* Streamer::read_nbytes(int nb)
+char* RsStreamer::read_nbytes(int nb)
 {
     char* buf = curr;
     assert((curr+nb)<=(base+size));
@@ -75,33 +75,33 @@ char* Streamer::read_nbytes(int nb)
     return buf;
 }
 
-void Streamer::skip(int nb)
+void RsStreamer::skip(int nb)
 {
     assert((curr+nb)<=(base+size));
     curr += nb;
 }
 
-void Streamer::write_char(char value)
+void RsStreamer::write_char(char value)
 {
     *curr++ = value;
 }
 
-void Streamer::write_short(uint16_t value)
+void RsStreamer::write_short(uint16_t value)
 {
     set_as_type(value);
 }
 
-void Streamer::write_int(uint32_t value)
+void RsStreamer::write_int(uint32_t value)
 {
     set_as_type(value);
 }
 
-void Streamer::write_long(uint64_t value)
+void RsStreamer::write_long(uint64_t value)
 {
     set_as_type(value);
 }
 
-void Streamer::write_nbytes(char* buf, int nb)
+void RsStreamer::write_nbytes(char* buf, int nb)
 {
     memcpy(curr, buf, nb);
     curr += nb;

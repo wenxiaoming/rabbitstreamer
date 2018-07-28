@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 RabbitStreamer
+Copyright (c) 2016-2018 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -20,57 +20,31 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-#include "rs_debug_utility.h"
+#include "debug_utility.h"
 #include <execinfo.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
-static int get_process_name(char* buf, int size)
-{
-    int ret = readlink("/proc/self/exe", buf, size);
-    if((ret < 0)||(ret >= size))
-        return 1;
-
-    buf[ret] = '\0';
-    return 0;
-}
-
-#define CALLSTACK_DEPTH 64
-#define MAX_BUF_SIZE 1024
-
 void print_backtrace(void)
 {
-    void *trace[CALLSTACK_DEPTH];
-    char process_name[MAX_BUF_SIZE];
-    FILE* file = NULL;
+    int i;
+    int MAX_CALLSTACK_DEPTH = 32;
+    void *traceback[MAX_CALLSTACK_DEPTH];
 
-    char command[MAX_BUF_SIZE] = "addr2line -f -e ";
+    char cmd[512] = "addr2line -f -e ";
+    char *prog = cmd + strlen(cmd);
 
-    if(get_process_name(process_name, MAX_BUF_SIZE))
-        return;
+    int r = readlink("/proc/self/exe",prog,sizeof(cmd)-(prog-cmd)-1);
 
-    memcpy(command+strlen(command), process_name, strlen(process_name));
+    /*printf("%s\n",cmd);*/
+    FILE *fp = popen(cmd, "w");
 
-    file = popen(command, "w");
-    if(!file)
-        return;
-
-    int nptrs = backtrace(trace, CALLSTACK_DEPTH);
-    for (int i = 0; i < nptrs; i++)
+    int depth = backtrace(traceback, MAX_CALLSTACK_DEPTH);
+    for (i = 0; i < depth; i++)
     {
-        fprintf(file, "%p\n\r", trace[i]);
+        /*printf("%p\n",traceback[i]);*/
+        fprintf(fp, "%p\n\r", traceback[i]);
     }
-
-    fclose(file);
+    fclose(fp);
 }
-
-//#define UNIT_TEST
-#ifdef UNIT_TEST //build with -g
-int main()
-{
-    print_backtrace();
-    return 0;
-}
-#endif

@@ -21,16 +21,17 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef CORE_RS_STREAMER_H_
-#define CORE_RS_STREAMER_H_
+#ifndef CORE_STREAMER_H_
+#define CORE_STREAMER_H_
+
 #include <string.h>
 #include <stdint.h>
 #include <assert.h>
 
-class Streamer {
+class RsStreamer {
 public:
-    Streamer();
-    virtual ~Streamer();
+	RsStreamer();
+    virtual ~RsStreamer();
     void initialize(char* buf, int nb);
 private:
     template <class T> void get_as_type(T& x)
@@ -79,4 +80,4 @@ private:
     int size;
 };
 
-#endif /* CORE_RS_STREAMER_H_ */
+#endif /* CORE_STREAMER_H_ */
