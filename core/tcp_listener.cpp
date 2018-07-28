@@ -22,6 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "tcp_listener.h"
 #include "error_code.h"
+#include "logger.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -117,15 +118,14 @@ int RsTcpListener::loop()
     if(client_stfd == NULL){
         // ignore error.
         if (errno != EINTR) {
-            //srs_error("ignore accept thread stoppped for accept client error");
+            RSLOGE("ignore accept thread stoppped for accept client error");
         }
         return ret;
     }
-    //srs_verbose("get a client. fd=%d", st_netfd_fileno(client_stfd));
 
     if ((ret = tcp_handler->handle_tcp_connect(client_stfd)) != ERROR_SUCCESS) {
-        //srs_warn("accept client error. ret=%d", ret);
-     //   return ret;
+        RSLOGE("accept client error. ret=%d", ret);
+        return ret;
     }
 
     return ret;

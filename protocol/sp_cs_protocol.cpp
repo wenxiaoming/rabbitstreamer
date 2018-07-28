@@ -91,9 +91,6 @@ int RsCsSpProtocol::loop()
     ssize_t ret_size = 0;
     //read 4 bytes to get the message type
     if ((ret = cs_buffer->fill_buffer(io_socket, 4)) != ERROR_SUCCESS) {
-        //if (ret != ERROR_SOCKET_TIMEOUT && !srs_is_client_gracefully_close(ret)) {
-            //srs_error("read 1bytes basic header failed. required_size=%d, ret=%d", 1, ret);
-        //}
         return ret;
     }
 
@@ -129,18 +126,7 @@ int RsCsSpProtocol::loop()
 	        printf("%s CS2SP_MEDIA_TYPE\n", __FUNCTION__);
             get_mediatype(temp+1, msg_size-5);
             break;
-    //SP2CS_WELCOME:
-    //SP2CS_MSG
     }
-    //int on_msg(ACE_UINT8 msg_type, MessageBlock* mb);
-    //int on_register(MessageBlock* mb);
-    //int on_update(MessageBlock* mb);
-    //int on_block(MessageBlock* mb);
-
-    //int send_welcome(ACE_UINT32 block_id);
-    //int send_err_msg(ACE_UINT16 err_code, bool should_quit);
-
-    //io_socket->read(read_buffer, read_size, &ret_size);
 
     return ret;
 }

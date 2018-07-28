@@ -211,12 +211,10 @@ static int no_receive_counter = 0;
 int RsNpSpProtocol::loop()
 {
     int ret = ERROR_SUCCESS;
-    //printf("%s\n", __FUNCTION__);
     //get message size
     ssize_t ret_size;
     //read 4 bytes to get the message type
     if ((ret = np_buffer->fill_buffer(io_socket, 4)) != ERROR_SUCCESS) {
-        //if (ret != ERROR_SOCKET_TIMEOUT && !srs_is_client_gracefully_close(ret))
         if (ret != ERROR_SUCCESS)
         {
             //printf("np_buffer->fill_buffer(io_socket, 4) failed. required_size=%d, ret=%d \n", 1, ret);

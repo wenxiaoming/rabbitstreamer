@@ -171,7 +171,7 @@ int RsSocket::writev(const iovec *iov, int iov_size, ssize_t* nwrite)
 #ifdef __linux__
 #include <sys/epoll.h>
 
-bool srs_st_epoll_is_supported(void)
+bool rs_st_epoll_is_supported(void)
 {
     struct epoll_event ev;
 
@@ -189,7 +189,7 @@ int rs_st_init()
     int ret = ERROR_SUCCESS;
 
 #ifdef __linux__
-    if (!srs_st_epoll_is_supported()) {
+    if (!rs_st_epoll_is_supported()) {
         ret = ERROR_ST_SET_EPOLL;
         RSLOGE("epoll required on Linux. ret=%d", ret);
         return ret;
