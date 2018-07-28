@@ -1,12 +1,10 @@
 #!/bin/bash
 set -x
 
-#rm -rf core/*.o protocol/*.o app/sp/*.o
-
-#rm -rf thirty_party/md5/*.o
-
-#rm superpeer_server
-
+if [ ! -f "objs" ]; then
+	echo "mkdir objs"
+	mkdir objs
+fi
 #set the library path for libst.so
 echo "set the library path for libst.so"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:objs/st
