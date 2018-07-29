@@ -27,7 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core_struct.h"
 #include "streamer.h"
 
-class RsMessage {
+class RsMessage
+{
 public:
     RsMessage();
     virtual ~RsMessage();
@@ -107,11 +108,10 @@ public:
     char sp_uuid[UUID_LENGTH];
 };
 
-typedef struct resource_info
-{
+typedef struct resource_info {
     char res_md5[MD5_LEN];
     BlockInterval block_interval;
-}resource_info;
+} resource_info;
 
 //SP2TS_RES_LIST
 class Sp2TsResList:public RsMessage
@@ -134,8 +134,8 @@ public:
 class Sp2TsStatus:public RsMessage
 {
 public:
-	Sp2TsStatus();
-	~Sp2TsStatus();
+    Sp2TsStatus();
+    ~Sp2TsStatus();
 public:
     virtual int parse(RsStreamer* streamer);
 protected:
@@ -145,17 +145,17 @@ public:
     char sp_uuid[UUID_LENGTH];
     uint32_t resource_count;
     uint16_t connection_num;
-	float bandwidth;
-	uint8_t exceed_max_connection;	
+    float bandwidth;
+    uint8_t exceed_max_connection;
 };
 
-    // |UUID(16 bytes)|
-    //SP2TS_LOGOUT      = 0x24,
+// |UUID(16 bytes)|
+//SP2TS_LOGOUT      = 0x24,
 class Sp2TsLogout:public RsMessage
 {
 public:
-	Sp2TsLogout();
-	~Sp2TsLogout();
+    Sp2TsLogout();
+    ~Sp2TsLogout();
 public:
     virtual int parse(RsStreamer* streamer);
 protected:
@@ -214,7 +214,7 @@ protected:
     virtual int reserve_pack_size();
 public:
     char uuid[UUID_LENGTH];
-	CorePeerInfo coreinfo;
+    CorePeerInfo coreinfo;
     uint8_t interval_count;
     BlockInterval* blockinterval;
     TransferInfo transferinfo;
@@ -227,7 +227,7 @@ public:
     uint16_t outgoing_connection_count;
     uint16_t avg_incoming_connection_elapsed_time;
     uint16_t avg_outgoing_connection_elapsed_time;
-    float message_percent; 
+    float message_percent;
 };
 
 //NP2TS_NEED_PEERS  = 0x33,
@@ -242,8 +242,8 @@ protected:
     virtual int pack_submsg(RsStreamer* streamer);
     virtual int reserve_pack_size();
 public:
-	char uuid[UUID_LENGTH];
-	uint32_t current_block;
+    char uuid[UUID_LENGTH];
+    uint32_t current_block;
 };
 
 //NP2TS_RES_INTERVAL= 0x34,
@@ -258,7 +258,7 @@ protected:
     virtual int pack_submsg(RsStreamer* streamer);
     virtual int reserve_pack_size();
 public:
-	char uuid[UUID_LENGTH];
+    char uuid[UUID_LENGTH];
 };
 
 //NP2TS_LOGOUT      = 0x35,
@@ -273,7 +273,7 @@ protected:
     virtual int pack_submsg(RsStreamer* streamer);
     virtual int reserve_pack_size();
 public:
-	char uuid[UUID_LENGTH];
+    char uuid[UUID_LENGTH];
 };
 
 //TS2NP_WELCOME     = 0x36,
@@ -288,8 +288,8 @@ protected:
     virtual int pack_submsg(RsStreamer* streamer);
     virtual int reserve_pack_size();
 public:
-	char uuid[UUID_LENGTH];
-	P2PAddress peer_ip;
+    char uuid[UUID_LENGTH];
+    P2PAddress peer_ip;
 };
 
 //TS2NP_PEERS       = 0x37,
@@ -304,11 +304,11 @@ protected:
     virtual int pack_submsg(RsStreamer* streamer);
     virtual int reserve_pack_size();
 public:
-	uint8_t sp_list_size;
-	NetAddress* sp_addr;
-	uint8_t peer_list_size;
-	PeerInfoWithAddr* peer_addr;
-	NetAddress np_addr;//Kevin, fix me
+    uint8_t sp_list_size;
+    NetAddress* sp_addr;
+    uint8_t peer_list_size;
+    PeerInfoWithAddr* peer_addr;
+    NetAddress np_addr;//Kevin, fix me
 };
 
 //TS2NP_RES_INTERVAL= 0x38,
@@ -323,7 +323,7 @@ protected:
     virtual int pack_submsg(RsStreamer* streamer);
     virtual int reserve_pack_size();
 public:
-	BlockInterval block_interval;
+    BlockInterval block_interval;
 };
 
 //TS2NP_MSG         = 0x39,
@@ -338,10 +338,10 @@ protected:
     virtual int pack_submsg(RsStreamer* streamer);
     virtual int reserve_pack_size();
 public:
-	uint16_t err_msg_type;
-	bool should_quit;
+    uint16_t err_msg_type;
+    bool should_quit;
 };
-	
+
 //SP2SP_PUSHLIST
 class Sp2SpPushList:public RsMessage
 {
@@ -390,7 +390,7 @@ public:
 class Sp2SpResponse:public RsMessage
 {
 public:
-	Sp2SpResponse();
+    Sp2SpResponse();
     ~Sp2SpResponse();
 public:
     virtual int parse(RsStreamer* streamer);

@@ -156,8 +156,7 @@ int Ts2SpSpList::parse(RsStreamer* streamer)
         return 0;//todo, return error code
 
     addr = new NetAddress[count];
-    for(int i = 0; i < count; i++)
-    {
+    for(int i = 0; i < count; i++) {
         memcpy((char*)&addr[i], streamer->read_nbytes(sizeof(NetAddress)), sizeof(NetAddress));
     }
     return ret;
@@ -167,8 +166,7 @@ int Ts2SpSpList::pack_submsg(RsStreamer* streamer)
 {
     streamer->write_char(TS2SP_SP_LIST);
     streamer->write_char(count);
-    for(int i = 0; i < count; i++)
-    {
+    for(int i = 0; i < count; i++) {
         streamer->write_nbytes((char*)&addr[i], sizeof(NetAddress));
     }
 }
@@ -208,9 +206,9 @@ int Sp2TsSpList::pack_submsg(RsStreamer* streamer)
 {
     streamer->write_char(SP2TS_GET_SP);
     streamer->write_nbytes(sp_uuid, UUID_LENGTH);
- }
+}
 
- //Sp2TsLogout
+//Sp2TsLogout
 Sp2TsLogout::Sp2TsLogout()
 {
 }
@@ -237,7 +235,7 @@ int Sp2TsLogout::pack_submsg(RsStreamer* streamer)
 {
     streamer->write_char(SP2TS_GET_SP);
     streamer->write_nbytes(sp_uuid, UUID_LENGTH);
- }
+}
 
 //Sp2TsResList
 Sp2TsResList::Sp2TsResList()
@@ -254,14 +252,13 @@ int Sp2TsResList::parse(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     memcpy(sp_uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
-	resource_count = streamer->read_int();
-	for(int i = 0; i < resource_count; i++)
-	{
-		memcpy(res_info[i].res_md5, streamer->read_nbytes(MD5_LEN), MD5_LEN);
+    resource_count = streamer->read_int();
+    for(int i = 0; i < resource_count; i++) {
+        memcpy(res_info[i].res_md5, streamer->read_nbytes(MD5_LEN), MD5_LEN);
         res_info[i].block_interval.start = streamer->read_int();
         res_info[i].block_interval.size = streamer->read_int();
-	}
-  	return ret;
+    }
+    return ret;
 }
 
 int Sp2TsResList::reserve_pack_size()
@@ -279,14 +276,13 @@ int Sp2TsResList::pack_submsg(RsStreamer* streamer)
     streamer->write_char(SP2TS_RES_LIST);
     streamer->write_nbytes(sp_uuid, UUID_LENGTH);
     streamer->write_int(resource_count);
-    for(int i = 0; i < resource_count; i++)
-    {
+    for(int i = 0; i < resource_count; i++) {
         streamer->write_nbytes(res_info[i].res_md5, MD5_LEN);
         streamer->write_int(res_info[i].block_interval.start);
         streamer->write_int(res_info[i].block_interval.size);
     }
     return ret;
- }
+}
 
 Sp2TsStatus::Sp2TsStatus()
 {
@@ -300,11 +296,11 @@ int Sp2TsStatus::parse(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     memcpy(sp_uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
-	resource_count = streamer->read_int();
-	connection_num = streamer->read_short();
-	memcpy(&bandwidth, streamer->read_nbytes(sizeof(bandwidth)), sizeof(bandwidth));
-	exceed_max_connection = streamer->read_char();
-	return ret;
+    resource_count = streamer->read_int();
+    connection_num = streamer->read_short();
+    memcpy(&bandwidth, streamer->read_nbytes(sizeof(bandwidth)), sizeof(bandwidth));
+    exceed_max_connection = streamer->read_char();
+    return ret;
 }
 
 int Sp2TsStatus::reserve_pack_size()
@@ -325,9 +321,9 @@ int Sp2TsStatus::pack_submsg(RsStreamer* streamer)
     streamer->write_nbytes(sp_uuid, UUID_LENGTH);
     streamer->write_int(resource_count);
     streamer->write_short(connection_num);
-	streamer->write_nbytes((char*)&bandwidth, sizeof(bandwidth));
-	streamer->write_char(exceed_max_connection);
-	return ret;
+    streamer->write_nbytes((char*)&bandwidth, sizeof(bandwidth));
+    streamer->write_char(exceed_max_connection);
+    return ret;
 }
 
 //Sp2SpPushList
@@ -351,11 +347,9 @@ int Sp2SpPushList::parse(RsStreamer* streamer)
     memcpy(resource_md5, streamer->read_nbytes(MD5_LEN), MD5_LEN);
     memcpy(&source_sp_addr, streamer->read_nbytes(sizeof(source_sp_addr)), sizeof(source_sp_addr));
     block_count = streamer->read_char();
-    if(block_count)
-    {
+    if(block_count) {
         block_array = new uint32_t[block_count];
-        for(int i = 0; i < block_count; i++)
-        {
+        for(int i = 0; i < block_count; i++) {
             block_array[i] = streamer->read_int();
         }
     }
@@ -375,7 +369,7 @@ int Sp2SpPushList::pack_submsg(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     return ret;
- }
+}
 
 //Sp2SpMediatype
 Sp2SpMediatype::Sp2SpMediatype()
@@ -433,7 +427,7 @@ int Sp2SpMediatype::pack_submsg(RsStreamer* streamer)
         streamer->write_nbytes(channel_name, channel_name_size);
 
     return ret;
- }
+}
 
 //Sp2SpResponse
 Sp2SpResponse::Sp2SpResponse()
@@ -471,35 +465,35 @@ int Sp2SpResponse::pack_submsg(RsStreamer* streamer)
         streamer->write_nbytes(block_data, block_size);
 
     return ret;
- }
+}
 
 //NP2TS_LOGIN       = 0x30,
 Np2TsLogin::Np2TsLogin()
 {
-	ip_addr = NULL;
+    ip_addr = NULL;
 }
 
 Np2TsLogin::~Np2TsLogin()
 {
-	if(ip_addr)
-		delete[] ip_addr;
+    if(ip_addr)
+        delete[] ip_addr;
 }
 
 int Np2TsLogin::parse(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     login_id = streamer->read_int();
-	memcpy(password, streamer->read_nbytes(MD5_LEN), MD5_LEN);
-	memcpy((char*)&client_version, streamer->read_nbytes(sizeof(float)), sizeof(float));
+    memcpy(password, streamer->read_nbytes(MD5_LEN), MD5_LEN);
+    memcpy((char*)&client_version, streamer->read_nbytes(sizeof(float)), sizeof(float));
     listening_port = streamer->read_short();
     local_ip_list_size = streamer->read_char();
-	if(local_ip_list_size)
-		ip_addr = new in_addr[local_ip_list_size];
+    if(local_ip_list_size)
+        ip_addr = new in_addr[local_ip_list_size];
 
-	for(int i = 0; i < local_ip_list_size; i++)
-		memcpy((char*)&(ip_addr[i]), streamer->read_nbytes(sizeof(in_addr)), sizeof(in_addr));
+    for(int i = 0; i < local_ip_list_size; i++)
+        memcpy((char*)&(ip_addr[i]), streamer->read_nbytes(sizeof(in_addr)), sizeof(in_addr));
 
-	return ret;
+    return ret;
 }
 
 int Np2TsLogin::pack_submsg(RsStreamer* streamer)
@@ -514,7 +508,7 @@ int Np2TsLogin::pack_submsg(RsStreamer* streamer)
 
     for(int i = 0; i < local_ip_list_size; i++)
         streamer->write_nbytes((char*)&(ip_addr[i]), sizeof(in_addr));
- 
+
     return ret;
 }
 
@@ -522,17 +516,17 @@ int Np2TsLogin::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
     total_size += sizeof(login_id);
-	total_size += MD5_LEN;
+    total_size += MD5_LEN;
     total_size += sizeof(client_version);
     total_size += sizeof(listening_port);
-	total_size += sizeof(local_ip_list_size);
+    total_size += sizeof(local_ip_list_size);
     total_size += local_ip_list_size*sizeof(in_addr);
     return total_size;
 }
 
-    // |UUID(16 BYTEs)|
-    // |RESOURCE MD5(MD5_LEN)|
-    // NP2TS_REQ_RES     = 0x31,
+// |UUID(16 BYTEs)|
+// |RESOURCE MD5(MD5_LEN)|
+// NP2TS_REQ_RES     = 0x31,
 Np2TsReqRes::Np2TsReqRes()
 {
 
@@ -547,7 +541,7 @@ int Np2TsReqRes::parse(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     memcpy(uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
-	memcpy(resource_md5, streamer->read_nbytes(MD5_LEN), MD5_LEN);
+    memcpy(resource_md5, streamer->read_nbytes(MD5_LEN), MD5_LEN);
     return ret;
 }
 
@@ -564,7 +558,7 @@ int Np2TsReqRes::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
     total_size += UUID_LENGTH;
-	total_size += MD5_LEN;
+    total_size += MD5_LEN;
     return total_size;
 }
 
@@ -584,8 +578,8 @@ int Np2TsReport::parse(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     memcpy(uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
-	
-	memcpy((char*)&coreinfo, streamer->read_nbytes(sizeof(CorePeerInfo)), sizeof(CorePeerInfo));
+
+    memcpy((char*)&coreinfo, streamer->read_nbytes(sizeof(CorePeerInfo)), sizeof(CorePeerInfo));
 
     interval_count = streamer->read_char();
     for(int i = 0; i < interval_count; i++)
@@ -609,13 +603,13 @@ int Np2TsReport::pack_submsg(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     streamer->write_char(NP2TS_REPORT);
-	streamer->write_nbytes(uuid, UUID_LENGTH);
+    streamer->write_nbytes(uuid, UUID_LENGTH);
     streamer->write_nbytes((char*)&coreinfo, sizeof(CorePeerInfo));
-    
-	streamer->write_char(interval_count);
+
+    streamer->write_char(interval_count);
     for(int i = 0; i < interval_count; i++)
         streamer->write_nbytes((char*)&blockinterval[i], sizeof(BlockInterval));
-    
+
     streamer->write_nbytes((char*)&transferinfo, sizeof(transferinfo));
     streamer->write_int(playing_block);
     streamer->write_short(current_buffering_time);
@@ -633,22 +627,22 @@ int Np2TsReport::pack_submsg(RsStreamer* streamer)
 int Np2TsReport::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
-	total_size += UUID_LENGTH;
-    
-	total_size += sizeof(interval_count);
-	for(int i = 0; i < interval_count; i++)
-		total_size += sizeof(BlockInterval);
+    total_size += UUID_LENGTH;
+
+    total_size += sizeof(interval_count);
+    for(int i = 0; i < interval_count; i++)
+        total_size += sizeof(BlockInterval);
 
     total_size += sizeof(transferinfo);
-	total_size += sizeof(playing_block);
-	total_size += sizeof(current_buffering_time);
-	total_size += sizeof(buffered_count);
-	total_size += sizeof(buffered_time);
-	total_size += sizeof(connect_fail_count);
-	total_size += sizeof(incoming_connection_count);
-	total_size += sizeof(outgoing_connection_count);
-	total_size += sizeof(avg_incoming_connection_elapsed_time);
-	total_size += sizeof(avg_outgoing_connection_elapsed_time);
+    total_size += sizeof(playing_block);
+    total_size += sizeof(current_buffering_time);
+    total_size += sizeof(buffered_count);
+    total_size += sizeof(buffered_time);
+    total_size += sizeof(connect_fail_count);
+    total_size += sizeof(incoming_connection_count);
+    total_size += sizeof(outgoing_connection_count);
+    total_size += sizeof(avg_incoming_connection_elapsed_time);
+    total_size += sizeof(avg_outgoing_connection_elapsed_time);
     return total_size;
 }
 
@@ -666,8 +660,8 @@ int Np2TsNeedPeers::parse(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     memcpy(uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
-	current_block = streamer->read_int();
-	return ret;
+    current_block = streamer->read_int();
+    return ret;
 }
 
 int Np2TsNeedPeers::pack_submsg(RsStreamer* streamer)
@@ -675,18 +669,18 @@ int Np2TsNeedPeers::pack_submsg(RsStreamer* streamer)
     int ret = ERROR_SUCCESS;
     streamer->write_char(NP2TS_NEED_PEERS);
     streamer->write_nbytes(uuid, UUID_LENGTH);
-	streamer->write_int(current_block);
-	return ret;
+    streamer->write_int(current_block);
+    return ret;
 }
 
 int Np2TsNeedPeers::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
     total_size += UUID_LENGTH;
-    total_size += sizeof(current_block);	
-	return total_size;
+    total_size += sizeof(current_block);
+    return total_size;
 }
-    
+
 //NP2TS_RES_INTERVAL= 0x34,
 Np2TsReqInterval::Np2TsReqInterval()
 {
@@ -700,22 +694,22 @@ int Np2TsReqInterval::parse(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     memcpy(uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
-	return ret;
+    return ret;
 }
 
 int Np2TsReqInterval::pack_submsg(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
+    int ret = ERROR_SUCCESS;
     streamer->write_char(NP2TS_RES_INTERVAL);
     streamer->write_nbytes(uuid, UUID_LENGTH);
-	return ret;
+    return ret;
 }
 
 int Np2TsReqInterval::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
     total_size += UUID_LENGTH;
-	return total_size;
+    return total_size;
 }
 
 //NP2TS_LOGOUT      = 0x35,
@@ -731,22 +725,22 @@ int Np2TsLogout::parse(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
     memcpy(uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
-	return ret;
+    return ret;
 }
 
 int Np2TsLogout::pack_submsg(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
+    int ret = ERROR_SUCCESS;
     streamer->write_char(NP2TS_LOGOUT);
     streamer->write_nbytes(uuid, UUID_LENGTH);
-	return ret;
+    return ret;
 }
 
 int Np2TsLogout::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
     total_size += UUID_LENGTH;
-	return total_size;
+    return total_size;
 }
 
 Ts2NpWelcome::Ts2NpWelcome()
@@ -764,16 +758,16 @@ int Ts2NpWelcome::parse(RsStreamer* streamer)
     int ret = ERROR_SUCCESS;
     memcpy(uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
     memcpy((char*)&peer_ip, streamer->read_nbytes(sizeof(P2PAddress)), sizeof(P2PAddress));
-	return ret;
+    return ret;
 }
 
 int Ts2NpWelcome::pack_submsg(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
+    int ret = ERROR_SUCCESS;
     streamer->write_char(NP2TS_LOGOUT);
     streamer->write_nbytes(uuid, UUID_LENGTH);
     streamer->write_nbytes((char*)&peer_ip, sizeof(P2PAddress));
-	return ret;
+    return ret;
 }
 
 int Ts2NpWelcome::reserve_pack_size()
@@ -781,79 +775,79 @@ int Ts2NpWelcome::reserve_pack_size()
     int total_size = RsMessage::reserve_pack_size();
     total_size += UUID_LENGTH;
     total_size += sizeof(P2PAddress);
-	return total_size;
+    return total_size;
 }
 
 //TS2NP_PEERS       = 0x37,
 Ts2NpPeers::Ts2NpPeers()
 {
-	sp_addr = NULL;
-	peer_addr = NULL;
+    sp_addr = NULL;
+    peer_addr = NULL;
 }
 
 Ts2NpPeers::~Ts2NpPeers()
 {
-	if(sp_addr)
-		delete[] sp_addr;
+    if(sp_addr)
+        delete[] sp_addr;
 
-	if(peer_addr)
-		delete[] peer_addr;
+    if(peer_addr)
+        delete[] peer_addr;
 
 }
 
 int Ts2NpPeers::parse(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
-	sp_list_size = streamer->read_char();
-	
-	if(sp_list_size != 0)
-		sp_addr = new NetAddress[sp_list_size];
+    int ret = ERROR_SUCCESS;
+    sp_list_size = streamer->read_char();
 
-	for(int i = 0; i < sp_list_size; i++)
-		memcpy((char*)&sp_addr[i], streamer->read_nbytes(sizeof(NetAddress)), sizeof(NetAddress));
+    if(sp_list_size != 0)
+        sp_addr = new NetAddress[sp_list_size];
 
-	peer_list_size = streamer->read_char();
+    for(int i = 0; i < sp_list_size; i++)
+        memcpy((char*)&sp_addr[i], streamer->read_nbytes(sizeof(NetAddress)), sizeof(NetAddress));
 
-	if(peer_list_size)
-		peer_addr = new PeerInfoWithAddr[peer_list_size];
+    peer_list_size = streamer->read_char();
 
-	for(int j = 0; j < peer_list_size; j++)
-		memcpy((char*)&peer_addr[j], streamer->read_nbytes(sizeof(PeerInfoWithAddr)), sizeof(PeerInfoWithAddr));
-	
-	memcpy((char*)&np_addr, streamer->read_nbytes(sizeof(NetAddress)), sizeof(NetAddress));
-	return ret;
+    if(peer_list_size)
+        peer_addr = new PeerInfoWithAddr[peer_list_size];
+
+    for(int j = 0; j < peer_list_size; j++)
+        memcpy((char*)&peer_addr[j], streamer->read_nbytes(sizeof(PeerInfoWithAddr)), sizeof(PeerInfoWithAddr));
+
+    memcpy((char*)&np_addr, streamer->read_nbytes(sizeof(NetAddress)), sizeof(NetAddress));
+    return ret;
 }
 
 int Ts2NpPeers::pack_submsg(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
+    int ret = ERROR_SUCCESS;
     streamer->write_char(TS2NP_PEERS);
-    
-	streamer->write_char(sp_list_size);
-	for(int i = 0; i < sp_list_size; i++)
-		streamer->write_nbytes((char*)&sp_addr[i], sizeof(sp_addr[i]));
 
-	streamer->write_char(peer_list_size);
-	for(int j = 0; j < sp_list_size; j++)
-		streamer->write_nbytes((char*)&peer_addr[j], sizeof(peer_addr[j]));
+    streamer->write_char(sp_list_size);
+    for(int i = 0; i < sp_list_size; i++)
+        streamer->write_nbytes((char*)&sp_addr[i], sizeof(sp_addr[i]));
 
-	streamer->write_nbytes((char*)&np_addr, sizeof(np_addr));
-	return ret;
+    streamer->write_char(peer_list_size);
+    for(int j = 0; j < sp_list_size; j++)
+        streamer->write_nbytes((char*)&peer_addr[j], sizeof(peer_addr[j]));
+
+    streamer->write_nbytes((char*)&np_addr, sizeof(np_addr));
+    return ret;
 }
 
 int Ts2NpPeers::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
     total_size += sizeof(sp_list_size);
-	for(int i = 0; i < sp_list_size; i++)
-		total_size += sizeof(sizeof(NetAddress));
+    for(int i = 0; i < sp_list_size; i++)
+        total_size += sizeof(sizeof(NetAddress));
 
-	total_size += sizeof(peer_list_size);
-	for(int j = 0; j < peer_list_size; j++)
-		total_size += sizeof(PeerInfoWithAddr);
-	
-	total_size += sizeof(np_addr);
-	return total_size;
+    total_size += sizeof(peer_list_size);
+    for(int j = 0; j < peer_list_size; j++)
+        total_size += sizeof(PeerInfoWithAddr);
+
+    total_size += sizeof(np_addr);
+    return total_size;
 }
 
 //TS2NP_RES_INTERVAL= 0x38,
@@ -867,24 +861,24 @@ Ts2NpResInterval::~Ts2NpResInterval()
 
 int Ts2NpResInterval::parse(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
-	memcpy((char*)&block_interval, streamer->read_nbytes(sizeof(block_interval)), sizeof(block_interval));
-	return ret;
+    int ret = ERROR_SUCCESS;
+    memcpy((char*)&block_interval, streamer->read_nbytes(sizeof(block_interval)), sizeof(block_interval));
+    return ret;
 }
 
 int Ts2NpResInterval::pack_submsg(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
+    int ret = ERROR_SUCCESS;
     streamer->write_char(TS2NP_RES_INTERVAL);
-	streamer->write_nbytes((char*)&block_interval, sizeof(block_interval));
-	return ret;
+    streamer->write_nbytes((char*)&block_interval, sizeof(block_interval));
+    return ret;
 }
 
 int Ts2NpResInterval::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
     total_size += sizeof(BlockInterval);
-	return total_size;
+    return total_size;
 }
 
 //TS2NP_MSG         = 0x39,
@@ -898,25 +892,25 @@ Ts2NpMsg::~Ts2NpMsg()
 
 int Ts2NpMsg::parse(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
-	err_msg_type = streamer->read_short();
-	should_quit = streamer->read_char();
-	return ret;
+    int ret = ERROR_SUCCESS;
+    err_msg_type = streamer->read_short();
+    should_quit = streamer->read_char();
+    return ret;
 }
 
 int Ts2NpMsg::pack_submsg(RsStreamer* streamer)
 {
-	int ret = ERROR_SUCCESS;
+    int ret = ERROR_SUCCESS;
     streamer->write_char(TS2NP_MSG);
-	streamer->write_short(err_msg_type);
-	streamer->write_char(should_quit);
-	return ret;
+    streamer->write_short(err_msg_type);
+    streamer->write_char(should_quit);
+    return ret;
 }
- 
+
 int Ts2NpMsg::reserve_pack_size()
 {
     int total_size = RsMessage::reserve_pack_size();
     total_size += sizeof(err_msg_type);
-	total_size += sizeof(should_quit);
-	return total_size;
+    total_size += sizeof(should_quit);
+    return total_size;
 }
