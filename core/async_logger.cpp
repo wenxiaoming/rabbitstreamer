@@ -77,6 +77,8 @@ int RsThreadContext::set_id(int v)
 // reserved for the end of log data, it must be strlen(LOG_TAIL)
 #define LOG_TAIL_SIZE 1
 
+#define MAX_PATH 255
+
 RsAsyncLogger::RsAsyncLogger()
 {
     log_level = Verbose;
@@ -248,16 +250,24 @@ void RsAsyncLogger::write_log(int& fd, char *str_log, int size, int level)
 
 void RsAsyncLogger::open_log_file()
 {
-    string filename = "mylog";
-
-    if (filename.empty()) {
+    timeval tv;
+    if (gettimeofday(&tv, NULL) == -1) {
         return;
     }
 
-    fd = ::open(filename.c_str(), O_RDWR | O_APPEND);
+    struct tm* tm;
+    if ((tm = localtime(&tv.tv_sec)) == NULL) {
+        return;
+    }
+
+    char filename[MAX_PATH];
+    snprintf(filename, MAX_PATH,"log-%d-%02d-%02d-%02d-%02d-%02d.%03d\0",
+             1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000));
+
+    fd = ::open(filename, O_RDWR | O_APPEND);
 
     if(fd == -1 && errno == ENOENT) {
-        fd = open(filename.c_str(),
+        fd = open(filename,
             O_RDWR | O_CREAT | O_TRUNC,
             S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
         );
