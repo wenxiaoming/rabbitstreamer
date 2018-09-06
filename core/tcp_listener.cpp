@@ -35,6 +35,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 RsTcpListener::RsTcpListener(string ip, int port, ITcpHandler* handler)
+              : RsThread("tcplistener")
 {
    ip_addr = ip;
    listen_port = port;

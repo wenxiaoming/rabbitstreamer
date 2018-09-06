@@ -33,6 +33,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define UDP_RECEIVE_BUFFER_SIZE 65535
 
 RsUdpListener::RsUdpListener(string ip, int port, IUdpHandler* handler)
+              : RsThread("udplistener")
 {
     ip_addr = ip;
     listen_port = port;

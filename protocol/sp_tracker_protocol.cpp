@@ -48,6 +48,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define TRACKER_GET_SP_LIST_TIMER_ID 1
 
 RsSpTrackerProtocol::RsSpTrackerProtocol(string ip, int port)
+                    : RsThread("trackerprotocol")
 {
 	// TODO Auto-generated constructor stub
     ip_address = ip;

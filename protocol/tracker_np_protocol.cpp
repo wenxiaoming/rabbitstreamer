@@ -50,6 +50,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define TRACKER_GET_SP_LIST_TIMER_ID 1
 
 RsNpTracker::RsNpTracker()
+            : RsThread("nptracker")
 {
 	// TODO Auto-generated constructor stub
 	buf_size = UDP_MAX_PACKET_SIZE;

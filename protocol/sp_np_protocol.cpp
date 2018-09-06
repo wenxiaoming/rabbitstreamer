@@ -35,6 +35,7 @@ FILE* np_dump_file = NULL;
 #endif
 
 RsNpSpProtocol::RsNpSpProtocol(st_netfd_t stfd)
+		: RsThread("npspprotocol")
 {
     st_fd = stfd;
     io_socket = new RsSocket(st_fd);

@@ -25,8 +25,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "error_code.h"
 #include "logger.h"
 
-RsThread::RsThread()
+RsThread::RsThread(const char* name)
 {
+    _name = name;
     _cid = -1;
     tid = 0;
     cycle_interval_us = 0;

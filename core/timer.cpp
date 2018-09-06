@@ -36,6 +36,7 @@ RsTimer* RsTimer::instance()
 }
 
 RsTimer::RsTimer()
+        : RsThread("rstimer")
 {
     last_thread_time = 0;
     thread_start_flag = false;

@@ -40,6 +40,7 @@ static int block_counter = 0;
 static bool write_flag = false;
 #endif
 RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd)
+		: RsThread("csspprotocol")
 {
     // TODO Auto-generated constructor stub
     st_fd = stfd;
