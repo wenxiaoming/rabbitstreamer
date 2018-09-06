@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/socket_connect.h"
 #include "core/message.h"
 #include "core/p2p_protocol.h"
+#include "core/logger.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -66,6 +67,9 @@ RsSpTracker::~RsSpTracker()
 	// TODO Auto-generated destructor stub
     if(io)
         delete io;
+
+	if(recv_buf)
+		delete[] recv_buf;
 }
 
 int RsSpTracker::on_end_loop()
@@ -109,6 +113,7 @@ void RsSpTracker::generate_uuid(map_str& digits)
 int RsSpTracker::get_register(char* msg, int size)
 {
     printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsRegister register_msg;
     RsStreamer streamer;
@@ -144,6 +149,7 @@ int RsSpTracker::get_register(char* msg, int size)
 int RsSpTracker::get_res_list(char* msg, int size)
 {
     printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsResList res_list_msg;
     RsStreamer streamer;
@@ -175,6 +181,7 @@ int RsSpTracker::get_res_list(char* msg, int size)
 		memcpy(pNode.pHash[i].hash_, res_list_msg.res_info[i].res_md5, MD5_LEN);
 		pNode.pHash[i].hash_[MD5_LEN] = 0;
 		pNode.pHash[i].blockInterval = res_list_msg.res_info[i].block_interval;
+		RSLOGE("index:%d block_interval start %d size %d\n", i, pNode.pHash[i].blockInterval.start, pNode.pHash[i].blockInterval.size);
 	}
 
 	 mgr->insert_channel(uuid, &pNode);
@@ -183,6 +190,7 @@ int RsSpTracker::get_res_list(char* msg, int size)
 int RsSpTracker::get_sp_list(char* msg, int size)
 {
     printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsSpList sp_list_msg;
     RsStreamer streamer;
@@ -199,6 +207,7 @@ int RsSpTracker::get_sp_list(char* msg, int size)
 int RsSpTracker::get_status(char* msg, int size)
 {
     printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     
 	Sp2TsStatus status_msg;
@@ -234,6 +243,7 @@ int RsSpTracker::get_status(char* msg, int size)
 int RsSpTracker::get_logout(char* msg, int size)
 {
     printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsLogout  logout_msg;
     RsStreamer streamer;
@@ -249,6 +259,7 @@ int RsSpTracker::send_errormsg()
 
 int RsSpTracker::send_sp_list(map_str uuid)
 {
+    RSLOGE("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
 
     NetAddress* spaddr = NULL;
@@ -300,14 +311,15 @@ int RsSpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* bu
     //get message size
     char* temp = buf;
     int msg_size = 0;//(temp[3]<<24)|(temp[2]<<16)|(temp[1]<<8)|temp[0];
-    memcpy((char*)&msg_size, recv_buf, 4);
-    recv_buf += 4;
+    memcpy((char*)&msg_size, buf, 4);
+    buf += 4;
 
     //get the message type
     char  msg_type = 0;
-    msg_type = *recv_buf;
-    recv_buf += 1;
+    msg_type = *buf;
+    buf += 1;
 
+    RSLOGE("%s type:%d size:%d\n", __FUNCTION__, msg_type, msg_size);
     switch(msg_type)
     {
 		case SP2TS_REGISTER:
@@ -363,6 +375,7 @@ int RsSpTracker::send_buffer(char* buf, int size)
 int RsSpTracker::send_welcome(map_str uuid)
 {
     printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     Ts2SpWelcome welcome_msg;
     memcpy(welcome_msg.sp_uuid, uuid.str_, UUID_LENGTH);

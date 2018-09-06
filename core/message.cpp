@@ -246,6 +246,8 @@ Sp2TsResList::Sp2TsResList()
 
 Sp2TsResList::~Sp2TsResList()
 {
+    if(res_info)
+        delete[] res_info;
 }
 
 int Sp2TsResList::parse(RsStreamer* streamer)
@@ -253,6 +255,7 @@ int Sp2TsResList::parse(RsStreamer* streamer)
     int ret = ERROR_SUCCESS;
     memcpy(sp_uuid, streamer->read_nbytes(UUID_LENGTH), UUID_LENGTH);
     resource_count = streamer->read_int();
+    res_info = new resource_info[resource_count];
     for(int i = 0; i < resource_count; i++) {
         memcpy(res_info[i].res_md5, streamer->read_nbytes(MD5_LEN), MD5_LEN);
         res_info[i].block_interval.start = streamer->read_int();
