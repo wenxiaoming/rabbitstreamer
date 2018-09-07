@@ -68,6 +68,9 @@ RsNpTracker::~RsNpTracker()
 	// TODO Auto-generated destructor stub
     if(io)
         delete io;
+
+    if(recv_buf)
+        delete[] recv_buf;
 }
 
 int RsNpTracker::on_end_loop()
@@ -431,9 +434,7 @@ int RsNpTracker::send_peers(map_str uuid, MD5_Hash_Str resHash, uint32_t current
 	mgr->insert_Node(uuid, &pNode);
 
     peers_msg.pack(payload, payload_nb);
-    ssize_t nsize;
-    if((payload!=NULL)&&(payload_nb!=0))
-        io->write(payload, payload_nb, &nsize);
+    send_buffer(payload, payload_nb);
 
 del:
 	
@@ -467,9 +468,7 @@ int RsNpTracker::send_welcome(map_str digits, P2PAddress p2pAddr)
 	char* payload = NULL;
     int payload_nb = 0;
     welcome_msg.pack(payload, payload_nb);
-    ssize_t nsize;
-    if((payload!=NULL)&&(payload_nb!=0))
-        io->write(payload, payload_nb, &nsize);
+    send_buffer(payload, payload_nb);
 	
 	return ret;
 }
@@ -501,9 +500,7 @@ int RsNpTracker::send_res_interval(MD5_Hash_Str channel_hash)
 	char* payload = NULL;
     int payload_nb = 0;
     res_interval_msg.pack(payload, payload_nb);
-    ssize_t nsize;
-    if((payload!=NULL)&&(payload_nb!=0))
-        io->write(payload, payload_nb, &nsize);
+    send_buffer(payload, payload_nb);
 }
 
 void RsNpTracker::send_msg()
@@ -517,9 +514,7 @@ void RsNpTracker::send_msg()
 	char* payload = NULL;
     int payload_nb = 0;
     msg.pack(payload, payload_nb);
-    ssize_t nsize;
-    if((payload!=NULL)&&(payload_nb!=0))
-        io->write(payload, payload_nb, &nsize);
+    send_buffer(payload, payload_nb);
 }
 
 int RsNpTracker::loop()
@@ -541,13 +536,15 @@ int RsNpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* bu
     //get message size
     char* temp = buf;
     int msg_size = 0;//(temp[3]<<24)|(temp[2]<<16)|(temp[1]<<8)|temp[0];
-    memcpy((char*)&msg_size, recv_buf, 4);
-    recv_buf += 4;
+    memcpy((char*)&msg_size, buf, 4);
+    buf += 4;
 
     //get the message type
     char  msg_type = 0;
-    msg_type = *recv_buf;
-    recv_buf += 1;
+    msg_type = *buf;
+    buf += 1;
+
+    RSLOGE("%s type:%d size:%d\n", __FUNCTION__, msg_type, msg_size);
 
     switch(msg_type)
     {
