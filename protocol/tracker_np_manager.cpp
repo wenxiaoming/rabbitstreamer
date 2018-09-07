@@ -27,18 +27,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
-TrackerNpManager* TrackerNpManager::p = new TrackerNpManager();
-TrackerNpManager* TrackerNpManager::instance()
+TrackerNpCoordinator* TrackerNpCoordinator::p = new TrackerNpCoordinator();
+TrackerNpCoordinator* TrackerNpCoordinator::instance()
 {
     return p;
 }
 
-TrackerNpManager::TrackerNpManager ()
+TrackerNpCoordinator::TrackerNpCoordinator ()
 {
 	NPNode_map_.clear();
 }
 
-TrackerNpManager::~TrackerNpManager ()
+TrackerNpCoordinator::~TrackerNpCoordinator ()
 {
     for (CMIt it = NPNode_map_.begin (); it != NPNode_map_.end (); ++it)
     {
@@ -49,7 +49,7 @@ TrackerNpManager::~TrackerNpManager ()
     NPNode_map_.clear();
 }
 
-int TrackerNpManager::timer_check()
+int TrackerNpCoordinator::timer_check()
 {
 	for(CMIt it = NPNode_map_.begin(); it != NPNode_map_.end(); ) 
 	{
@@ -74,7 +74,7 @@ int TrackerNpManager::timer_check()
 	return 0;
 }
 
-int TrackerNpManager::insert_Node(map_str digits, NPNode* node)
+int TrackerNpCoordinator::insert_Node(map_str digits, NPNode* node)
 {
     NPNode* pNode = get_Node(digits);
     if(NULL == pNode)
@@ -117,7 +117,7 @@ int TrackerNpManager::insert_Node(map_str digits, NPNode* node)
     return 0;
 }
 
-int TrackerNpManager::deleteNode(map_str digits)
+int TrackerNpCoordinator::deleteNode(map_str digits)
 {
 	CMIt it = NPNode_map_.find(digits);
 	//
@@ -131,7 +131,7 @@ int TrackerNpManager::deleteNode(map_str digits)
 	return 0;
 }
 
-int TrackerNpManager::get_Node(map_str digits, NPNode* node)
+int TrackerNpCoordinator::get_Node(map_str digits, NPNode* node)
 {
 	CCMIt it = NPNode_map_.find(digits);
 	if(it == NPNode_map_.end())
@@ -143,7 +143,7 @@ int TrackerNpManager::get_Node(map_str digits, NPNode* node)
 	return 0;
 }
 
-NPNode* TrackerNpManager::get_Node(map_str digits)
+NPNode* TrackerNpCoordinator::get_Node(map_str digits)
 {
     CCMIt it = NPNode_map_.find(digits);
     if(it == NPNode_map_.end())
@@ -154,7 +154,7 @@ NPNode* TrackerNpManager::get_Node(map_str digits)
     return it->second;
 }
 
-int TrackerNpManager::get_np_address(MD5_Hash_Str resHash, map_str uuid, 
+int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid, 
 							  PeerInfoWithAddr*& pPeerInfoWithAddr, 
 							  int inCount, uint32_t currentblockID)
 {

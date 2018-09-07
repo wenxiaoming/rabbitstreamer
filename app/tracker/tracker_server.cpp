@@ -22,6 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include <stdio.h>
 #include "app/tracker/tracker_sp_manager.h"
+#include "app/tracker/tracker_np_manager.h"
 #include "app/common/server_base.h"
 #include "core/async_logger.h"
 
@@ -35,10 +36,20 @@ int main()
     TrackerSpManager* sp_tracker = new TrackerSpManager("68.168.137.118", 4444);
     sp_tracker->start_listener();
 
+    TrackerNpManager* np_tracker = new TrackerNpManager("68.168.137.118", 5555);
+    np_tracker->start_listener();
+
     RsBaseServer* server = new RsBaseServer;
     server->loop();
 
     printf("hello tracker!\n");
+
+    delete sp_tracker;
+
+    delete np_tracker;
+
+    delete server;
+
     return 0;
 }
 

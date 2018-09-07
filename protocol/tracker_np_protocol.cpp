@@ -124,7 +124,7 @@ int RsNpTracker::get_login(char* msg, int size)
 	map_str digits;
 	generate_uuid(digits);
 	
-	TrackerNpManager* mgr = TrackerNpManager::instance();
+	TrackerNpCoordinator* mgr = TrackerNpCoordinator::instance();
 	
 
 	//login id(UINT32)
@@ -223,7 +223,7 @@ int RsNpTracker::get_report(char* msg, int size)
 	memcpy(digits.str_, report_msg.uuid, UUID_LENGTH);
 	digits.str_[UUID_LENGTH] = 0;
 
-	TrackerNpManager* mgr = TrackerNpManager::instance();
+	TrackerNpCoordinator* mgr = TrackerNpCoordinator::instance();
 	NPNode node;
 
 	if (mgr->get_Node(digits, &node) == -1)
@@ -307,7 +307,7 @@ int RsNpTracker::get_need_peers(char* msg, int size)
 	//current block(UINT32)
 	uint32_t currentBlock = needpeers_msg.current_block;
 
-	TrackerNpManager* mgr = TrackerNpManager::instance();
+	TrackerNpCoordinator* mgr = TrackerNpCoordinator::instance();
 	NPNode node;
 	
 	if (mgr->get_Node(digits, &node) == -1)
@@ -337,7 +337,7 @@ int RsNpTracker::get_logout(char* msg, int size)
 
 	digits.str_[UUID_LENGTH] = 0;
 
-	TrackerNpManager* mgr = TrackerNpManager::instance();
+	TrackerNpCoordinator* mgr = TrackerNpCoordinator::instance();
 
 	mgr->deleteNode(digits);
 	
@@ -359,7 +359,7 @@ int RsNpTracker::get_res_interval(char* msg, int size)
 
 	digits.str_[UUID_LENGTH] = 0;
 
-	TrackerNpManager* mgr = TrackerNpManager::instance();
+	TrackerNpCoordinator* mgr = TrackerNpCoordinator::instance();
 
 	NPNode node;
 	if (mgr->get_Node(digits, &node) == -1)
@@ -380,7 +380,7 @@ int RsNpTracker::send_peers(map_str uuid, MD5_Hash_Str resHash, uint32_t current
 	NetAddress* pCPAddr= NULL;
 	NetAddress* pSPAddr= NULL;
 
-	TrackerNpManager* mgr = TrackerNpManager::instance();
+	TrackerNpCoordinator* mgr = TrackerNpCoordinator::instance();
 	NPNode pNode;
 
 	StreamMgr* chn_mgr = StreamMgr::instance();

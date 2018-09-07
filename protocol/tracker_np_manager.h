@@ -27,16 +27,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "../core/struct_define.h"
 
 // manager of all channels
-class TrackerNpManager
+class TrackerNpCoordinator
 {
 private:
-	TrackerNpManager();
-    static TrackerNpManager* p;
+    TrackerNpCoordinator();
+    static TrackerNpCoordinator* p;
 public:
-    virtual ~TrackerNpManager();
+    virtual ~TrackerNpCoordinator();
 public:
     //for single instance
-    static TrackerNpManager* instance();
+    static TrackerNpCoordinator* instance();
 	
 	int timer_check();
     // add a new channel
