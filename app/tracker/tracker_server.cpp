@@ -36,10 +36,10 @@ int main()
     TrackerSpManager* sp_tracker = new TrackerSpManager("68.168.137.118", 4444);
     sp_tracker->start_listener();
 
-    TrackerNpManager* np_tracker = new TrackerNpManager("68.168.137.118", 5555);
+    TrackerNpManager* np_tracker = new TrackerNpManager("68.168.137.118", 3333);
     np_tracker->start_listener();
 
-    RsBaseServer* server = new RsBaseServer;
+    RsBaseServer* server = new RsBaseServer(TRACKER);
     server->loop();
 
     printf("hello tracker!\n");

@@ -45,13 +45,13 @@ int main()
     cs_manager->start_listener();
 
     //listen from normal peer or supoer peer
-    RsSourceManager::instance()->initialize("", "", "192.168.40.1:3333");
+    RsSourceManager::instance()->initialize("", "", "68.168.137.118:3333");
 
     //update and check status with tracker server
-    SpTrackerManager* tracker_manager = new SpTrackerManager("192.168.40.1", 1111);
+    SpTrackerManager* tracker_manager = new SpTrackerManager("68.168.137.118", 4444);
     tracker_manager->start_connect();
 
-    RsBaseServer* server = new RsBaseServer;
+    RsBaseServer* server = new RsBaseServer(SUPER_PEER);
     server->loop();
 
     printf("hello sp!\n");
