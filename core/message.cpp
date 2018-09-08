@@ -746,6 +746,7 @@ int Np2TsLogout::reserve_pack_size()
     return total_size;
 }
 
+//TS2NP_WELCOME  = 0x36
 Ts2NpWelcome::Ts2NpWelcome()
 {
 
@@ -767,7 +768,7 @@ int Ts2NpWelcome::parse(RsStreamer* streamer)
 int Ts2NpWelcome::pack_submsg(RsStreamer* streamer)
 {
     int ret = ERROR_SUCCESS;
-    streamer->write_char(NP2TS_LOGOUT);
+    streamer->write_char(TS2NP_WELCOME);
     streamer->write_nbytes(uuid, UUID_LENGTH);
     streamer->write_nbytes((char*)&peer_ip, sizeof(P2PAddress));
     return ret;

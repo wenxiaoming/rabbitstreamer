@@ -351,7 +351,7 @@ int RsNpTracker::get_res_interval(char* msg, int size)
 {
     printf("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
-    Np2TsReport res_interval_msg;
+    Np2TsReqInterval res_interval_msg;
     RsStreamer streamer;
     streamer.initialize(msg, size);
     res_interval_msg.parse(&streamer);
