@@ -70,8 +70,6 @@ protected:
     int get_welcome(char* msg, int size);
     int get_sp_list(char* msg, int size);
     int get_res_interval(char* msg, int size);
-	//int on_msg(ACE_UINT8 msg_type, MessageBlock* mb);
-	//int on_err_msg(MessageBlock* mb);
 
     int send_register();
     int send_res_list();
@@ -81,9 +79,6 @@ protected:
 
     // uuid of super peer on tracker
     char sp_id[UUID_LENGTH];
-
-    // address of Tracker
-    //ACE_INET_Addr tracker_addr_;
 
     // recved welcome
     bool login_done_;

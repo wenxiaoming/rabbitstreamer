@@ -32,7 +32,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #define CS_SP_READ_BUFFER_SIZE 65535
 
-#define DUMP_MEDIA_DATA_FROM_CS
+//#define DUMP_MEDIA_DATA_FROM_CS
 
 #ifdef DUMP_MEDIA_DATA_FROM_CS
 FILE* dump_file = NULL;
@@ -42,7 +42,6 @@ static bool write_flag = false;
 RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd)
 		: RsThread("csspprotocol")
 {
-    // TODO Auto-generated constructor stub
     st_fd = stfd;
     io_socket = new RsSocket(st_fd);
 
@@ -61,7 +60,6 @@ RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd)
 
 RsCsSpProtocol::~RsCsSpProtocol()
 {
-    // TODO Auto-generated destructor stub
     if(read_buffer)
         delete[]read_buffer;
 #ifdef DUMP_MEDIA_DATA_FROM_CS
@@ -160,14 +158,7 @@ int RsCsSpProtocol::get_register(char* msg, int size)
 {
     int ret = ERROR_SUCCESS;
     RSLOGI("get_register");
-    // |msg size(UINT32)|msg type(BYTE)|msg content(...)|
 
-    // the following is the detail of msg content
-    // |size of channel name(UINT8)|channel name(...)|
-    // |userid(UINT32)|md5 password(MD5_LEN)|
-    // |max blocksize(UINT32)|max filesize(UINT32)|channel bitRate(float)| //直播流时filesize==-1；
-    // |isSource(bool)|size of CHANNEL DATA(UINT32)|CHANNEL DATA(...)|
-    //CS2SP_REGISTER    = 0, // 注册到SP ---- 由SP2CS_WELCOME返回
     char  channel_size = 0;
     get_as_type(msg, channel_size);
     msg += sizeof(channel_size);
@@ -255,12 +246,6 @@ int RsCsSpProtocol::get_update(char* msg, int size)
 
 int RsCsSpProtocol::get_block(char* msg, int size)
 {
-    // 协议格式，新的协议的目标是更加精炼，更加安全
-    // |msg size(UINT32)|msg type(BYTE)|msg content(...)|
-    // |<-----------msg size是全部数据的长度----------->|
-    // 注意小写的bool值，大小是一个字节
-    // |block id(UINT32)|block size(UINT32)|data offset(UINT32)
-    // |block data(...)|
     int ret = ERROR_SUCCESS;
     //block id (UINT32)
     int block_id = 0;
@@ -283,8 +268,6 @@ int RsCsSpProtocol::get_block(char* msg, int size)
     printf("get_block: id:%d size:%d data_offset:%d \n", block_id, block_size, data_offset);
 
     //block data
-    //char* block_data = (char*)malloc((block_size-4)*sizeof(char));
-    //memcpy(block_data, msg, (block_size-4));
     char* block_data = NULL;
     RsSourceManager::instance()->queue_block(chnl_hash_, &block_data, block_size);
     memcpy(block_data, msg-4, block_size);

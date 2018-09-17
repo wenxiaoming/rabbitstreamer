@@ -50,7 +50,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 RsSpTrackerProtocol::RsSpTrackerProtocol(string ip, int port)
                     : RsThread("trackerprotocol")
 {
-	// TODO Auto-generated constructor stub
     ip_address = ip;
     ip_port = port;
     sp_port = 2222;//hard code the port for np to access sp through tcp
@@ -64,7 +63,6 @@ RsSpTrackerProtocol::RsSpTrackerProtocol(string ip, int port)
 
 RsSpTrackerProtocol::~RsSpTrackerProtocol()
 {
-	// TODO Auto-generated destructor stub
     if(io)
         delete io;
 }
@@ -149,7 +147,6 @@ int RsSpTrackerProtocol::send_res_list()
         return ret;
 
     //printf("%s\n", __FUNCTION__);
-
     int index = 0;
     res_list.res_info = new resource_info[res_list.resource_count];
     //update res list for each source
@@ -163,7 +160,6 @@ int RsSpTrackerProtocol::send_res_list()
 
     char* payload = NULL;
     int payload_nb = 0;
-    //RsMessage* msg = register_msg;
     res_list.pack(payload, payload_nb);
     ssize_t nsize;
     if((payload!=NULL)&&(payload_nb!=0))
@@ -180,7 +176,6 @@ int RsSpTrackerProtocol::send_sp_list()
     memcpy(sp_list.sp_uuid, sp_id, UUID_LENGTH);
     char* payload = NULL;
     int payload_nb = 0;
-    //RsMessage* msg = register_msg;
     sp_list.pack(payload, payload_nb);
     ssize_t nsize;
     if((payload!=NULL)&&(payload_nb!=0))
@@ -223,12 +218,6 @@ int RsSpTrackerProtocol::loop()
 {
     int ret = ERROR_SUCCESS;
 
-    //if((!register_flag)&&(register_retry < 3))
-    //{
-        //register_retry++;
-     //   return send_register();
-    //}
-    // TODO: FIXME: support ipv6, @see man 7 ipv6
     sockaddr_in from;
     int from_len = sizeof(sockaddr_in);
     int read_size = 0;
@@ -239,7 +228,7 @@ int RsSpTrackerProtocol::loop()
 
     //get message size
     char* temp = recv_buf;
-    int msg_size = 0;//(temp[3]<<24)|(temp[2]<<16)|(temp[1]<<8)|temp[0];
+    int msg_size = 0;
     memcpy((char*)&msg_size, recv_buf, 4);
     recv_buf += 4;
 
@@ -261,14 +250,6 @@ int RsSpTrackerProtocol::loop()
             break;
     }
 
-    //parse the recv_buffer, then decode the header,process it as following switch code
-    /*
-    SP2TS_REGISTER
-    SP2TS_STATUS
-    SP2TS_RES_LIST
-    SP2TS_GET_SP
-    SP2TS_LOGOUT
-    */
     if (UDP_PACKET_RECV_CYCLE_INTERVAL_MS > 0) {
         st_usleep(UDP_PACKET_RECV_CYCLE_INTERVAL_MS * 1000);
     }

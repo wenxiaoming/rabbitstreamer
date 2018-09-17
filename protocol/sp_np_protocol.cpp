@@ -28,7 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdio.h>
 #include <st.h>
 
-#define DUMP_SEND_MEDIA
+//#define DUMP_SEND_MEDIA
 
 #ifdef DUMP_SEND_MEDIA
 FILE* np_dump_file = NULL;
@@ -169,7 +169,6 @@ int RsNpSpProtocol::send_one_block(char* resource_hash, uint8_t count, uint32_t 
 
     calculator->update_buffersize(size);
     //printf("%s id:%d \n", __FUNCTION__, id);
-
     return ret;
 }
 
@@ -199,9 +198,7 @@ int RsNpSpProtocol::get_push_list(char* msg, int size)
     pushlist_msg.parse(&streamer);
     if(!media_type_flag)
         send_media_type(&(pushlist_msg.resource_md5[0]));
-
     //st_usleep(10000);
-
     if(pushlist_msg.block_count)
         send_push_list(&(pushlist_msg.resource_md5[0]), pushlist_msg.block_count, pushlist_msg.block_array);
     return ret;

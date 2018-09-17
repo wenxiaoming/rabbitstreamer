@@ -92,10 +92,6 @@ public:
     // check if this channel exists
     bool find_channel(const MD5_Hash_Str& chnl_hash) {return get_buffer_queue(chnl_hash) != NULL;};
 
-    // lock following operations of Channels
-    // save a block into file
-    //int add_block (const MD5_Hash_Str& chnl_hash, char* block, int size);
-
     int get_max_blockid(const MD5_Hash_Str& chnl_hash, int& block_id);
 
 private:
