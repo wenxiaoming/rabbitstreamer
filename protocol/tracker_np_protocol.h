@@ -36,7 +36,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using namespace std;
 
 class RsNpTracker : public RsThread,
-                            public virtual ITimerHandler
+                    public virtual ITimerHandler
 {
 public:
 	RsNpTracker();

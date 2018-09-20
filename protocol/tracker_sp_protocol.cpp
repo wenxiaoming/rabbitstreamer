@@ -112,8 +112,8 @@ void RsSpTracker::generate_uuid(map_str& digits)
 
 int RsSpTracker::get_register(char* msg, int size)
 {
-    printf("%s\n", __FUNCTION__);
-    RSLOGE("%s\n", __FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsRegister register_msg;
     RsStreamer streamer;
@@ -148,8 +148,8 @@ int RsSpTracker::get_register(char* msg, int size)
 
 int RsSpTracker::get_res_list(char* msg, int size)
 {
-    printf("%s\n", __FUNCTION__);
-    RSLOGE("%s\n", __FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsResList res_list_msg;
     RsStreamer streamer;
@@ -189,8 +189,8 @@ int RsSpTracker::get_res_list(char* msg, int size)
 
 int RsSpTracker::get_sp_list(char* msg, int size)
 {
-    printf("%s\n", __FUNCTION__);
-    RSLOGE("%s\n", __FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsSpList sp_list_msg;
     RsStreamer streamer;
@@ -206,8 +206,8 @@ int RsSpTracker::get_sp_list(char* msg, int size)
 
 int RsSpTracker::get_status(char* msg, int size)
 {
-    printf("%s\n", __FUNCTION__);
-    RSLOGE("%s\n", __FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     
 	Sp2TsStatus status_msg;
@@ -242,8 +242,8 @@ int RsSpTracker::get_status(char* msg, int size)
 
 int RsSpTracker::get_logout(char* msg, int size)
 {
-    printf("%s\n", __FUNCTION__);
-    RSLOGE("%s\n", __FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsLogout  logout_msg;
     RsStreamer streamer;
@@ -259,7 +259,7 @@ int RsSpTracker::send_errormsg()
 
 int RsSpTracker::send_sp_list(map_str uuid)
 {
-    RSLOGE("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
 
     NetAddress* spaddr = NULL;
@@ -319,7 +319,7 @@ int RsSpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* bu
     msg_type = *buf;
     buf += 1;
 
-    RSLOGE("%s type:%d size:%d\n", __FUNCTION__, msg_type, msg_size);
+    RSLOGE("%s type:%d size:%d\n", __PRETTY_FUNCTION__, msg_type, msg_size);
     switch(msg_type)
     {
 		case SP2TS_REGISTER:
@@ -374,8 +374,8 @@ int RsSpTracker::send_buffer(char* buf, int size)
 
 int RsSpTracker::send_welcome(map_str uuid)
 {
-    printf("%s\n", __FUNCTION__);
-    RSLOGE("%s\n", __FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Ts2SpWelcome welcome_msg;
     memcpy(welcome_msg.sp_uuid, uuid.str_, UUID_LENGTH);

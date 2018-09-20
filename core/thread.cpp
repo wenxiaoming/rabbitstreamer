@@ -31,6 +31,7 @@ RsThread::RsThread(const char* name)
     _cid = -1;
     tid = 0;
     cycle_interval_us = 0;
+    loop_flag = false;
 }
 
 RsThread::~RsThread()

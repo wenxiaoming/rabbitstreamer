@@ -113,7 +113,8 @@ void RsNpTracker::generate_uuid(map_str& digits)
 
 int RsNpTracker::get_login(char* msg, int size)
 {
-    printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Np2TsLogin login_msg;
     RsStreamer streamer;
@@ -128,7 +129,6 @@ int RsNpTracker::get_login(char* msg, int size)
 	generate_uuid(digits);
 	
 	TrackerNpCoordinator* mgr = TrackerNpCoordinator::instance();
-	
 
 	//login id(UINT32)
 	uint32_t id = login_msg.login_id;
@@ -193,8 +193,8 @@ int RsNpTracker::get_login(char* msg, int size)
 
 int RsNpTracker::get_req_res(char* msg, int size)
 {
-    RSLOGE("NP: REQ_RES ! recieved  NP2TS_REQ_RES MSG |on_NP2TS_REQ_RES.\n");
-    printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Np2TsReqRes reqres_msg;
     RsStreamer streamer;
@@ -214,8 +214,8 @@ int RsNpTracker::get_req_res(char* msg, int size)
 
 int RsNpTracker::get_report(char* msg, int size)
 {
-    RSLOGE("NP:  REPORT ! recieved  NP2TS_REPORT MSG |on_NP2TS_REPORT.\n");
-    printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Np2TsReport report_msg;
     RsStreamer streamer;
@@ -294,8 +294,8 @@ int RsNpTracker::get_report(char* msg, int size)
 
 int RsNpTracker::get_need_peers(char* msg, int size)
 {
-    RSLOGE("NP: NEED_PEERS ! recieved  NP2TS_NEED_PEERS MSG |on_NP2TS_NEED_PEERS.\n");
-    printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Np2TsNeedPeers needpeers_msg;
     RsStreamer streamer;
@@ -327,8 +327,8 @@ int RsNpTracker::get_need_peers(char* msg, int size)
 
 int RsNpTracker::get_logout(char* msg, int size)
 {
-    RSLOGE("NP: LOGOUT! recieved  NP2TS_LOGOUT MSG |on_NP2TS_LOGOUT.\n");
-    printf("%s\n", __FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Np2TsLogout logout_msg;
     RsStreamer streamer;
@@ -349,7 +349,8 @@ int RsNpTracker::get_logout(char* msg, int size)
 
 int RsNpTracker::get_res_interval(char* msg, int size)
 {
-    printf("%s\n", __FUNCTION__);
+    printf("%s\n", __PRETTY_FUNCTION__);
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
     Np2TsReqInterval res_interval_msg;
     RsStreamer streamer;
@@ -376,6 +377,7 @@ int RsNpTracker::get_res_interval(char* msg, int size)
 
 int RsNpTracker::send_peers(map_str uuid, MD5_Hash_Str resHash, uint32_t currentblockID)
 {
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
 	char* payload = NULL;
     int payload_nb = 0;
 
@@ -458,12 +460,11 @@ del:
 
 int RsNpTracker::send_welcome(map_str digits, P2PAddress p2pAddr)
 {
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
 	int ret = ERROR_SUCCESS;
 	Ts2NpWelcome welcome_msg;
 	memcpy((char*)&welcome_msg.uuid, digits.str_, UUID_LENGTH);
 	memcpy((char*)&welcome_msg.peer_ip, (char*)&p2pAddr, sizeof(P2PAddress));
-
-	RSLOGE("send  TS2NP_WELCOME MSG |send_TS2NP_WELCOME.\n");
 
 	char* payload = NULL;
     int payload_nb = 0;
@@ -475,6 +476,7 @@ int RsNpTracker::send_welcome(map_str digits, P2PAddress p2pAddr)
 
 int RsNpTracker::send_res_interval(MD5_Hash_Str channel_hash)
 {
+    RSLOGE("%s\n", __PRETTY_FUNCTION__);
 	BlockInterval blockInterval;
 	StreamMgr* mgr = StreamMgr::instance();
 	if (1 == mgr->get_channel_interval(channel_hash,  blockInterval))
@@ -488,12 +490,13 @@ int RsNpTracker::send_res_interval(MD5_Hash_Str channel_hash)
 	{
 		mgr->signal_get_res_interval(channel_hash);
 		last_send_blockinterval = blockInterval;
-		//ACE_DEBUG((LM_ERROR, ACE_TEXT("blockInterval is not updated in send_TS2NP_RES_INTERVAL\n")));
+		RSLOGE("blockInterval is not updated in send_TS2NP_RES_INTERVAL\n");
 		return 0;
 	}
 
 	Ts2NpResInterval res_interval_msg;
 	memcpy((char*)&res_interval_msg.block_interval, (char*)&blockInterval, sizeof(BlockInterval));
+    RSLOGE("%s blockInterval.start:%d size:%d \n", __PRETTY_FUNCTION__, blockInterval.start, blockInterval.size);
 
 	last_send_blockinterval = blockInterval;
 
@@ -544,7 +547,7 @@ int RsNpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* bu
     msg_type = *buf;
     buf += 1;
 
-    RSLOGE("%s type:%d size:%d\n", __FUNCTION__, msg_type, msg_size);
+    RSLOGE("%s type:%d size:%d\n", __PRETTY_FUNCTION__, msg_type, msg_size);
 
     switch(msg_type)
     {

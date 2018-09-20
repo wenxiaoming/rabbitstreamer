@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdio.h>
 #include "tracker_streamer_manager.h"
 #include "thirty_party/md5/md5.h"
+#include "core/logger.h"
 
 StreamMgr* StreamMgr::p = new StreamMgr;
 StreamMgr* StreamMgr::instance()
@@ -123,14 +124,14 @@ int StreamMgr::get_channel_count()
 int StreamMgr::insert_channel(map_str strMd5, ChannelNode* chnl)
 {
     ChannelNode Node; 
-    if(get_channel(strMd5, &Node) == -1)//û���ҵ�node
+    if(get_channel(strMd5, &Node) == -1)
     {
 		try
 		{
 			ChannelNode* pNode = new ChannelNode();
 			if(!pNode)
 			{
-				//ACE_ERROR((LM_ERROR, ACE_TEXT("pNode = new ChannelNode() error | new_channel.\n")));
+				RSLOGE("pNode = new ChannelNode() error | new_channel.\n");
 				return 0;
 			}
 
@@ -139,7 +140,7 @@ int StreamMgr::insert_channel(map_str strMd5, ChannelNode* chnl)
 			bool ret = chnl_map_.insert(std::pair<map_str, ChannelNode*>(strMd5, pNode)).second;
 			if(!ret) 
 			{
-				//ACE_ERROR((LM_ERROR, ACE_TEXT("chnl_map_.insert error | new_channel.\n")));
+				RSLOGE("chnl_map_.insert error | new_channel.\n");
 				delete pNode;
 				pNode = NULL;
 				return 0;
@@ -147,11 +148,11 @@ int StreamMgr::insert_channel(map_str strMd5, ChannelNode* chnl)
 		}
 		catch (...)
 		{
-			//ACE_ERROR((LM_ERROR, ACE_TEXT("new ChannelNode Exception error  | new_channel.\n")));
+			RSLOGE("new ChannelNode Exception error  | new_channel.\n");
 		}
 	
     }
-	else//�ҵ���node
+	else
 	{
          ChannelNode* pNode = get_node(strMd5);
 		 if (NULL != pNode)
@@ -270,8 +271,8 @@ int StreamMgr::get_cp_address( NetAddress*& pSPAddr, int inCount)
 	pSPAddr = new  NetAddress[inCount];
 
 
-	int imax = chnl_map_.size();    //ӵ�нڵ���
-	int imaxPos = imax - inCount;   //����ȡ�����λ��
+	int imax = chnl_map_.size();    
+	int imaxPos = imax - inCount;   
 	int iPos=0;//
 	if (imaxPos > 0)
 	{
