@@ -28,3 +28,5 @@ ret=$?; if [[ $ret -ne 0 ]]; then echo "build st-1.9 failed, ret=$ret"; exit $re
 
 #make clean
 make
+
+ln -s objs/st/libst.so.1.9 libst.so.1
