@@ -28,6 +28,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace core {
+
 class RsBitrateCalculator {
 public:
     RsBitrateCalculator(string name);
@@ -39,5 +41,7 @@ private:
     uint32_t recv_buffer_size;
     uint32_t last_recv_msec;
 };
+
+} /* namespace core */
 
 #endif /* CORE_BITRATE_CALCULATOR_H_ */

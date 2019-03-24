@@ -24,7 +24,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define PROTOCOL_TRACKER_NP_MANAGER_
 
 #include <map>
-#include "../core/struct_define.h"
+#include "core/struct_define.h"
+
+using namespace core;
+
+namespace protocol {
+namespace tracker {
 
 // manager of all channels
 class TrackerNpCoordinator
@@ -69,6 +74,10 @@ private:
         MAX_IDLE_TIME_SEC = 600, 
     };
 };
+
+
+} /* namespace protocol */
+} /* namespace tracker  */
 
 #endif
 

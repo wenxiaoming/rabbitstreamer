@@ -24,7 +24,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CORE_THREAD_H_
 
 #include "st.h"
-//every thread must inherit from this class to support actual threading operation
+
+namespace core {
+
+// every thread must inherit from this class to support actual threading operation
 class RsThread
 {
 public:
@@ -33,7 +36,7 @@ public:
 public:
 	int start_thread();
 	void stop_thread();       
-	//inherited class must implement those functions
+	// inherited class must implement those functions
 	virtual int on_thread_start() = 0;
 	virtual int on_before_loop() = 0;
 	virtual int loop() = 0;
@@ -57,5 +60,7 @@ private:
 public:
     int64_t cycle_interval_us;
 };
+
+} /* namespace core */
 
 #endif

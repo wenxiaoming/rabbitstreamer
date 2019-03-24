@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <st.h>
 
+namespace core {
+
 class RsSocket
 {
 private:
@@ -62,5 +64,7 @@ extern int rs_st_init();
 
 // close the netfd, and close the underlayer fd.
 extern void rs_close_stfd(st_netfd_t& stfd);
+
+} /* namespace core */
 
 #endif /* CORE_RSSOCKET_H_ */

@@ -26,6 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <stdint.h>
 
+namespace core {
+
 #define rs_min(a, b) (((a) < (b))? (a) : (b))
 #define rs_max(a, b) (((a) < (b))? (b) : (a))
 
@@ -33,5 +35,6 @@ int64_t get_system_time_ms();
 int64_t get_system_startup_time_ms();
 int64_t update_system_time_ms();
 
+} /* namespace core */
 
 #endif /* CORE_CORE_UTILITY_H_ */

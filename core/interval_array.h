@@ -26,6 +26,8 @@
 
 using namespace std;
 
+namespace core {
+
 class IntervalArray 
 {
 public:
@@ -378,5 +380,7 @@ private:
 	uint16_t m_totalsize;
 	uint16_t m_validsize;
 };
+
+} /* namespace core */
 
 #endif

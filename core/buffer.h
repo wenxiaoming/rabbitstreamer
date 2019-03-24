@@ -26,6 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "socket.h"
 
+namespace core {
+
 class RsBuffer {
 
 public:
@@ -61,5 +63,7 @@ private:
     char* buffer;//the pointer for the base position of the buffer
     int buffer_size;//the total size of the buffer
 };
+
+} /* namespace core */
 
 #endif /* CORE_BUFFER_H_ */

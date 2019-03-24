@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "error_code.h"
 #include "logger.h"
 
+namespace core {
+
 RsSocket::RsSocket(st_netfd_t client_stfd)
 {
     stfd = client_stfd;
@@ -225,3 +227,5 @@ void rs_close_stfd(st_netfd_t& stfd)
         close(fd);
     }
 }
+
+} /* namespace core */

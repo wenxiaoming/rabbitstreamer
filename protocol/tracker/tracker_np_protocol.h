@@ -20,8 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef PROTOCOL_TRACKER_SP_PROTOCOL_H_
-#define PROTOCOL_TRACKER_SP_PROTOCOL_H_
+#ifndef PROTOCOL_TRACKER_NP_PROTOCOL_H_
+#define PROTOCOL_TRACKER_NP_PROTOCOL_H_
 
 #include <st.h>
 #include <string>
@@ -35,12 +35,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
-class RsSpTracker : public RsThread,
-                            public virtual ITimerHandler
+using namespace core;
+
+//class map_str;
+
+namespace protocol {
+namespace tracker {
+
+class RsNpTracker : public RsThread,
+                    public virtual ITimerHandler
 {
 public:
-	RsSpTracker();
-	virtual ~RsSpTracker();
+	RsNpTracker();
+	virtual ~RsNpTracker();
 public:
     //implement rs_thread's virtual function
     virtual int on_thread_start();
@@ -69,22 +76,23 @@ private:
     st_netfd_t sp_fd;
     RsSocket* io;
 	sockaddr_in last_receive_addr;
-protected:
-    int send_welcome(map_str uuid);
-    int send_sp_list(map_str uuid);
-    int send_errormsg();
-    int send_res_interval();
+private:
+	int get_login(char* msg, int size);
+	int get_req_res(char* msg, int size);
+	int get_report(char* msg, int size);
+	int get_need_peers(char* msg, int size);
+	int get_logout(char* msg, int size);
+	int get_res_interval(char* msg, int size);
 
-	//handle message from sp to tracker
-	int get_register(char* msg, int size);
-    int get_res_list(char* msg, int size);
-    int get_sp_list(char* msg, int size);
-    int get_status(char* msg, int size);
-    int get_logout(char* msg, int size);
-    // uuid of super peer on tracker
-    char sp_id[UUID_LENGTH];
-    // recved welcome
-    bool login_done_;
+	int send_peers(map_str uuid, MD5_Hash_Str resHash, uint32_t currentblockID=0);
+	int send_welcome(map_str digits, P2PAddress p2pAddr);
+	int send_res_interval(MD5_Hash_Str channel_hash);
+	void send_msg();
+private:
+	BlockInterval last_send_blockinterval;
 };
 
+
+} /* namespace protocol */
+} /* namespace tracker  */
 #endif

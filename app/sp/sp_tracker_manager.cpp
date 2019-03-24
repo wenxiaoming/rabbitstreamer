@@ -24,7 +24,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "sp_tracker_manager.h"
 #include "core/error_code.h"
 
-SpTrackerManager::SpTrackerManager(string ip, int port)
+namespace app {
+namespace sp {
+
+SpTrackerManager::SpTrackerManager(string ip, uint32_t port)
 {
     ip_address = ip;
     ip_port = port;
@@ -46,5 +49,7 @@ int SpTrackerManager::start_connect()
     return ret;
 }
 
+} /* namespace app */
+} /* namespace sp */
 
 

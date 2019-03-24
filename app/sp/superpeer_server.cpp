@@ -26,14 +26,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "app/sp/sp_cs_manager.h"
 #include "app/sp/sp_tracker_manager.h"
 #include "app/common/server_base.h"
-#include "protocol/sp_source_manager.h"
+#include "protocol/sp/sp_source_manager.h"
 #include "core/async_logger.h"
 
-RsLogBase* rs_log = new RsAsyncLogger();
-RsContextBase* rs_context = new RsThreadContext();
+using namespace app::common;
+using namespace protocol::sp;
+using namespace app::sp;
 
 int main()
 {    
+    init_log_system();
+
     rs_st_init();
 
     //start the listener of super peer server
@@ -54,8 +57,8 @@ int main()
     RsBaseServer* server = new RsBaseServer(SUPER_PEER);
     server->loop();
 
+    deinit_log_system();
+
     printf("hello sp!\n");
     return 0;
 }
-
-

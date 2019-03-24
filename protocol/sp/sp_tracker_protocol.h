@@ -21,27 +21,33 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef PROTOCOL_SP_NP_PROTOCOL_H_
-#define PROTOCOL_SP_NP_PROTOCOL_H_
+#ifndef PROTOCOL_SP_TRACKER_PROTOCOL_H_
+#define PROTOCOL_SP_TRACKER_PROTOCOL_H_
 
+#include <st.h>
+#include <string>
+#include <stdint.h>
 #include "core/thread.h"
 #include "core/socket.h"
-#include "core/buffer.h"
-#include "core/p2p_protocol.h"
-#include "core/bitrate_calculator.h"
-#include <st.h>
-#include <string.h>
-#include <stdint.h>
+#include "core/core_struct.h"
+#include "core/core_utility.h"
+#include "core/timer.h"
 
-class RsNpSpProtocol : public RsThread
+using namespace std;
+
+using namespace core;
+
+namespace protocol {
+namespace sp {
+
+class RsSpTrackerProtocol : public RsThread,
+                            public virtual ITimerHandler
 {
 public:
-    RsNpSpProtocol(st_netfd_t stfd);
-    virtual ~RsNpSpProtocol();
+	RsSpTrackerProtocol(string ip, int port);
+	virtual ~RsSpTrackerProtocol();
 public:
-    int get_push_list(char* msg, int size);
-    int send_push_list(char* resource_hash, uint8_t count, uint32_t* array);
-    int send_media_type(char* resource_hash);
+	int start_connect();
 public:
     //implement rs_thread's virtual function
     virtual int on_thread_start();
@@ -49,14 +55,45 @@ public:
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
+public:
+    //implement ITimerHandler
+    virtual int handle_timeout(int64_t timerid);
+
 private:
-    int send_one_block(char* resource_hash, uint8_t count, uint32_t id);
+    char* recv_buf;
+    int buf_size;
+    bool register_flag;
+    int register_retry;
 private:
-    st_netfd_t st_fd;
-    RsSocket* io_socket;
-    RsBuffer* np_buffer;
-    bool media_type_flag;
-    RsBitrateCalculator* calculator;
+    int64_t last_thread_time;
+private:
+    string ip_address;
+    int ip_port;
+    st_netfd_t tracker_udp_fd;
+    RsSocket* io;
+protected:
+    int get_welcome(char* msg, int size);
+    int get_sp_list(char* msg, int size);
+    int get_res_interval(char* msg, int size);
+
+    int send_register();
+    int send_res_list();
+    int send_sp_list();
+    int send_status();
+    int send_logout();
+
+    // uuid of super peer on tracker
+    char sp_id[UUID_LENGTH];
+
+    // recved welcome
+    bool login_done_;
+
+    // sp port
+    uint16_t sp_port;
 };
 
-#endif /* PROTOCOL_SP_NP_PROTOCOL_H_ */
+
+} /* namespace protocol */
+} /* namespace sp  */
+
+#endif /* PROTOCOL_SP_TRACKER_PROTOCOL_H_ */

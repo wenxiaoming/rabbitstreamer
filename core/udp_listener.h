@@ -30,6 +30,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace core {
+
 class RsUdpListener: public RsThread
 {
 
@@ -59,5 +61,7 @@ private:
     int buffer_size;
     IUdpHandler* udp_handler;
 };
+
+} /* namespace core */
 
 #endif /* CORE_UDP_LISTENER_H_ */

@@ -22,10 +22,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "tracker_np_manager.h"
 #include "md5.h"
-#include "../core/logger.h"
+#include "core/logger.h"
 #include <vector>
 
 using namespace std;
+
+namespace protocol {
+namespace tracker {
 
 TrackerNpCoordinator* TrackerNpCoordinator::p = new TrackerNpCoordinator();
 TrackerNpCoordinator* TrackerNpCoordinator::instance()
@@ -251,3 +254,7 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
 	
 	return index;
 }
+
+
+} /* namespace protocol */
+} /* namespace tracker  */

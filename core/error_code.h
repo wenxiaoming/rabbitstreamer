@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef RS_ERROR_CODE_H
 #define RS_ERROR_CODE_H
 
+namespace core {
+
 #define ERROR_SUCCESS                       0
 // system error.
 #define ERROR_SOCKET_CREATE                 1000
@@ -51,4 +53,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //source manager error
 #define ERROR_SOURCE_MGR_NOT_FOUND              2000
 #define ERROR_SOURCE_MGR_FAILT_TO_CREATE_SOURCE 2001
+
+} /* namespace core */
+
 #endif

@@ -25,6 +25,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "thirty_party/md5/md5.h"
 #include "core/logger.h"
 
+namespace protocol {
+namespace tracker {
+
 StreamMgr* StreamMgr::p = new StreamMgr;
 StreamMgr* StreamMgr::instance()
 {
@@ -84,7 +87,7 @@ int StreamMgr::signal_get_res_interval(MD5_Hash_Str Channel_hash)
 		{
 			if (it->second->pHash[i] == Channel_hash)
 			{
-				RsSpTracker* sp = it->second->spService;
+				RsSpTracker* sp = static_cast<RsSpTracker*>(it->second->spService);
 				if(sp)
 				{
 					//sp->send_TS2SP_GET_RES_LIST(); //Kevin.Wen,fixme
@@ -327,3 +330,7 @@ int StreamMgr::get_sp_address(MD5_Hash_Str resHash,  NetAddress*& pSPAddr, int i
 	return index;
 
 }
+
+
+} /* namespace protocol */
+} /* namespace tracker  */

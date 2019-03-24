@@ -22,6 +22,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "tracker_sp_manager.h"
 
+namespace app {
+namespace tracker {
+
 TrackerSpManager::TrackerSpManager(string ip, int port)
 {
     ip_addr = ip;
@@ -47,4 +50,5 @@ int TrackerSpManager::handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, cha
     return 0;
 }
 
-
+} /* namespace app */
+} /* namespace tracker */

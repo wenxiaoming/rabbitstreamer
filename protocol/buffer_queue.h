@@ -31,6 +31,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+using namespace core;
+
+namespace protocol {
+
 enum BUFFER_FLAG
 {
     BUFFER_WRITING,
@@ -96,5 +100,7 @@ private:
     bool buffer_full_flag;
     vector<media_buffer*> buffer_vector;
 };
+
+} /* namespace protocol */
 
 #endif /* PROTOCOL_BUFFER_QUEUE_H_ */

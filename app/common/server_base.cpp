@@ -24,9 +24,14 @@
 #include "server_base.h"
 #include <st.h>
 #include "core/core_utility.h"
-#include "protocol/sp_source_manager.h"
+#include "protocol/sp/sp_source_manager.h"
 
 #define SYS_CYCLE_INTERVAL 1000
+
+using namespace protocol::sp;
+
+namespace app {
+namespace common {
 
 RsBaseServer::RsBaseServer(ServerType type) {
 	servertype = type;
@@ -46,3 +51,6 @@ void RsBaseServer::loop()
 			RsSourceManager::instance()->write_source_channel_list_txt();
 	}
 }
+
+} /* namespace common */
+} /* namespace app */

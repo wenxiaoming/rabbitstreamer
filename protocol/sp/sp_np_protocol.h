@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 RabbitStreamer
+Copyright (c) 2016-2017 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -21,39 +21,49 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef APP_SP_CS_MANAGER_H_
-#define APP_SP_CS_MANAGER_H_
+#ifndef PROTOCOL_SP_NP_PROTOCOL_H_
+#define PROTOCOL_SP_NP_PROTOCOL_H_
 
-#include "core/tcp_listener.h"
-#include "protocol/sp/sp_cs_protocol.h"
+#include "core/thread.h"
+#include "core/socket.h"
+#include "core/buffer.h"
+#include "core/p2p_protocol.h"
+#include "core/bitrate_calculator.h"
+#include <st.h>
+#include <string.h>
+#include <stdint.h>
 
 using namespace core;
-using namespace protocol::sp;
 
-namespace app {
+namespace protocol {
 namespace sp {
 
-class SpCsManager : public ITcpHandler
+class RsNpSpProtocol : public RsThread
 {
 public:
-    SpCsManager(string ip, int port);
-    ~SpCsManager();
-
+    RsNpSpProtocol(st_netfd_t stfd);
+    virtual ~RsNpSpProtocol();
 public:
-    int start_listener();
-
+    int get_push_list(char* msg, int size);
+    int send_push_list(char* resource_hash, uint8_t count, uint32_t* array);
+    int send_media_type(char* resource_hash);
 public:
-    //implement interface ITcpHandler
-    virtual int handle_tcp_connect(st_netfd_t stfd);
-
+    //implement rs_thread's virtual function
+    virtual int on_thread_start();
+    virtual int on_before_loop();
+    virtual int loop();
+    virtual int on_end_loop();
+    virtual int on_thread_stop();
 private:
-    RsTcpListener* tcp_listener;
-    string ip_addr;
-    int listen_port;
-    RsCsSpProtocol* cs_sp_protocol;
+    int send_one_block(char* resource_hash, uint8_t count, uint32_t id);
+private:
+    st_netfd_t st_fd;
+    RsSocket* io_socket;
+    RsBuffer* np_buffer;
+    bool media_type_flag;
+    RsBitrateCalculator* calculator;
 };
 
-} /* namespace app */
-} /* namespace sp */
-
-#endif /* APP_SP_CS_MANAGER_H */
+} /* namespace protocol */
+} /* namespace sp  */
+#endif /* PROTOCOL_SP_NP_PROTOCOL_H_ */

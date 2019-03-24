@@ -23,9 +23,20 @@
 #include <time.h>
 #include "../core/core_struct.h"
 #include "../core/interval_array.h"
+//#include "../protocol/tracker/tracker_sp_protocol.h"
 
+//using namespace protocol;
 
-class RsSpTracker;
+//using namespace tracker;
+namespace protocol {
+	namespace tracker {
+		class RsSpTracker;
+	}
+}
+
+//class RsSpTracker;
+
+namespace core {
 
 class map_str
 {
@@ -98,18 +109,19 @@ struct  ChannelNode
 		return (*this);
 	}
 	
-	time_t               last_recv_report_time_;  
-	uint32_t             userID;                    
-	uint8_t            pswd[33];                 
-	uint16_t           servicePort;               
-	uint32_t           resourceCount;              
-	uint16_t           conNum;                     
-	bool                 exceedMaxConn;              
-	float                bandwidth;                  
-	NetAddress        spAddress;                  
-	RsSpTracker*           spService;					 
+	time_t last_recv_report_time_;
+	uint32_t userID;
+	uint8_t pswd[33];
+	uint16_t servicePort;
+	uint32_t resourceCount;
+	uint16_t conNum;
+	bool exceedMaxConn;
+	float bandwidth;
+	NetAddress spAddress;
+	//RsSpTracker* spService;
+	void* spService;
 	
-    MD5_Hash_Str*         pHash;                     
+	MD5_Hash_Str* pHash;
 
 	void new_pHash()
 	{
@@ -195,5 +207,7 @@ struct  NPNode
 	 }
 	 
 };
+
+} /* namespace core */
 
 #endif

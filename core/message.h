@@ -27,6 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core_struct.h"
 #include "streamer.h"
 
+namespace core {
+
 class RsMessage
 {
 public:
@@ -404,5 +406,7 @@ public:
     uint32_t block_size;
     char* block_data;
 };
+
+} /* namespace core */
 
 #endif /* CORE_RS_MESSAGE_H_ */

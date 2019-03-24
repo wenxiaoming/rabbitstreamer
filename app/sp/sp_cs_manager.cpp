@@ -23,6 +23,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "sp_cs_manager.h"
 
+namespace app {
+namespace sp {
+
 SpCsManager::SpCsManager(string ip, int port)
 {
     ip_addr = ip;
@@ -49,4 +52,5 @@ int SpCsManager::handle_tcp_connect(st_netfd_t stfd)
     return 0;
 }
 
-
+} /* namespace app */
+} /* namespace sp */

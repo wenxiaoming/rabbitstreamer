@@ -37,6 +37,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdio.h>
 #include <st.h>
 
+namespace protocol {
+namespace tracker {
+
 #define TRACKER_UDP_CONNECT_TIMEOUT_US (int64_t)(1*1000*1000LL)
 
 #define UDP_MAX_PACKET_SIZE 65535
@@ -603,3 +606,7 @@ int RsNpTracker::send_buffer(char* buf, int size)
 		return -1;//todo, Kevin, handle error code
 	return ret;
 }
+
+
+} /* namespace protocol */
+} /* namespace tracker  */

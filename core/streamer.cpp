@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "streamer.h"
 
+namespace core {
+
 RsStreamer::RsStreamer()
 {
     curr = base = NULL;
@@ -106,3 +108,5 @@ void RsStreamer::write_nbytes(char* buf, int nb)
     memcpy(curr, buf, nb);
     curr += nb;
 }
+
+} /* namespace core */

@@ -25,6 +25,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/error_code.h"
 #include <stdio.h>
 
+namespace protocol {
+namespace sp {
+
 RsSourceManager* RsSourceManager::p = new RsSourceManager;
 RsSourceManager* RsSourceManager::instance()
 {
@@ -210,4 +213,7 @@ int RsSourceManager::get_header (const MD5_Hash_Str& chnl_hash, char*& header, i
     buffer_queue->get_header(header, size);
     return ret;
 }
+
+} /* namespace protocol */
+} /* namespace sp  */
 

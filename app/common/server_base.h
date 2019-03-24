@@ -24,6 +24,9 @@
 #ifndef APP_RS_SERVER_BASE_H
 #define APP_RS_SERVER_BASE_H
 
+namespace app {
+namespace common {
+
 enum ServerType
 {
 	SUPER_PEER,
@@ -41,5 +44,8 @@ class RsBaseServer {
 	private:
 		ServerType servertype;
 };
+
+} /* namespace common */
+} /* namespace app */
 
 #endif /* APP_RS_SERVER_BASE_H */

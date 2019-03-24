@@ -30,6 +30,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace core {
+
 class RsTcpListener: public RsThread
 {
 public:
@@ -54,5 +56,7 @@ private:
 
     ITcpHandler* tcp_handler;
 };
+
+} /* namespace core */
 
 #endif

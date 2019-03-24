@@ -24,6 +24,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <sys/time.h>
 #include <stdio.h>
 
+namespace core {
+
 #define SYS_TIME_RESOLUTION_US 300*1000
 
 static int64_t _srs_system_time_us_cache = 0;
@@ -75,3 +77,5 @@ int64_t get_system_startup_time_ms()
 
     return _srs_system_time_startup_time / 1000;
 }
+
+} /* namespace core */

@@ -30,6 +30,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "error_code.h"
 #include "logger.h"
 
+namespace core {
+
 #define UDP_RECEIVE_BUFFER_SIZE 65535
 
 RsUdpListener::RsUdpListener(string ip, int port, IUdpHandler* handler)
@@ -139,3 +141,4 @@ int RsUdpListener::on_thread_stop()
     return ret;
 }
 
+} /* namespace core */

@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "error_code.h"
 #include "logger.h"
 
+namespace core {
+
 RsThread::RsThread(const char* name)
 {
     _name = name;
@@ -137,3 +139,5 @@ void RsThread::dispose()
 {
 
 }
+
+} /* namespace core */

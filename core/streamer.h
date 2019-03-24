@@ -28,6 +28,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdint.h>
 #include <assert.h>
 
+namespace core {
+
 class RsStreamer {
 public:
 	RsStreamer();
@@ -79,5 +81,7 @@ private:
     char* curr;
     int size;
 };
+
+} /* namespace core */
 
 #endif /* CORE_STREAMER_H_ */

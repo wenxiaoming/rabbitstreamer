@@ -32,6 +32,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "error_code.h"
 #include "logger.h"
 
+namespace core {
+
 int socket_connect(int socket_type, string server, int port, int64_t timeout, st_netfd_t* pstfd)
 {
     int ret = ERROR_SUCCESS;
@@ -80,3 +82,5 @@ failed:
     }
     return ret;
 }
+
+} /* namespace core */

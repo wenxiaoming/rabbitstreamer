@@ -26,6 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string.h>
 #include <unistd.h>
 
+namespace core {
+
 void print_backtrace(void)
 {
     int i;
@@ -48,3 +50,5 @@ void print_backtrace(void)
     }
     fclose(fp);
 }
+
+} /* namespace core */

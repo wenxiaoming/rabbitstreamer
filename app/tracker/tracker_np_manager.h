@@ -24,7 +24,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define APP_TRACKER_NP_MANAGER_H_
 
 #include "core/udp_listener.h"
-#include "protocol/tracker_np_protocol.h"
+#include "protocol/tracker/tracker_np_protocol.h"
+
+using namespace protocol::tracker;
+
+namespace app {
+namespace tracker {
 
 class TrackerNpManager : public IUdpHandler
 {
@@ -45,5 +50,8 @@ private:
     int listen_port;
     RsNpTracker* np_tracker;
 };
+
+} /* namespace app */
+} /* namespace tracker */
 
 #endif /* APP_TRACKER_NP_MANAGER_H_ */

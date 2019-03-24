@@ -24,6 +24,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <sys/time.h>
 #include "logger.h"
 
+namespace core {
+
 RsBitrateCalculator::RsBitrateCalculator(string name)
 {
     calculator_name = name;
@@ -53,3 +55,5 @@ void RsBitrateCalculator::update_buffersize(uint32_t size)
         last_recv_msec = curr_ms;
     }
 }
+
+} /* namespace core */

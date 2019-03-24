@@ -23,12 +23,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "sp_cs_protocol.h"
 #include "core/error_code.h"
 #include "core/p2p_protocol.h"
-#include "protocol/sp_source_manager.h"
+#include "sp_source_manager.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "thirty_party/md5/md5.h"
 #include "core/logger.h"
+
+namespace protocol {
+namespace sp {
 
 #define CS_SP_READ_BUFFER_SIZE 65535
 
@@ -327,3 +330,5 @@ int RsCsSpProtocol::on_thread_stop()
     return ret;
 }
 
+} /* namespace protocol */
+} /* namespace sp  */

@@ -28,6 +28,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdio.h>
 #include <st.h>
 
+namespace protocol {
+namespace sp {
+
 //#define DUMP_SEND_MEDIA
 
 #ifdef DUMP_SEND_MEDIA
@@ -266,3 +269,6 @@ int RsNpSpProtocol::on_thread_stop()
 
     return ret;
 }
+
+} /* namespace protocol */
+} /* namespace sp  */

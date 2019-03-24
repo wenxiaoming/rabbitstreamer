@@ -26,11 +26,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "app/common/server_base.h"
 #include "core/async_logger.h"
 
-RsLogBase* rs_log = new RsAsyncLogger();
-RsContextBase* rs_context = new RsThreadContext();
+using namespace app::common;
+using namespace app::tracker;
 
 int main()
 {
+    init_log_system();
+
     rs_st_init();
 
     TrackerSpManager* sp_tracker = new TrackerSpManager("68.168.137.118", 4444);
@@ -50,7 +52,7 @@ int main()
 
     delete server;
 
+    deinit_log_system();
+
     return 0;
 }
-
-

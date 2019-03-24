@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "error_code.h"
 
+namespace core {
+
 class RsLogBase
 {
 public:
@@ -61,17 +63,20 @@ public:
     virtual int set_id(int v);
 };
 
-extern RsLogBase* rs_log;
+void init_log_system();
 
-extern RsContextBase* rs_context;
+void deinit_log_system();
+
+RsLogBase* rs_log();
+RsContextBase* rs_context();
 
 // donot print method
 #if 1
-    #define RSLOGV(msg, ...) rs_log->log(RsLogBase::Verbose, NULL, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGI(msg, ...)    rs_log->log(RsLogBase::Info, NULL, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGT(msg, ...)   rs_log->log(RsLogBase::Trace, NULL, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGW(msg, ...)    rs_log->log(RsLogBase::Warn, NULL, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGE(msg, ...)   rs_log->log(RsLogBase::Error, NULL, rs_context->get_id(), msg, ##__VA_ARGS__)
+    #define RSLOGV(msg, ...) rs_log()->log(RsLogBase::Verbose, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
+    #define RSLOGI(msg, ...)    rs_log()->log(RsLogBase::Info, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
+    #define RSLOGT(msg, ...)   rs_log()->log(RsLogBase::Trace, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
+    #define RSLOGW(msg, ...)    rs_log()->log(RsLogBase::Warn, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
+    #define RSLOGE(msg, ...)   rs_log()->log(RsLogBase::Error, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
 // use __FUNCTION__ to print c method
 #elif 0
     #define RSLOGV(msg, ...) rs_log->log(Verbose, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
@@ -87,5 +92,9 @@ extern RsContextBase* rs_context;
     #define RSLOGW(msg, ...)    rs_log->log(Warn, __PRETTY_FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
     #define RSLOGE(msg, ...)   rs_log->log(Error, __PRETTY_FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
 #endif
+
+
+
+} /* namespace core */
 
 #endif

@@ -22,6 +22,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "logger.h"
 
+namespace core {
+
 RsLogBase::RsLogBase()
 {
 }
@@ -63,3 +65,5 @@ int RsContextBase::set_id(int v)
 {
     return 0;
 }
+
+} /* namespace core */

@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "p2p_protocol.h"
 #include "error_code.h"
 
+namespace core {
+
 RsMessage::RsMessage()
 {
     msg_size = 0;
@@ -918,3 +920,5 @@ int Ts2NpMsg::reserve_pack_size()
     total_size += sizeof(should_quit);
     return total_size;
 }
+
+} /* namespace core */

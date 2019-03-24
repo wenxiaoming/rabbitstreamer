@@ -30,6 +30,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+using namespace core;
+
+namespace protocol {
+namespace sp {
+
 struct source_status
 {
     // hash of channel
@@ -100,5 +105,8 @@ private:
     map<MD5_Hash_Str, RsBufferQueue*> source_hashmap;
     string tracker_address;
 };
+
+} /* namespace protocol */
+} /* namespace sp  */
 
 #endif /* PROTOCOL_SP_SOURCE_MANAGER_H_ */

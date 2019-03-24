@@ -34,6 +34,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace core {
+
 RsThreadContext::RsThreadContext()
 {
 }
@@ -273,3 +275,34 @@ void RsAsyncLogger::open_log_file()
         );
     }
 }
+
+static RsLogBase* sRsLog = nullptr;
+
+static RsContextBase* sRscontext = nullptr;
+
+void init_log_system()
+{
+    sRsLog = new RsAsyncLogger();
+    sRscontext = new RsThreadContext();
+}
+
+void deinit_log_system()
+{
+    if (sRsLog)
+        delete sRsLog;
+
+    if (sRscontext)
+        delete sRscontext;
+}
+
+RsLogBase* rs_log()
+{
+    return sRsLog;
+}
+
+RsContextBase* rs_context()
+{
+    return sRscontext;
+}
+
+} /* namespace core */

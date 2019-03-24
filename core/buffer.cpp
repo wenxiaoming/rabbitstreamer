@@ -29,6 +29,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core_utility.h"
 #include "debug_utility.h"
 
+namespace core {
+
 #define DEFAULT_RECV_BUFFER_SIZE 131072
 #define MAX_SOCKET_BUFFER 262144
 
@@ -144,3 +146,5 @@ int RsBuffer::fill_buffer(RsSocket* io, int size)
 
     return ret;
 }
+
+} /* namespace core */

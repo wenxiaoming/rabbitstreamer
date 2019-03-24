@@ -25,33 +25,38 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define APP_SP_NP_MANAGER_H_
 
 #include "core/tcp_listener.h"
-#include "protocol/sp_np_protocol.h"
+#include "protocol/sp/sp_np_protocol.h"
 #include <string>
 #include <vector>
 
-using namespace std;
+using namespace core;
+using namespace protocol::sp;
+
+namespace app {
+namespace sp {
 
 class SpNpManager : public ITcpHandler
 {
 
 public:
-    SpNpManager(string ip, int port);
+    SpNpManager(std::string ip, uint32_t port);
     ~SpNpManager();
 
 public:
     int start_listener();
 
 public:
-    //implement interface ITcpHandler
+    // implement interface ITcpHandler
     virtual int handle_tcp_connect(st_netfd_t stfd);
 
 private:
     RsTcpListener* tcp_listener;
     string ip_addr;
-    int listen_port;
-    vector<RsNpSpProtocol*> np_sp_protocol_vector;
+    uint32_t listen_port;
+    std::vector<RsNpSpProtocol*> np_sp_protocol_vector;
 };
 
-
+} /* namespace app */
+} /* namespace sp */
 
 #endif /* APP_SP_NP_MANAGER_H */

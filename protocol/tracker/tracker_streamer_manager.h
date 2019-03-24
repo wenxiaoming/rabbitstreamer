@@ -30,6 +30,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/struct_define.h"
 
 using namespace std;
+using namespace core;
+
+namespace protocol {
+namespace tracker {
+
 class StreamMgr
 {
 private:
@@ -81,5 +86,8 @@ private:
         MAX_IDLE_TIME_SEC = 100, 
     };
 };
+
+} /* namespace protocol */
+} /* namespace tracker  */
 
 #endif

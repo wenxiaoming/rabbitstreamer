@@ -21,6 +21,8 @@
 #ifndef CORE_RS_P2P_PROTOCOL_H__
 #define CORE_RS_P2P_PROTOCOL_H__
 
+namespace core {
+
 // Capture Server = CS; Super Peer = SP; Tracker Server = TS; Normal Peer = NP;
 // SP<------SPandTS(UDP)------>TS
 // NP<------NPandTS(UDP)------>TS
@@ -147,5 +149,7 @@ enum P2PMESSAGE
     // |err msg type(UINT16)|should quit(bool)|
     SP2SP_MSG           = 0x53,
 };
+
+} /* namespace core */
 
 #endif

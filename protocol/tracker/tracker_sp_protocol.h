@@ -20,9 +20,8 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-#ifndef PROTOCOL_SP_TRACKER_PROTOCOL_H_
-#define PROTOCOL_SP_TRACKER_PROTOCOL_H_
+#ifndef PROTOCOL_TRACKER_SP_PROTOCOL_H_
+#define PROTOCOL_TRACKER_SP_PROTOCOL_H_
 
 #include <st.h>
 #include <string>
@@ -32,17 +31,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/core_struct.h"
 #include "core/core_utility.h"
 #include "core/timer.h"
+#include "core/struct_define.h"
 
 using namespace std;
 
-class RsSpTrackerProtocol : public RsThread,
-                            public virtual ITimerHandler
+using namespace core;
+
+//class map_str;
+
+namespace protocol {
+namespace tracker {
+
+class RsSpTracker : public RsThread,
+                    public virtual ITimerHandler
 {
 public:
-	RsSpTrackerProtocol(string ip, int port);
-	virtual ~RsSpTrackerProtocol();
-public:
-	int start_connect();
+	RsSpTracker();
+	virtual ~RsSpTracker();
 public:
     //implement rs_thread's virtual function
     virtual int on_thread_start();
@@ -50,10 +55,14 @@ public:
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
+private:
+	void generate_uuid(map_str& digits);
+    int send_buffer(char* buf, int size);
 public:
     //implement ITimerHandler
     virtual int handle_timeout(int64_t timerid);
-
+public:
+    int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf);
 private:
     char* recv_buf;
     int buf_size;
@@ -62,29 +71,31 @@ private:
 private:
     int64_t last_thread_time;
 private:
-    string ip_address;
-    int ip_port;
-    st_netfd_t tracker_udp_fd;
+    //string ip_address;
+    //int ip_port;
+    st_netfd_t sp_fd;
     RsSocket* io;
+	sockaddr_in last_receive_addr;
 protected:
-    int get_welcome(char* msg, int size);
+    int send_welcome(map_str uuid);
+    int send_sp_list(map_str uuid);
+    int send_errormsg();
+    int send_res_interval();
+
+	//handle message from sp to tracker
+	int get_register(char* msg, int size);
+    int get_res_list(char* msg, int size);
     int get_sp_list(char* msg, int size);
-    int get_res_interval(char* msg, int size);
-
-    int send_register();
-    int send_res_list();
-    int send_sp_list();
-    int send_status();
-    int send_logout();
-
+    int get_status(char* msg, int size);
+    int get_logout(char* msg, int size);
     // uuid of super peer on tracker
     char sp_id[UUID_LENGTH];
-
     // recved welcome
     bool login_done_;
-
-    // sp port
-    uint16_t sp_port;
 };
 
-#endif /* PROTOCOL_SP_TRACKER_PROTOCOL_H_ */
+
+} /* namespace protocol */
+} /* namespace tracker  */
+
+#endif

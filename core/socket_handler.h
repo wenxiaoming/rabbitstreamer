@@ -26,6 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <arpa/inet.h>
 
+namespace core {
+
 class ITcpHandler
 {
 public:
@@ -54,4 +56,5 @@ public:
     virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf) = 0;
 };
 
+} /* namespace core */
 #endif /* CORE_RS_SOCKET_HANDLER_H_ */

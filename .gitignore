@@ -1,0 +1,23 @@
+# commonly generated files
+*.pyc
+*~
+.*.sw?
+.DS_Store
+.classpath
+.cproject
+.dart_tool
+.gdb_history
+.checkstyle
+.gdbinit
+.landmines
+.packages
+.project
+.pub
+.pydevproject
+cscope.*
+Session.vim
+tags
+Thumbs.db
+.idea
+pubspec.lock
+.vscode/

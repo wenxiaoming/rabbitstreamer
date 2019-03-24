@@ -26,6 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/error_code.h"
 #include <stdio.h>
 
+namespace protocol {
+
 RsBufferQueue::RsBufferQueue(const MD5_Hash_Str& hash, const string& name, bool source)
 {
     queue_index = 0;
@@ -129,3 +131,4 @@ void RsBufferQueue::get_header(char*& header, int& size)
     size = media_header.header_size;
 }
 
+} /* namespace protocol */

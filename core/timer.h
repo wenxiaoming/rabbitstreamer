@@ -28,6 +28,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace core {
+
 class ITimerHandler
 {
 public:
@@ -85,5 +87,7 @@ private:
     int64_t last_thread_time;
     vector<timer_item> timer_vector;
 };
+
+} /* namespace core */
 
 #endif /* CORE_TIMER_H_ */

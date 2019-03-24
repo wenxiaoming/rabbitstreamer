@@ -27,6 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <assert.h>
 #include <algorithm>
 
+namespace core {
+
 #define SYS_TIMER_LOOP_INTERVAL 500 //sleep for 500ms
 
 RsTimer* RsTimer::p = new RsTimer;
@@ -137,3 +139,5 @@ void RsTimer::check_timeout()
     }
     return;
 }
+
+} /* namespace core */

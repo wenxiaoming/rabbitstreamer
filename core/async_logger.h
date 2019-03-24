@@ -14,6 +14,8 @@
 
 using namespace std;
 
+namespace core {
+
 class RsThreadContext : public RsContextBase
 {
 private:
@@ -47,5 +49,7 @@ private:
     bool log_to_file_tank;
     bool utc;
 };
+
+} /* namespace core */
 
 #endif /* CORE_RS_ASYNC_LOGGER_H_ */

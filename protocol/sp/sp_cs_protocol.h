@@ -30,6 +30,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/core_struct.h"
 #include "core/bitrate_calculator.h"
 
+using namespace core;
+
+namespace protocol {
+namespace sp {
+
 class RsCsSpProtocol : public RsThread
 {
 public:
@@ -69,5 +74,8 @@ private:
     RsBuffer* cs_buffer;
     RsBitrateCalculator* calculator;
 };
+
+} /* namespace protocol */
+} /* namespace sp  */
 
 #endif /* PROTOCOL_SP_CS_PROTOCOL_H_ */

@@ -30,6 +30,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <sys/stat.h>
 #include <fcntl.h>
 
+namespace core {
+
 // nginx also set to 512
 #define SERVER_LISTEN_BACKLOG 512
 
@@ -146,4 +148,4 @@ int RsTcpListener::on_thread_stop()
     return ret;
 }
 
-
+} /* namespace core */
