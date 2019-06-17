@@ -45,6 +45,7 @@ DYNAMICLIBPATH=$(SRCROOT)/solib
 
 INCLS += -I$(SRCROOT)
 INCLS += -Iobjs/st -Ithirty_party/md5
+INCLS += -Ithirty_party/googletest/googletest/include
 
 ## default links
 ifeq ($(LINKS_DYNAMIC), 1)
@@ -53,13 +54,16 @@ else
 LINKS += -L$(STATICLIBPATH)
 endif
 
-CPPSRCS  = $(wildcard *.cpp ./thirty_party/md5/*.cpp ./app/common/*.cpp ./app/tracker/*.cpp ./app/sp/*.cpp ./core/*.cpp ./protocol/*.cpp ./protocol/sp/*.cpp ./protocol/tracker/*.cpp)
+CPPSRCS  = $(wildcard *.cpp ./thirty_party/md5/*.cpp ./app/common/*.cpp ./app/tracker/tracker_np_manager.cpp ./app/tracker/tracker_sp_manager.cpp ./app/sp/sp_cs_manager.cpp ./app/sp/sp_np_manager.cpp ./app/sp/sp_tracker_manager.cpp ./core/*.cpp ./protocol/*.cpp ./protocol/sp/*.cpp ./protocol/tracker/*.cpp)
 CSRCS  = $(wildcard *.c ./thirty_party/md5/*.c ./app/common/*.c ./app/sp/*.c ./core/*.c ./protocol/*.c ./protocol/sp/*.c ./protocol/tracker/*.c)
 CPPOBJS  = $(patsubst %.cpp,%.o,$(CPPSRCS))
 COBJS  = $(patsubst %.c,%.o,$(CSRCS))
 
-SRCS = $(CPPSRCS) $(CSRCS)
-OBJS = $(CPPOBJS) $(COBJS)
+TESTSSRCS = $(wildcard ./tests/*.cpp)
+TESTSOBJS = $(patsubst %.cpp,%.o,$(TESTSSRCS))
+
+SRCS = $(CPPSRCS) $(CSRCS) $(TESTSSRCS)
+OBJS = $(CPPOBJS) $(COBJS) $(TESTSOBJS)
 
 CPPCOMPI=$(CPP) $(CFLAGS) -Wno-deprecated
 CCCOMPI=$(CC) $(CFLAGS)

@@ -5,13 +5,18 @@ include common.mk
 CFLAGS += -g -fno-strict-aliasing -Wall -export-dynamic \
 	-Wall -pipe  -D_GNU_SOURCE -D_REENTRANT -fPIC -Wno-deprecated -m64 -std=c++11
 
-LINKS += -g -L./lib -L./objs/st -lrabbitstreamer -lpthread -ldl -lstdc++ -lst
+LINKS += -g -L./lib -L./objs/st -lrabbitstreamer -ldl -lstdc++ -lst
 
 LINKS += -Wl,-rpath=./objs/st
 
+LINKS += -L./thirty_party/googletest/build/lib -lgtestd -lgtest_maind
+#LINKS += -Wl,-rpath=./thirty_party/googletest/build/lib
+
+LINKS += -lpthread
+
 THIRTY_PARTY_MD5 = thirty_party/md5/md5.o
 
-PROGS = rabbitstreamer superpeer_server tracker_server
+PROGS = rabbitstreamer superpeer_server tracker_server rabbitstreamertests
 
 all:$(PROGS)
 
@@ -24,6 +29,9 @@ superpeer_server: app/sp/superpeer_server.o
 	$(BUILDEXE) 
 
 tracker_server: app/tracker/tracker_server.o
+	$(BUILDEXE)
+
+rabbitstreamertests: $(TESTSOBJS)
 	$(BUILDEXE)
 
 clean:
