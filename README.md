@@ -11,7 +11,7 @@ P2PCapturer is implemented in [p2pcapturer](https://github.com/wenxiaoming/p2pca
 
 ![architecture](https://github.com/wenxiaoming/rabbitstreamer/blob/master/doc/architecture.png)
 
-How to sync and build
+## How to sync and build
 
 git clone https://github.com/wenxiaoming/rabbitstreamer.git
 
