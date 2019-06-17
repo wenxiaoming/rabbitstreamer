@@ -10,3 +10,18 @@ RabbitPlayer is implemented in [rabbitplayer](https://github.com/wenxiaoming/rab
 P2PCapturer is implemented in [p2pcapturer](https://github.com/wenxiaoming/p2pcapturer).
 
 ![architecture](https://github.com/wenxiaoming/rabbitstreamer/blob/master/doc/architecture.png)
+
+How to sync and build
+
+git clone https://github.com/wenxiaoming/rabbitstreamer.git
+cd rabbitstreamer/
+git submodule init
+git submodule update
+cd thirty_party/googletest/
+mkdir build
+cd build/
+cmake ../ -DCMAKE_BUILD_TYPE=Debug
+make
+cd ../../../
+./build_all.sh 
+
