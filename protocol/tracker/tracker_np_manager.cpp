@@ -27,34 +27,36 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
-namespace protocol {
-namespace tracker {
-
-TrackerNpCoordinator* TrackerNpCoordinator::p = new TrackerNpCoordinator();
-TrackerNpCoordinator* TrackerNpCoordinator::instance()
+namespace protocol
 {
-    return p;
+namespace tracker
+{
+
+TrackerNpCoordinator *TrackerNpCoordinator::p = new TrackerNpCoordinator();
+TrackerNpCoordinator *TrackerNpCoordinator::instance()
+{
+	return p;
 }
 
-TrackerNpCoordinator::TrackerNpCoordinator ()
+TrackerNpCoordinator::TrackerNpCoordinator()
 {
 	NPNode_map_.clear();
 }
 
-TrackerNpCoordinator::~TrackerNpCoordinator ()
+TrackerNpCoordinator::~TrackerNpCoordinator()
 {
-    for (CMIt it = NPNode_map_.begin (); it != NPNode_map_.end (); ++it)
-    {
-        NPNode* temp = it->second;
-        delete temp;
-    }
+	for (CMIt it = NPNode_map_.begin(); it != NPNode_map_.end(); ++it)
+	{
+		NPNode *temp = it->second;
+		delete temp;
+	}
 	//
-    NPNode_map_.clear();
+	NPNode_map_.clear();
 }
 
 int TrackerNpCoordinator::timer_check()
 {
-	for(CMIt it = NPNode_map_.begin(); it != NPNode_map_.end(); ) 
+	for (CMIt it = NPNode_map_.begin(); it != NPNode_map_.end();)
 	{
 		CMIt i = it;
 		it++;
@@ -66,58 +68,56 @@ int TrackerNpCoordinator::timer_check()
 			RSLOGE("NPNode removed due to long time idle.\n");
 
 			// delete this NPNode
-			NPNode* temp = i->second;
+			NPNode *temp = i->second;
 			delete temp;
 
 			NPNode_map_.erase(i);
 		}
-		
 	}
 
 	return 0;
 }
 
-int TrackerNpCoordinator::insert_Node(map_str digits, NPNode* node)
+int TrackerNpCoordinator::insert_Node(map_str digits, NPNode *node)
 {
-    NPNode* pNode = get_Node(digits);
-    if(NULL == pNode)
-    {
+	NPNode *pNode = get_Node(digits);
+	if (NULL == pNode)
+	{
 		// create a new channel
 		RSLOGE("creating new NPNode(%s)\n", digits.str_);
 
 		try
 		{
 			pNode = new NPNode();
-			if(!pNode)
+			if (!pNode)
 			{
 				RSLOGE("node = new NPNode(); error | new_Node.\n");
 				return 0;
 			}
 
-            *pNode = *node;
+			*pNode = *node;
 
-			bool ret = NPNode_map_.insert(std::pair<map_str, NPNode*>(digits, pNode)).second;
-			if(!ret) 
+			bool ret = NPNode_map_.insert(std::pair<map_str, NPNode *>(digits, pNode)).second;
+			if (!ret)
 			{
 				RSLOGE("NPNode_map_.insert error | new_Node.\n");
 				delete pNode;
 				pNode = NULL;
 				return 0;
 			}
-
 		}
 		catch (...)
 		{
 			RSLOGE("new NPNode Exception error | new_Node.\n");
 			pNode = NULL;
-		}		
-    }
+		}
+	}
 	else
 	{
 		*pNode = *node;
 	}
 	//
-    return 0;
+	return 0;
 }
 
 int TrackerNpCoordinator::deleteNode(map_str digits)
@@ -134,10 +134,10 @@ int TrackerNpCoordinator::deleteNode(map_str digits)
 	return 0;
 }
 
-int TrackerNpCoordinator::get_Node(map_str digits, NPNode* node)
+int TrackerNpCoordinator::get_Node(map_str digits, NPNode *node)
 {
 	CCMIt it = NPNode_map_.find(digits);
-	if(it == NPNode_map_.end())
+	if (it == NPNode_map_.end())
 	{
 		return -1;
 	}
@@ -146,20 +146,20 @@ int TrackerNpCoordinator::get_Node(map_str digits, NPNode* node)
 	return 0;
 }
 
-NPNode* TrackerNpCoordinator::get_Node(map_str digits)
+NPNode *TrackerNpCoordinator::get_Node(map_str digits)
 {
-    CCMIt it = NPNode_map_.find(digits);
-    if(it == NPNode_map_.end())
+	CCMIt it = NPNode_map_.find(digits);
+	if (it == NPNode_map_.end())
 	{
 		return NULL;
 	}
 	//
-    return it->second;
+	return it->second;
 }
 
-int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid, 
-							  PeerInfoWithAddr*& pPeerInfoWithAddr, 
-							  int inCount, uint32_t currentblockID)
+int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
+										 PeerInfoWithAddr *&pPeerInfoWithAddr,
+										 int inCount, uint32_t currentblockID)
 {
 	/*
 		随机取node的算法思想
@@ -180,8 +180,8 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
 	typedef vector<int> INTVECTOR;
 	INTVECTOR theVector;
 
-	int iSize = NPNode_map_.size();	
-	int iRange = iSize / 30 +1;
+	int iSize = NPNode_map_.size();
+	int iRange = iSize / 30 + 1;
 
 	for (int i = 0; i < iRange; i++)
 	{
@@ -190,8 +190,8 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
 
 	int r1 = rand();
 
-	int index =0;
-	do 
+	int index = 0;
+	do
 	{
 		int iPos = 0;
 		//
@@ -207,14 +207,13 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
 			//
 			if (-1 == iPos)
 				continue;
-			
 		}
 
 		if (-1 == iPos)
 			break;
-	
+
 		CCMIt it = NPNode_map_.begin();
-		for (int m=0; m <iPos*30; m++)
+		for (int m = 0; m < iPos * 30; m++)
 		{
 			it++;
 		}
@@ -231,12 +230,12 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
 				break;
 			}
 			//
-			if (it->second->channelID_md5 == resHash //同一个频道
-				&& it->second->digits != uuid        //不是自己
-				&& it->second->intervalArray.FindBlock(currentblockID))//拥有自己需要的数据块
+			if (it->second->channelID_md5 == resHash					//同一个频道
+				&& it->second->digits != uuid							//不是自己
+				&& it->second->intervalArray.FindBlock(currentblockID)) //拥有自己需要的数据块
 			{
-				*(CorePeerInfo*)&pPeerInfoWithAddr[index] = it->second->coreInfo;
-				*(P2PAddress*)&pPeerInfoWithAddr[index] = it->second->clientAddress;
+				*(CorePeerInfo *)&pPeerInfoWithAddr[index] = it->second->coreInfo;
+				*(P2PAddress *)&pPeerInfoWithAddr[index] = it->second->clientAddress;
 				index++;
 			}
 		}
@@ -249,12 +248,10 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
 			break;
 		}
 
-	} while(true);
-	
-	
+	} while (true);
+
 	return index;
 }
 
-
-} /* namespace protocol */
-} /* namespace tracker  */
+} // namespace tracker
+} // namespace protocol

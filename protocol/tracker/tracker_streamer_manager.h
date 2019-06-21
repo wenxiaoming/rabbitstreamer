@@ -32,62 +32,66 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using namespace std;
 using namespace core;
 
-namespace protocol {
-namespace tracker {
+namespace protocol
+{
+namespace tracker
+{
 
 class StreamMgr
 {
 private:
-	StreamMgr();
-    static StreamMgr* p;
+    StreamMgr();
+    static StreamMgr *p;
+
 public:
     virtual ~StreamMgr();
+
 public:
     //for single instance
-    static StreamMgr* instance();
-    
-	int initialize (const string& block_data_store_path);
+    static StreamMgr *instance();
 
-	//return is the count result
-	int get_channel_count();
+    int initialize(const string &block_data_store_path);
+
+    //return is the count result
+    int get_channel_count();
     // add a new channel
-    int insert_channel(map_str strMd5, ChannelNode* chnl);
-	int delete_channel(map_str uuid);
-    
+    int insert_channel(map_str strMd5, ChannelNode *chnl);
+    int delete_channel(map_str uuid);
+
     // find a channel
-    int get_channel(map_str chnlhash, ChannelNode* Node);
+    int get_channel(map_str chnlhash, ChannelNode *Node);
 
-	// find sp address
-	int get_cp_address(NetAddress*& pSPAddr, map_str chnlhash);
-	int get_cp_address( NetAddress*& pSPAddr, int& inCount, map_str uuid);
-	int get_all_cp_address( NetAddress*& pSPAddr, int& inCount, map_str uuid);
-	int get_cp_address( NetAddress*& pSPAddr, int inCount);
-	int get_sp_address(MD5_Hash_Str resHash,  NetAddress*& pSPAddr, int inCount);
+    // find sp address
+    int get_cp_address(NetAddress *&pSPAddr, map_str chnlhash);
+    int get_cp_address(NetAddress *&pSPAddr, int &inCount, map_str uuid);
+    int get_all_cp_address(NetAddress *&pSPAddr, int &inCount, map_str uuid);
+    int get_cp_address(NetAddress *&pSPAddr, int inCount);
+    int get_sp_address(MD5_Hash_Str resHash, NetAddress *&pSPAddr, int inCount);
 
-	//
-	int get_channel_interval(MD5_Hash_Str Channel_hash, BlockInterval& blockInterval);
+    //
+    int get_channel_interval(MD5_Hash_Str Channel_hash, BlockInterval &blockInterval);
 
-	int signal_get_res_interval(MD5_Hash_Str Channel_hash);
-	//
+    int signal_get_res_interval(MD5_Hash_Str Channel_hash);
+    //
 protected:
-	ChannelNode* get_node(map_str chnlhash);
+    ChannelNode *get_node(map_str chnlhash);
 
 private:
-    typedef std::map<map_str, ChannelNode*> ChannelHashMap;
-    typedef std::map<map_str, ChannelNode*>::iterator CMIt;
-    typedef std::map<map_str, ChannelNode*>::const_iterator CCMIt;
-    typedef std::pair<map_str, ChannelNode*> CMPair;
+    typedef std::map<map_str, ChannelNode *> ChannelHashMap;
+    typedef std::map<map_str, ChannelNode *>::iterator CMIt;
+    typedef std::map<map_str, ChannelNode *>::const_iterator CCMIt;
+    typedef std::pair<map_str, ChannelNode *> CMPair;
 
     ChannelHashMap chnl_map_;
-   
+
     enum
     {
         // if a live channel stopped receiving block from cs for more than MAX_IDLE_TIME_SEC, it will be deleted
-        MAX_IDLE_TIME_SEC = 100, 
+        MAX_IDLE_TIME_SEC = 100,
     };
 };
 
-} /* namespace protocol */
-} /* namespace tracker  */
+} // namespace tracker
+} // namespace protocol
 
 #endif

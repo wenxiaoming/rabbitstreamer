@@ -29,8 +29,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <time.h>
 #include "core/core_struct.h"
 
-using namespace std;
-
 using namespace core;
 
 namespace protocol {
@@ -56,9 +54,10 @@ typedef struct media_type_header
     int header_size;
 }media_type_header;
 
-//RsBufferQueue is similar to android's gui's BufferQueue
-//it will use queue_buffer to get one free buffer for storing buffer from capture server
-//and the socket from NP will use dequeue_buffer to get one media buffer for consuming in the player.
+// RsBufferQueue is similar to android's gui's BufferQueue
+// it will use queue_buffer to get one free buffer for storing buffer from capture server
+// and the socket from NP will use dequeue_buffer to get one media buffer for consuming in the player.
+// currently sp or tracker runs within one thread using st, no need to lock the resource in it
 class RsBufferQueue {
 public:
     RsBufferQueue(const MD5_Hash_Str& hash, const string& name, bool source);
@@ -95,10 +94,10 @@ private:
     int queue_index;
     int dequeue_index;
     int buffer_number;
-    int min_block_id; //the min block id
-    int min_block_index;//the min block's index in the queue
+    int min_block_id; // the min block id
+    int min_block_index;// the min block's index in the queue
     bool buffer_full_flag;
-    vector<media_buffer*> buffer_vector;
+    std::vector<media_buffer*> buffer_vector;
 };
 
 } /* namespace protocol */

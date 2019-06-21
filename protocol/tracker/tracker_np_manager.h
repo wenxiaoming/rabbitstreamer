@@ -28,56 +28,58 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace core;
 
-namespace protocol {
-namespace tracker {
+namespace protocol
+{
+namespace tracker
+{
 
 // manager of all channels
 class TrackerNpCoordinator
 {
 private:
     TrackerNpCoordinator();
-    static TrackerNpCoordinator* p;
+    static TrackerNpCoordinator *p;
+
 public:
     virtual ~TrackerNpCoordinator();
+
 public:
     //for single instance
-    static TrackerNpCoordinator* instance();
-	
-	int timer_check();
+    static TrackerNpCoordinator *instance();
+
+    int timer_check();
     // add a new channel
-    int insert_Node(map_str digits, NPNode* node);
+    int insert_Node(map_str digits, NPNode *node);
     // delete this node
     int deleteNode(map_str digits);
 
     // find a channel
-	int get_Node(map_str digits, NPNode* node);
-   
-	// find sp address
-	int get_np_address(MD5_Hash_Str resHash, map_str uuid,
-		              PeerInfoWithAddr*& pPeerInfoWithAddr, 
-					  int inCount, uint32_t currentblockID);
+    int get_Node(map_str digits, NPNode *node);
+
+    // find sp address
+    int get_np_address(MD5_Hash_Str resHash, map_str uuid,
+                       PeerInfoWithAddr *&pPeerInfoWithAddr,
+                       int inCount, uint32_t currentblockID);
 
 protected:
-	NPNode* get_Node(map_str digits );
+    NPNode *get_Node(map_str digits);
 
 private:
-	typedef std::map<map_str, NPNode*> HashMap;
-    typedef std::map<map_str, NPNode*>::iterator CMIt;
-    typedef std::map<map_str, NPNode*>::const_iterator CCMIt;
-    typedef std::pair<map_str, NPNode*> CMPair;
+    typedef std::map<map_str, NPNode *> HashMap;
+    typedef std::map<map_str, NPNode *>::iterator CMIt;
+    typedef std::map<map_str, NPNode *>::const_iterator CCMIt;
+    typedef std::pair<map_str, NPNode *> CMPair;
 
     HashMap NPNode_map_;
-    
+
     enum
     {
         // if a live channel stopped receiving block from cs for more than MAX_IDLE_TIME_SEC, it will be deleted
-        MAX_IDLE_TIME_SEC = 600, 
+        MAX_IDLE_TIME_SEC = 600,
     };
 };
 
-
-} /* namespace protocol */
-} /* namespace tracker  */
+} // namespace tracker
+} // namespace protocol
 
 #endif
-

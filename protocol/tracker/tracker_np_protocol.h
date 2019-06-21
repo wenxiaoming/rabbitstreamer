@@ -39,15 +39,18 @@ using namespace core;
 
 //class map_str;
 
-namespace protocol {
-namespace tracker {
+namespace protocol
+{
+namespace tracker
+{
 
 class RsNpTracker : public RsThread,
                     public virtual ITimerHandler
 {
 public:
-	RsNpTracker();
-	virtual ~RsNpTracker();
+    RsNpTracker();
+    virtual ~RsNpTracker();
+
 public:
     //implement rs_thread's virtual function
     virtual int on_thread_start();
@@ -55,44 +58,51 @@ public:
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
+
 private:
-	void generate_uuid(map_str& digits);
-    int send_buffer(char* buf, int size);
+    void generate_uuid(map_str &digits);
+    int send_buffer(char *buf, int size);
+
 public:
     //implement ITimerHandler
     virtual int handle_timeout(int64_t timerid);
+
 public:
-    int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf);
+    int handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *buf, int nb_buf);
+
 private:
-    char* recv_buf;
+    char *recv_buf;
     int buf_size;
     bool register_flag;
     int register_retry;
+
 private:
     int64_t last_thread_time;
+
 private:
     //string ip_address;
     //int ip_port;
     st_netfd_t sp_fd;
-    RsSocket* io;
-	sockaddr_in last_receive_addr;
-private:
-	int get_login(char* msg, int size);
-	int get_req_res(char* msg, int size);
-	int get_report(char* msg, int size);
-	int get_need_peers(char* msg, int size);
-	int get_logout(char* msg, int size);
-	int get_res_interval(char* msg, int size);
+    RsSocket *io;
+    sockaddr_in last_receive_addr;
 
-	int send_peers(map_str uuid, MD5_Hash_Str resHash, uint32_t currentblockID=0);
-	int send_welcome(map_str digits, P2PAddress p2pAddr);
-	int send_res_interval(MD5_Hash_Str channel_hash);
-	void send_msg();
 private:
-	BlockInterval last_send_blockinterval;
+    int get_login(char *msg, int size);
+    int get_req_res(char *msg, int size);
+    int get_report(char *msg, int size);
+    int get_need_peers(char *msg, int size);
+    int get_logout(char *msg, int size);
+    int get_res_interval(char *msg, int size);
+
+    int send_peers(map_str uuid, MD5_Hash_Str resHash, uint32_t currentblockID = 0);
+    int send_welcome(map_str digits, P2PAddress p2pAddr);
+    int send_res_interval(MD5_Hash_Str channel_hash);
+    void send_msg();
+
+private:
+    BlockInterval last_send_blockinterval;
 };
 
-
-} /* namespace protocol */
-} /* namespace tracker  */
+} // namespace tracker
+} // namespace protocol
 #endif
