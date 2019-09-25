@@ -27,7 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "thirty_party/md5/md5.h"
+#include "third_party/md5/md5.h"
 #include "core/logger.h"
 
 namespace protocol {

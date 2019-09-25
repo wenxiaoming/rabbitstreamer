@@ -21,7 +21,7 @@ git submodule init
 
 git submodule update
 
-cd thirty_party/googletest/
+cd third_party/googletest/
 
 mkdir build
 

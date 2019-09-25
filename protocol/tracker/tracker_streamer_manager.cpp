@@ -22,7 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include <stdio.h>
 #include "tracker_streamer_manager.h"
-#include "thirty_party/md5/md5.h"
+#include "third_party/md5/md5.h"
 #include "core/logger.h"
 
 namespace protocol

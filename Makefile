@@ -9,12 +9,12 @@ LINKS += -g -L./lib -L./objs/st -lrabbitstreamer -ldl -lstdc++ -lst
 
 LINKS += -Wl,-rpath=./objs/st
 
-LINKS += -L./thirty_party/googletest/build/lib -lgtestd -lgtest_maind
-#LINKS += -Wl,-rpath=./thirty_party/googletest/build/lib
+LINKS += -L./third_party/googletest/build/lib -lgtestd -lgtest_maind
+#LINKS += -Wl,-rpath=./third_party/googletest/build/lib
 
 LINKS += -lpthread
 
-THIRTY_PARTY_MD5 = thirty_party/md5/md5.o
+THIRD_PARTY_MD5 = third_party/md5/md5.o
 
 PROGS = rabbitstreamer superpeer_server tracker_server rabbitstreamertests
 
