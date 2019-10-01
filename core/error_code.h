@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef RS_ERROR_CODE_H
 #define RS_ERROR_CODE_H
 
+namespace rs {
 namespace core {
 
 #define ERROR_SUCCESS                       0
@@ -54,6 +55,6 @@ namespace core {
 #define ERROR_SOURCE_MGR_NOT_FOUND              2000
 #define ERROR_SOURCE_MGR_FAILT_TO_CREATE_SOURCE 2001
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif

@@ -27,10 +27,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core_struct.h"
 #include "streamer.h"
 
+namespace rs {
 namespace core {
 
-class RsMessage
-{
+class RsMessage {
 public:
     RsMessage();
     virtual ~RsMessage();
@@ -46,8 +46,7 @@ protected:
 };
 
 //SP2TS_REGISTER
-class Sp2TsRegister:public RsMessage
-{
+class Sp2TsRegister:public RsMessage {
 public:
     Sp2TsRegister();
     ~Sp2TsRegister();
@@ -63,8 +62,7 @@ public:
 };
 
 //TS2SP_WELCOME
-class Ts2SpWelcome:public RsMessage
-{
+class Ts2SpWelcome:public RsMessage {
 public:
     Ts2SpWelcome();
     ~Ts2SpWelcome();
@@ -79,8 +77,7 @@ public:
 };
 
 //TS2SP_SP_LIST
-class Ts2SpSpList:public RsMessage
-{
+class Ts2SpSpList:public RsMessage {
 public:
     Ts2SpSpList();
     ~Ts2SpSpList();
@@ -95,8 +92,7 @@ public:
 };
 
 //SP2TS_GET_SP
-class Sp2TsSpList:public RsMessage
-{
+class Sp2TsSpList:public RsMessage {
 public:
     Sp2TsSpList();
     ~Sp2TsSpList();
@@ -116,8 +112,7 @@ typedef struct resource_info {
 } resource_info;
 
 //SP2TS_RES_LIST
-class Sp2TsResList:public RsMessage
-{
+class Sp2TsResList:public RsMessage {
 public:
     Sp2TsResList();
     ~Sp2TsResList();
@@ -133,8 +128,7 @@ public:
     resource_info* res_info;
 };
 
-class Sp2TsStatus:public RsMessage
-{
+class Sp2TsStatus:public RsMessage {
 public:
     Sp2TsStatus();
     ~Sp2TsStatus();
@@ -153,8 +147,7 @@ public:
 
 // |UUID(16 bytes)|
 //SP2TS_LOGOUT      = 0x24,
-class Sp2TsLogout:public RsMessage
-{
+class Sp2TsLogout:public RsMessage {
 public:
     Sp2TsLogout();
     ~Sp2TsLogout();
@@ -168,8 +161,7 @@ public:
 };
 
 //NP2TS_LOGIN       = 0x30,
-class Np2TsLogin:public RsMessage
-{
+class Np2TsLogin:public RsMessage {
 public:
     Np2TsLogin();
     ~Np2TsLogin();
@@ -188,8 +180,7 @@ public:
 };
 
 // NP2TS_REQ_RES     = 0x31,
-class Np2TsReqRes:public RsMessage
-{
+class Np2TsReqRes:public RsMessage {
 public:
     Np2TsReqRes();
     ~Np2TsReqRes();
@@ -204,8 +195,7 @@ public:
 };
 
 //NP2TS_REPORT      = 0x32,
-class Np2TsReport:public RsMessage
-{
+class Np2TsReport:public RsMessage {
 public:
     Np2TsReport();
     ~Np2TsReport();
@@ -233,8 +223,7 @@ public:
 };
 
 //NP2TS_NEED_PEERS  = 0x33,
-class Np2TsNeedPeers:public RsMessage
-{
+class Np2TsNeedPeers:public RsMessage {
 public:
     Np2TsNeedPeers();
     ~Np2TsNeedPeers();
@@ -249,8 +238,7 @@ public:
 };
 
 //NP2TS_RES_INTERVAL= 0x34,
-class Np2TsReqInterval:public RsMessage
-{
+class Np2TsReqInterval:public RsMessage {
 public:
     Np2TsReqInterval();
     ~Np2TsReqInterval();
@@ -264,8 +252,7 @@ public:
 };
 
 //NP2TS_LOGOUT      = 0x35,
-class Np2TsLogout:public RsMessage
-{
+class Np2TsLogout:public RsMessage {
 public:
     Np2TsLogout();
     ~Np2TsLogout();
@@ -279,8 +266,7 @@ public:
 };
 
 //TS2NP_WELCOME     = 0x36,
-class Ts2NpWelcome:public RsMessage
-{
+class Ts2NpWelcome:public RsMessage {
 public:
     Ts2NpWelcome();
     ~Ts2NpWelcome();
@@ -295,8 +281,7 @@ public:
 };
 
 //TS2NP_PEERS       = 0x37,
-class Ts2NpPeers:public RsMessage
-{
+class Ts2NpPeers:public RsMessage {
 public:
     Ts2NpPeers();
     ~Ts2NpPeers();
@@ -314,8 +299,7 @@ public:
 };
 
 //TS2NP_RES_INTERVAL= 0x38,
-class Ts2NpResInterval:public RsMessage
-{
+class Ts2NpResInterval:public RsMessage {
 public:
     Ts2NpResInterval();
     ~Ts2NpResInterval();
@@ -329,8 +313,7 @@ public:
 };
 
 //TS2NP_MSG         = 0x39,
-class Ts2NpMsg:public RsMessage
-{
+class Ts2NpMsg:public RsMessage {
 public:
     Ts2NpMsg();
     ~Ts2NpMsg();
@@ -345,8 +328,7 @@ public:
 };
 
 //SP2SP_PUSHLIST
-class Sp2SpPushList:public RsMessage
-{
+class Sp2SpPushList:public RsMessage {
 public:
     Sp2SpPushList();
     ~Sp2SpPushList();
@@ -364,8 +346,7 @@ public:
 };
 
 //SP2SP_MEDIATYPE
-class Sp2SpMediatype:public RsMessage
-{
+class Sp2SpMediatype:public RsMessage {
 public:
     Sp2SpMediatype();
     ~Sp2SpMediatype();
@@ -389,8 +370,7 @@ public:
 };
 
 //SP2SP_RESPONSE
-class Sp2SpResponse:public RsMessage
-{
+class Sp2SpResponse:public RsMessage {
 public:
     Sp2SpResponse();
     ~Sp2SpResponse();
@@ -407,6 +387,6 @@ public:
     char* block_data;
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif /* CORE_RS_MESSAGE_H_ */

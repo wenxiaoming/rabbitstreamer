@@ -26,16 +26,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <map>
 #include "core/struct_define.h"
 
-using namespace core;
+using namespace rs::core;
 
-namespace protocol
-{
-namespace tracker
-{
+namespace rs {
+namespace protocol {
+namespace tracker {
 
 // manager of all channels
-class TrackerNpCoordinator
-{
+class TrackerNpCoordinator {
 private:
     TrackerNpCoordinator();
     static TrackerNpCoordinator *p;
@@ -79,7 +77,7 @@ private:
     };
 };
 
-} // namespace tracker
-} // namespace protocol
+
+} } }// namespace rs::protocol::tracker
 
 #endif

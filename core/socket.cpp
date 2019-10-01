@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "error_code.h"
 #include "logger.h"
 
+namespace rs {
 namespace core {
 
 RsSocket::RsSocket(st_netfd_t client_stfd)
@@ -34,47 +35,38 @@ RsSocket::RsSocket(st_netfd_t client_stfd)
     recv_bytes = send_bytes = 0;
 }
 
-RsSocket::~RsSocket()
-{
+RsSocket::~RsSocket() {
 }
 
-bool RsSocket::is_never_timeout(int64_t timeout_us)
-{
+bool RsSocket::is_never_timeout(int64_t timeout_us) {
     return timeout_us == (int64_t)ST_UTIME_NO_TIMEOUT;
 }
 
-void RsSocket::set_recv_timeout(int64_t timeout_us)
-{
+void RsSocket::set_recv_timeout(int64_t timeout_us) {
     recv_timeout = timeout_us;
 }
 
-int64_t RsSocket::get_recv_timeout()
-{
+int64_t RsSocket::get_recv_timeout() {
     return recv_timeout;
 }
 
-void RsSocket::set_send_timeout(int64_t timeout_us)
-{
+void RsSocket::set_send_timeout(int64_t timeout_us) {
     send_timeout = timeout_us;
 }
 
-int64_t RsSocket::get_send_timeout()
-{
+int64_t RsSocket::get_send_timeout() {
     return send_timeout;
 }
 
-int64_t RsSocket::get_recv_bytes()
-{
+int64_t RsSocket::get_recv_bytes() {
     return recv_bytes;
 }
 
-int64_t RsSocket::get_send_bytes()
-{
+int64_t RsSocket::get_send_bytes() {
     return send_bytes;
 }
 
-int RsSocket::read(void* buf, size_t size, ssize_t* nread)
-{
+int RsSocket::read(void* buf, size_t size, ssize_t* nread) {
     int ret = ERROR_SUCCESS;
 
     ssize_t nb_read = st_read(stfd, buf, size, recv_timeout);
@@ -99,8 +91,7 @@ int RsSocket::read(void* buf, size_t size, ssize_t* nread)
     return ret;
 }
 
-int RsSocket::read_fully(void* buf, size_t size, ssize_t* nread)
-{
+int RsSocket::read_fully(void* buf, size_t size, ssize_t* nread) {
     int ret = ERROR_SUCCESS;
 
     ssize_t nb_read = st_read_fully(stfd, buf, size, recv_timeout);
@@ -125,8 +116,7 @@ int RsSocket::read_fully(void* buf, size_t size, ssize_t* nread)
     return ret;
 }
 
-int RsSocket::write(void* buf, size_t size, ssize_t* nwrite)
-{
+int RsSocket::write(void* buf, size_t size, ssize_t* nwrite) {
     int ret = ERROR_SUCCESS;
 
     ssize_t nb_write = st_write(stfd, buf, size, send_timeout);
@@ -147,8 +137,7 @@ int RsSocket::write(void* buf, size_t size, ssize_t* nwrite)
     return ret;
 }
 
-int RsSocket::writev(const iovec *iov, int iov_size, ssize_t* nwrite)
-{
+int RsSocket::writev(const iovec *iov, int iov_size, ssize_t* nwrite) {
     int ret = ERROR_SUCCESS;
 
     ssize_t nb_write = st_writev(stfd, iov, iov_size, send_timeout);
@@ -186,8 +175,7 @@ bool rs_st_epoll_is_supported(void)
 }
 #endif
 
-int rs_st_init()
-{
+int rs_st_init() {
     int ret = ERROR_SUCCESS;
 
 #ifdef __linux__
@@ -215,8 +203,7 @@ int rs_st_init()
     return ret;
 }
 
-void rs_close_stfd(st_netfd_t& stfd)
-{
+void rs_close_stfd(st_netfd_t& stfd) {
     if (stfd) {
         int fd = st_netfd_fileno(stfd);
         st_netfd_close(stfd);
@@ -228,4 +215,4 @@ void rs_close_stfd(st_netfd_t& stfd)
     }
 }
 
-} /* namespace core */
+} // namespace rs::core

@@ -26,35 +26,30 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <arpa/inet.h>
 
+namespace rs {
 namespace core {
 
-class ITcpHandler
-{
+class ITcpHandler {
 public:
-    ITcpHandler()
-    {
+    ITcpHandler() {
     }
-    virtual ~ITcpHandler()
-    {
+    virtual ~ITcpHandler() {
     }
 
 public:
     virtual int handle_tcp_connect(st_netfd_t stfd) = 0;
 };
 
-class IUdpHandler
-{
+class IUdpHandler {
 public:
-    IUdpHandler()
-	{
+    IUdpHandler() {
 	}
-    virtual ~IUdpHandler()
-	{
+    virtual ~IUdpHandler() {
 	}
 
 public:
     virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf) = 0;
 };
 
-} /* namespace core */
+} // namespace rs::core
 #endif /* CORE_RS_SOCKET_HANDLER_H_ */

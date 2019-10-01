@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "error_code.h"
 #include "logger.h"
 
+namespace rs {
 namespace core {
 
 RsThread::RsThread(const char* name)
@@ -36,13 +37,11 @@ RsThread::RsThread(const char* name)
     loop_flag = false;
 }
 
-RsThread::~RsThread()
-{
+RsThread::~RsThread() {
     tid = 0;
 }
 
-int RsThread::start_thread()
-{
+int RsThread::start_thread() {
     int ret = ERROR_SUCCESS;
 
     if(tid) {
@@ -50,7 +49,7 @@ int RsThread::start_thread()
         return ret;
     }
 
-    if((tid = st_thread_create(thread_intermediary, this, (_joinable? 1:0), 0)) == NULL){
+    if((tid = st_thread_create(thread_intermediary, this, (_joinable? 1:0), 0)) == NULL) {
         ret = ERROR_ST_CREATE_CYCLE_THREAD;
         RSLOGE("st_thread_create failed. ret=%d", ret);
         return ret;
@@ -71,8 +70,7 @@ int RsThread::start_thread()
     return ret;
 }
 
-void RsThread::thread_loop()
-{
+void RsThread::thread_loop() {
     int ret = ERROR_SUCCESS;
 
 
@@ -106,7 +104,7 @@ void RsThread::thread_loop()
         }
         RSLOGE("thread %s on end cycle success", _name);
 
-    failed:
+failed:
         if (!loop_flag) {
             break;
         }
@@ -122,22 +120,19 @@ void RsThread::thread_loop()
     on_thread_stop();
 }
 
-void RsThread::stop_thread()
-{
+void RsThread::stop_thread() {
 
 }
 
 //the thread loop
-void* RsThread::thread_intermediary(void* arg)
-{
+void* RsThread::thread_intermediary(void* arg) {
     RsThread* obj = (RsThread*)arg;
 
     obj->thread_loop();
 }
 
-void RsThread::dispose()
-{
+void RsThread::dispose() {
 
 }
 
-} /* namespace core */
+} // namespace rs::core

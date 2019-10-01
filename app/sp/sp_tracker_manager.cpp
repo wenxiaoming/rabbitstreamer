@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "sp_tracker_manager.h"
 #include "core/error_code.h"
 
+namespace rs {
 namespace app {
 namespace sp {
 
@@ -33,13 +34,11 @@ SpTrackerManager::SpTrackerManager(string ip, uint32_t port)
     ip_port = port;
 }
 
-SpTrackerManager::~SpTrackerManager()
-{
+SpTrackerManager::~SpTrackerManager() {
 
 }
 
-int SpTrackerManager::start_connect()
-{
+int SpTrackerManager::start_connect() {
     int ret = ERROR_SUCCESS;
 
     tracker_protocol = new RsSpTrackerProtocol(ip_address, ip_port);
@@ -49,7 +48,6 @@ int SpTrackerManager::start_connect()
     return ret;
 }
 
-} /* namespace app */
-} /* namespace sp */
+} } } // namespace rabbitstreamer::app::sp
 
 

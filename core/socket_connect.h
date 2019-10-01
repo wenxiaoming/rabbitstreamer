@@ -27,10 +27,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace rs {
 namespace core {
 
 // client open socket and connect to server.
 int socket_connect(int socket_type, string server, int port, int64_t timeout, st_netfd_t* pstfd);
 
-} /* namespace core */
+} // namespace rs::core
 #endif /* CORE_RS_SOCKET_CONNECT_H_ */

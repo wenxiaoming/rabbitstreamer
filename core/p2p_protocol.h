@@ -21,6 +21,7 @@
 #ifndef CORE_RS_P2P_PROTOCOL_H__
 #define CORE_RS_P2P_PROTOCOL_H__
 
+namespace rs {
 namespace core {
 
 // Capture Server = CS; Super Peer = SP; Tracker Server = TS; Normal Peer = NP;
@@ -150,6 +151,6 @@ enum P2PMESSAGE
     SP2SP_MSG           = 0x53,
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif

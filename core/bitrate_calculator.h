@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace rs {
 namespace core {
 
 class RsBitrateCalculator {
@@ -42,6 +43,6 @@ private:
     uint32_t last_recv_msec;
 };
 
-} /* namespace core */
+} // namespace rs::coree rs::core
 
 #endif /* CORE_BITRATE_CALCULATOR_H_ */

@@ -30,13 +30,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
-using namespace core;
+using namespace rs::core;
 
+namespace rs {
 namespace protocol {
 namespace sp {
 
-struct source_status
-{
+struct source_status {
     // hash of channel
     MD5_Hash_Str chnl_hash_;
     string program_name;
@@ -52,7 +52,7 @@ struct source_status
 //manage the source from capture server, it is single instance
 class RsSourceManager {
 private:
-    RsSourceManager(){}
+    RsSourceManager() { }
     static RsSourceManager* p;
 public:
     virtual ~RsSourceManager();
@@ -106,7 +106,6 @@ private:
     string tracker_address;
 };
 
-} /* namespace protocol */
-} /* namespace sp  */
+} } }// namespace rs::protocol::sp
 
 #endif /* PROTOCOL_SP_SOURCE_MANAGER_H_ */

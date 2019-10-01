@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdio.h>
 #include <st.h>
 
+namespace rs {
 namespace protocol {
 namespace sp {
 
@@ -38,7 +39,7 @@ FILE* np_dump_file = NULL;
 #endif
 
 RsNpSpProtocol::RsNpSpProtocol(st_netfd_t stfd)
-		: RsThread("npspprotocol")
+    : RsThread("npspprotocol")
 {
     st_fd = stfd;
     io_socket = new RsSocket(st_fd);
@@ -54,30 +55,26 @@ RsNpSpProtocol::RsNpSpProtocol(st_netfd_t stfd)
     calculator = new RsBitrateCalculator("np");
 }
 
-RsNpSpProtocol::~RsNpSpProtocol()
-{
+RsNpSpProtocol::~RsNpSpProtocol() {
 #ifdef DUMP_SEND_MEDIA
     if(np_dump_file)
         fclose(np_dump_file);
 #endif
 }
 
-int RsNpSpProtocol::on_thread_start()
-{
+int RsNpSpProtocol::on_thread_start() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsNpSpProtocol::on_before_loop()
-{
+int RsNpSpProtocol::on_before_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsNpSpProtocol::send_media_type(char* resource_hash)
-{
+int RsNpSpProtocol::send_media_type(char* resource_hash) {
     int ret = ERROR_SUCCESS;
     char* media_type = NULL;
     int size = 0;
@@ -95,18 +92,15 @@ int RsNpSpProtocol::send_media_type(char* resource_hash)
     mediatype_msg.media_type_size = size;
     mediatype_msg.media_type = &media_type[0];
 #ifdef DUMP_SEND_MEDIA
-    if(np_dump_file)
-    {
+    if(np_dump_file) {
         fwrite(mediatype_msg.media_type, 1, size, np_dump_file);
     }
 #endif
     list<source_status> source_list;
     RsSourceManager::instance()->get_source_list(source_list);
     list<source_status>::iterator  iter = source_list.begin();
-    for(; iter != source_list.end(); iter++)
-    {
-        if(!memcmp(iter->chnl_hash_.hash_, mediatype_msg.resource_md5, MD5_LEN))
-        {
+    for(; iter != source_list.end(); iter++) {
+        if(!memcmp(iter->chnl_hash_.hash_, mediatype_msg.resource_md5, MD5_LEN)) {
             mediatype_msg.block_start_id = 0;//iter->block_inter_.start;
             mediatype_msg.block_num = -1;//iter->block_inter_.size;
             mediatype_msg.program_name = (char*)iter->chnl_name_.c_str();
@@ -132,8 +126,7 @@ int RsNpSpProtocol::send_media_type(char* resource_hash)
     return ret;
 }
 
-int RsNpSpProtocol::send_one_block(char* resource_hash, uint8_t count, uint32_t id)
-{
+int RsNpSpProtocol::send_one_block(char* resource_hash, uint8_t count, uint32_t id) {
     int ret = ERROR_SUCCESS;
     char* block = NULL;
     uint32_t size = 0;
@@ -154,8 +147,7 @@ int RsNpSpProtocol::send_one_block(char* resource_hash, uint8_t count, uint32_t 
     response_msg.block_id = block_id;
 
 #ifdef DUMP_SEND_MEDIA
-    if(np_dump_file)
-    {
+    if(np_dump_file) {
         fwrite(block, 1, size, np_dump_file);
     }
 #endif
@@ -175,14 +167,12 @@ int RsNpSpProtocol::send_one_block(char* resource_hash, uint8_t count, uint32_t 
     return ret;
 }
 
-int RsNpSpProtocol::send_push_list(char* resource_hash, uint8_t count, uint32_t* array)
-{
+int RsNpSpProtocol::send_push_list(char* resource_hash, uint8_t count, uint32_t* array) {
     int ret = ERROR_SUCCESS;
     int i = 0;
     if(count > 1)
         sort(array, array+count);
-    for(; i < count; i++)
-    {
+    for(; i < count; i++) {
         send_one_block(resource_hash, 1, array[i]);
         //st_usleep(5*1000);
     }
@@ -190,8 +180,7 @@ int RsNpSpProtocol::send_push_list(char* resource_hash, uint8_t count, uint32_t*
     return ret;
 }
 
-int RsNpSpProtocol::get_push_list(char* msg, int size)
-{
+int RsNpSpProtocol::get_push_list(char* msg, int size) {
     printf("%s\n", __FUNCTION__);
 
     int ret = ERROR_SUCCESS;
@@ -209,20 +198,17 @@ int RsNpSpProtocol::get_push_list(char* msg, int size)
 
 static int no_receive_counter = 0;
 
-int RsNpSpProtocol::loop()
-{
+int RsNpSpProtocol::loop() {
     int ret = ERROR_SUCCESS;
     //get message size
     ssize_t ret_size;
     //read 4 bytes to get the message type
     if ((ret = np_buffer->fill_buffer(io_socket, 4)) != ERROR_SUCCESS) {
-        if (ret != ERROR_SUCCESS)
-        {
+        if (ret != ERROR_SUCCESS) {
             //printf("np_buffer->fill_buffer(io_socket, 4) failed. required_size=%d, ret=%d \n", 1, ret);
         }
         no_receive_counter++;
-        if(no_receive_counter == 150)
-        {
+        if(no_receive_counter == 150) {
             loop_flag = false;
             close(st_netfd_fileno(st_fd));
             no_receive_counter = 0;
@@ -244,31 +230,29 @@ int RsNpSpProtocol::loop()
     char  msg_type = 0;
     msg_type = *temp;//np_buffer->read_byte();
 
-    switch(msg_type)
-    {
-        case SP2SP_PUSHLIST:
-            get_push_list(temp+1, msg_size-5);
-            break;
-        default:
-            printf("RsNpSpProtocol::loop() other msg_type\n");
-            break;
+    switch(msg_type) {
+    case SP2SP_PUSHLIST:
+        get_push_list(temp+1, msg_size-5);
+        break;
+    default:
+        printf("RsNpSpProtocol::loop() other msg_type\n");
+        break;
     }
     return ret;
 }
 
-int RsNpSpProtocol::on_end_loop()
-{
+int RsNpSpProtocol::on_end_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsNpSpProtocol::on_thread_stop()
-{
+int RsNpSpProtocol::on_thread_stop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-} /* namespace protocol */
-} /* namespace sp  */
+}
+}
+}// namespace rs::protocol::sp

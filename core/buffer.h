@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "socket.h"
 
+namespace rs {
 namespace core {
 
 class RsBuffer {
@@ -64,6 +65,6 @@ private:
     int buffer_size;//the total size of the buffer
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif /* CORE_BUFFER_H_ */

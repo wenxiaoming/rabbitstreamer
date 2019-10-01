@@ -35,18 +35,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
-using namespace core;
+using namespace rs::core;
 
 //class map_str;
 
-namespace protocol
-{
-namespace tracker
-{
+namespace rs {
+namespace protocol {
+namespace tracker {
 
 class RsNpTracker : public RsThread,
-                    public virtual ITimerHandler
-{
+                    public virtual ITimerHandler {
 public:
     RsNpTracker();
     virtual ~RsNpTracker();
@@ -103,6 +101,6 @@ private:
     BlockInterval last_send_blockinterval;
 };
 
-} // namespace tracker
-} // namespace protocol
+
+} } }// namespace rs::protocol::tracker
 #endif

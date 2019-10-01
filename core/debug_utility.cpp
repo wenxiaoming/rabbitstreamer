@@ -26,10 +26,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string.h>
 #include <unistd.h>
 
+namespace rs {
 namespace core {
 
-void print_backtrace(void)
-{
+void print_backtrace(void) {
     int i;
     int MAX_CALLSTACK_DEPTH = 32;
     void *traceback[MAX_CALLSTACK_DEPTH];
@@ -43,12 +43,11 @@ void print_backtrace(void)
     FILE *fp = popen(cmd, "w");
 
     int depth = backtrace(traceback, MAX_CALLSTACK_DEPTH);
-    for (i = 0; i < depth; i++)
-    {
+    for (i = 0; i < depth; i++) {
         /*printf("%p\n",traceback[i]);*/
         fprintf(fp, "%p\n\r", traceback[i]);
     }
     fclose(fp);
 }
 
-} /* namespace core */
+} // namespace rs::core

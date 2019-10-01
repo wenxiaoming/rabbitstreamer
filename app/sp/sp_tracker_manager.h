@@ -28,25 +28,26 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "protocol/sp/sp_tracker_protocol.h"
 
 using namespace std;
-using namespace protocol::sp;
+using namespace rs::protocol::sp;
 
+namespace rs {
 namespace app {
 namespace sp {
 
-class SpTrackerManager
-{
+class SpTrackerManager {
 public:
     SpTrackerManager(string ip, uint32_t port);
     ~SpTrackerManager();
+
 public:
     int start_connect();
+
 private:
     string ip_address;
     uint32_t ip_port;
     RsSpTrackerProtocol* tracker_protocol;
 };
 
-} /* namespace app */
-} /* namespace sp */
+} } } // namespace rabbitstreamer::app::sp
 
 #endif /* APP_SP_TRACKER_MANAGER_H_ */

@@ -35,24 +35,20 @@ namespace protocol {
 }
 
 //class RsSpTracker;
-
+namespace rs {
 namespace core {
 
-class map_str
-{
+class map_str {
 public:
-	bool operator < (const map_str other) const
-	{
+	bool operator < (const map_str other) const {
 		return strncasecmp(str_, other.str_, UUID_LENGTH) < 0;
 	}
 
-	bool operator != (const map_str other) const
-	{
+	bool operator != (const map_str other) const {
 		return strncasecmp(str_, other.str_, UUID_LENGTH) != 0;
 	}
 
-	map_str& operator = (const map_str other)
-	{
+	map_str& operator = (const map_str other) {
 		memcpy(str_, other.str_, sizeof(str_));
 
 		return *this;
@@ -61,10 +57,8 @@ public:
 	char str_[UUID_LENGTH+1];
 };
 //channelNode
-struct  ChannelNode
-{
-	ChannelNode()
-	{
+struct  ChannelNode {
+	ChannelNode() {
 		userID = 0;                  
 		pswd[0] = 0;                   
 		servicePort = 0;               
@@ -80,13 +74,11 @@ struct  ChannelNode
 
 	}
 
-	~ChannelNode()
-	{
+	~ChannelNode() {
 		delete_pHash();
 	}
 
-	ChannelNode& operator = (const ChannelNode& pNode)
-	{
+	ChannelNode& operator = (const ChannelNode& pNode) {
 		userID = pNode.userID;                    
 		memcpy(pswd, pNode.pswd, sizeof(pswd));
 		servicePort = pNode.servicePort;                
@@ -123,20 +115,16 @@ struct  ChannelNode
 	
 	MD5_Hash_Str* pHash;
 
-	void new_pHash()
-	{
-		if (0 < resourceCount)
-		{
+	void new_pHash() {
+		if (0 < resourceCount) {
 			pHash = new MD5_Hash_Str[resourceCount];
 		}
-		else
-		{
+		else {
 			pHash = NULL;
 		}
 	}
 
-	void delete_pHash()
-	{
+	void delete_pHash() {
 		if (NULL != pHash)
 			delete []pHash;
 		//
@@ -145,8 +133,7 @@ struct  ChannelNode
 };
 
 //npnode
-struct  NPNode
-{
+struct  NPNode {
 	 map_str     digits;                 
 	 time_t      last_recv_report_time_;
 	 float       fVersion;                   //version of client(float)
@@ -171,14 +158,12 @@ struct  NPNode
 
 	 MD5_Hash_Str channelID_md5;             
 
-	 NPNode()
-	 {
+	 NPNode() {
 		 memset(this, 0, sizeof(NPNode));
 		 time(&last_recv_report_time_);
 	 }
 
-	 NPNode& operator = (const NPNode& node)
-	 {
+	 NPNode& operator = (const NPNode& node) {
 		 digits = node.digits;                  
 		 last_recv_report_time_ = node.last_recv_report_time_;
 		 fVersion = node.fVersion;                   //version of client(float)
@@ -208,6 +193,6 @@ struct  NPNode
 	 
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif

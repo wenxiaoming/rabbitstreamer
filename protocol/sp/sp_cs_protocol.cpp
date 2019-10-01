@@ -30,6 +30,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "third_party/md5/md5.h"
 #include "core/logger.h"
 
+namespace rs {
 namespace protocol {
 namespace sp {
 
@@ -43,7 +44,7 @@ static int block_counter = 0;
 static bool write_flag = false;
 #endif
 RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd)
-		: RsThread("csspprotocol")
+    : RsThread("csspprotocol")
 {
     st_fd = stfd;
     io_socket = new RsSocket(st_fd);
@@ -61,8 +62,7 @@ RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd)
     calculator = new RsBitrateCalculator("cs");
 }
 
-RsCsSpProtocol::~RsCsSpProtocol()
-{
+RsCsSpProtocol::~RsCsSpProtocol() {
     if(read_buffer)
         delete[]read_buffer;
 #ifdef DUMP_MEDIA_DATA_FROM_CS
@@ -71,22 +71,19 @@ RsCsSpProtocol::~RsCsSpProtocol()
 #endif
 }
 
-int RsCsSpProtocol::on_thread_start()
-{
+int RsCsSpProtocol::on_thread_start() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsCsSpProtocol::on_before_loop()
-{
+int RsCsSpProtocol::on_before_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsCsSpProtocol::loop()
-{
+int RsCsSpProtocol::loop() {
     int ret = ERROR_SUCCESS;
 
     //get data from capture server
@@ -100,7 +97,7 @@ int RsCsSpProtocol::loop()
     char* temp = cs_buffer->read_nbytes(4);
     int msg_size = 0;//(temp[3]<<24)|(temp[2]<<16)|(temp[1]<<8)|temp[0];
     get_as_type(temp, msg_size);
-    
+
     //printf("%s msg_size:%d \n", __FUNCTION__, msg_size);
 
     //read the full msg
@@ -112,37 +109,34 @@ int RsCsSpProtocol::loop()
     get_as_type(temp, msg_type);
 
     //printf("%s msg_type:%d \n", __FUNCTION__, msg_type);
-    switch(msg_type)
-    {
-        case CS2SP_REGISTER:
-	        printf("%s CS2SP_REGISTER\n", __FUNCTION__);
-            get_register(temp+1, msg_size-5);
-            break;
-        case CS2SP_UPDATE:
-            break;
-        case CS2SP_BLOCK:
-	        //printf("%s CS2SP_BLOCK\n", __FUNCTION__);
-            get_block(temp+1, msg_size-5);
-            break;
-        case CS2SP_MEDIA_TYPE:
-	        printf("%s CS2SP_MEDIA_TYPE\n", __FUNCTION__);
-            get_mediatype(temp+1, msg_size-5);
-            break;
+    switch(msg_type) {
+    case CS2SP_REGISTER:
+        printf("%s CS2SP_REGISTER\n", __FUNCTION__);
+        get_register(temp+1, msg_size-5);
+        break;
+    case CS2SP_UPDATE:
+        break;
+    case CS2SP_BLOCK:
+        //printf("%s CS2SP_BLOCK\n", __FUNCTION__);
+        get_block(temp+1, msg_size-5);
+        break;
+    case CS2SP_MEDIA_TYPE:
+        printf("%s CS2SP_MEDIA_TYPE\n", __FUNCTION__);
+        get_mediatype(temp+1, msg_size-5);
+        break;
     }
 
     return ret;
 }
 
-int RsCsSpProtocol::get_msg()
-{
+int RsCsSpProtocol::get_msg() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
 
-int RsCsSpProtocol::get_mediatype(char* msg, int size)
-{
+int RsCsSpProtocol::get_mediatype(char* msg, int size) {
     int ret = ERROR_SUCCESS;
     RSLOGI("get_mediatype");
     //get media type's size
@@ -157,8 +151,7 @@ int RsCsSpProtocol::get_mediatype(char* msg, int size)
     return ret;
 }
 
-int RsCsSpProtocol::get_register(char* msg, int size)
-{
+int RsCsSpProtocol::get_register(char* msg, int size) {
     int ret = ERROR_SUCCESS;
     RSLOGI("get_register");
 
@@ -219,11 +212,10 @@ int RsCsSpProtocol::get_register(char* msg, int size)
     RsSourceManager::instance()->create_source(chnl_hash_, channel_name, true);
     free(channel_name);
 
-    if(header_size==0)
-    {
+    if(header_size==0) {
         printf("%s get_register header_size ==0\n", __FUNCTION__);
-	    RSLOGI("get_register header_size ==0");
-	    return ret;	
+        RSLOGI("get_register header_size ==0");
+        return ret;
     }
     char* header_data = (char*)malloc(header_size * sizeof(char));
     memcpy(header_data, msg, header_size);
@@ -240,15 +232,13 @@ int RsCsSpProtocol::get_register(char* msg, int size)
     return ret;
 }
 
-int RsCsSpProtocol::get_update(char* msg, int size)
-{
+int RsCsSpProtocol::get_update(char* msg, int size) {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsCsSpProtocol::get_block(char* msg, int size)
-{
+int RsCsSpProtocol::get_block(char* msg, int size) {
     int ret = ERROR_SUCCESS;
     //block id (UINT32)
     int block_id = 0;
@@ -277,22 +267,18 @@ int RsCsSpProtocol::get_block(char* msg, int size)
     //dump to file
 #ifdef DUMP_MEDIA_DATA_FROM_CS
     block_counter++;
-    if(dump_file && block_counter >= 200 && block_counter <=10000)
-    {
-        if(write_flag == false)
-        {
-            if((block_size-4-data_offset) != 0)
-            {
+    if(dump_file && block_counter >= 200 && block_counter <=10000) {
+        if(write_flag == false) {
+            if((block_size-4-data_offset) != 0) {
 #if 1
-                RSLOGI("buffer:0x%0x 0x%0x 0x%0x 0x%0x 0x%0x 0x%0x 0x%0x 0x%0x", 
-                            *(block_data+4+data_offset), *(block_data+4+data_offset+1), *(block_data+4+data_offset+2), *(block_data+4+data_offset+3),
-                            *(block_data+4+data_offset+4), *(block_data+4+data_offset+5), *(block_data+4+data_offset+6), *(block_data+4+data_offset+7));
+                RSLOGI("buffer:0x%0x 0x%0x 0x%0x 0x%0x 0x%0x 0x%0x 0x%0x 0x%0x",
+                       *(block_data+4+data_offset), *(block_data+4+data_offset+1), *(block_data+4+data_offset+2), *(block_data+4+data_offset+3),
+                       *(block_data+4+data_offset+4), *(block_data+4+data_offset+5), *(block_data+4+data_offset+6), *(block_data+4+data_offset+7));
 #endif
                 fwrite(block_data+4+data_offset, 1, block_size-4-data_offset, dump_file);
                 write_flag = true;
             }
-        }
-        else
+        } else
             fwrite(block_data+4, 1, block_size-4, dump_file);
     }
 #endif
@@ -302,33 +288,30 @@ int RsCsSpProtocol::get_block(char* msg, int size)
     return ret;
 }
 
-int RsCsSpProtocol::send_welcome()
-{
+int RsCsSpProtocol::send_welcome() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsCsSpProtocol::send_err_msg()
-{
+int RsCsSpProtocol::send_err_msg() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsCsSpProtocol::on_end_loop()
-{
+int RsCsSpProtocol::on_end_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsCsSpProtocol::on_thread_stop()
-{
+int RsCsSpProtocol::on_thread_stop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-} /* namespace protocol */
-} /* namespace sp  */
+}
+}
+}// namespace rs::protocol::sp

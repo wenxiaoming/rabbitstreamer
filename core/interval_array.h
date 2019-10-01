@@ -26,42 +26,38 @@
 
 using namespace std;
 
+namespace rs {
 namespace core {
 
 class IntervalArray 
 {
 public:
 
-	explicit IntervalArray() : m_array(NULL), m_totalsize(0), m_validsize(0)
-	{
+	explicit IntervalArray() : m_array(NULL), m_totalsize(0), m_validsize(0) {
 	};
 
-	explicit IntervalArray(const IntervalArray& another) : m_array(NULL), m_totalsize(another.m_totalsize), m_validsize(another.m_validsize) 
-	{
+	explicit IntervalArray(const IntervalArray& another) : m_array(NULL), m_totalsize(another.m_totalsize), m_validsize(another.m_validsize) {
 		if(m_totalsize) 		
 		{
 			m_array = new BlockInterval[m_totalsize];
 			memcpy(m_array, another.m_array, m_validsize*sizeof(BlockInterval));
 		}
 	};
-	virtual ~IntervalArray(void)
-	{
+	virtual ~IntervalArray(void) {
 		m_totalsize = 0;
 		m_validsize = 0;
 		delete [] m_array;
 		m_array = NULL;
 	};
 
-	bool operator == (const IntervalArray& a) const 
-	{
+	bool operator == (const IntervalArray& a) const {
 		if(m_validsize != a.m_validsize)
 			return false;
 		if(memcmp(m_array, a.m_array, sizeof(BlockInterval)*m_validsize) != 0)
 			return false;
 		return true;
 	};
-	IntervalArray& operator=(const IntervalArray& another) 
-	{
+	IntervalArray& operator=(const IntervalArray& another) {
 		m_totalsize = m_validsize = another.m_validsize;
 		delete [] m_array;
 		m_array = NULL;
@@ -74,22 +70,18 @@ public:
         return *this;
 	}
 
-	void DeleteArray(const IntervalArray& another) 
-	{
+	void DeleteArray(const IntervalArray& another) {
 		for(uint16_t i = 0; i < another.m_validsize; ++i)
 		{
 			DelInterval(another.m_array[i].start, another.m_array[i].size);
 		}
 	}
 
-	void AndOperator(const IntervalArray& another, IntervalArray& result) const
-	{
+	void AndOperator(const IntervalArray& another, IntervalArray& result) const	{
 		BlockInterval temp;
 		result.Clear();
-		for(uint16_t i = 0; i < another.m_validsize; ++i) 
-		{
-			for(uint16_t j = 0; j < m_validsize; ++j) 
-			{
+		for(uint16_t i = 0; i < another.m_validsize; ++i) {
+			for(uint16_t j = 0; j < m_validsize; ++j) {
 				BlockInterval::and_op(m_array[j], another.m_array[i], temp);
 				if(temp.size > 0)
 					result.AddInterval(temp.start, temp.size);
@@ -97,43 +89,34 @@ public:
 		}
 	}
 
-	void AddInterval(uint32_t start, uint32_t size) 
-	{
+	void AddInterval(uint32_t start, uint32_t size) {
 		if(start == UINT_MAX)
 			return;
 //		assert(size != 0);
 		if(size == 0)
 			return;
         uint16_t i = 0;
-		for(i = 0; i < m_validsize; ++i)
-		{
-			if(m_array[i].start > start)
-			{
-				if(m_array[i].start > start+size) 
-				{
+		for(i = 0; i < m_validsize; ++i) {
+			if(m_array[i].start > start) {
+				if(m_array[i].start > start+size) {
 					break;
 				}
-				else if(m_array[i].start+m_array[i].size >= start+size) 
-				{
+				else if(m_array[i].start+m_array[i].size >= start+size) {
 					m_array[i].size += m_array[i].start-start;
 					m_array[i].start = start;
 					return;
 				}
-				else 
-				{
+				else {
 					SafeDelete(i);
 					AddInterval(start, size);
 					return;
 				}
 			}
-			else if(m_array[i].start+m_array[i].size >= start) 
-			{
-				if(m_array[i].start+m_array[i].size >= start+size)
-				{
+			else if(m_array[i].start+m_array[i].size >= start) {
+				if(m_array[i].start+m_array[i].size >= start+size) {
 					return;
 				}
-				if(i == m_validsize-1 || m_array[i+1].start > start+size)
-				{
+				if(i == m_validsize-1 || m_array[i+1].start > start+size) {
 					m_array[i].size = start+size-m_array[i].start;
 					return;
 				}
@@ -150,46 +133,34 @@ public:
 		return;
 	};
 
-	void DelInterval(uint32_t start, uint32_t size)
-	{
+	void DelInterval(uint32_t start, uint32_t size) {
 		assert(size != 0);
 		if(size == 0)
 			return;
-		for(uint16_t i = 0; i < m_validsize; ++i)
-		{
-			if(m_array[i].start > start) 
-			
-			{
-				if(m_array[i].start > start+size) 
-				{
+		for(uint16_t i = 0; i < m_validsize; ++i) {
+			if(m_array[i].start > start) {
+				if(m_array[i].start > start+size) {
 					return;
 				}
-				else if(m_array[i].start+m_array[i].size > start+size)
-				{
+				else if(m_array[i].start+m_array[i].size > start+size)	{
 					m_array[i].size = (m_array[i].start+m_array[i].size) - (start+size);
 					m_array[i].start = start+size;
 					return;
-				}
-				else 
-				{
+				} else {
 					SafeDelete(i);
 					DelInterval(start, size);
 					return;
 				}
 			}
-			else if(m_array[i].start+m_array[i].size > start)
-			{
+			else if(m_array[i].start+m_array[i].size > start) {
 				uint32_t oldSize = m_array[i].size;
 
-				if(m_array[i].start != start) 
-				{
+				if(m_array[i].start != start) {
 					m_array[i].size = start-m_array[i].start;
 				}
 
-				if(m_array[i].start+oldSize <= start+size) 
-				{
-					if(m_array[i].start != start) 
-					{
+				if(m_array[i].start+oldSize <= start+size) {
+					if(m_array[i].start != start) {
 						DelInterval(start, size);
 						return;
 					}
@@ -197,8 +168,7 @@ public:
 					return;
 				}
 
-				if(m_array[i].start == start) 
-				{
+				if(m_array[i].start == start) {
 					m_array[i].size -= start+size-m_array[i].start;
 					m_array[i].start = start+size;
 					return;
@@ -209,10 +179,8 @@ public:
 		}
 	};
 
-	bool FindBlock(const uint32_t blockID) const 
-	{
-		for(uint16_t i = 0; i < m_validsize; ++i)
-		{
+	bool FindBlock(const uint32_t blockID) const {
+		for(uint16_t i = 0; i < m_validsize; ++i) {
 			if(m_array[i].start > blockID)
 				return false;
 
@@ -222,17 +190,14 @@ public:
 		return false;
 	};
 
-	void CopyIntervalArray(BlockInterval* targetArray, uint8_t& size) const
-	{
+	void CopyIntervalArray(BlockInterval* targetArray, uint8_t& size) const	{
 		if(!targetArray || size == 0)
 			return;
-		if(size >= m_validsize) 
-		{
+		if(size >= m_validsize) {
 			size = static_cast<uint8_t>(m_validsize);
 			memcpy(targetArray, m_array, size*sizeof(BlockInterval));
 		}
-		else 
-		{		
+		else {
 			std::sort(m_array, m_array+m_validsize, BlockInterval::cmp_size);	
 			memcpy(targetArray, m_array, size*sizeof(BlockInterval));		
 			std::sort(m_array, m_array+m_validsize, BlockInterval::cmp_start);	
@@ -240,37 +205,31 @@ public:
 		}
 	};
 
-	void Clear()
-	{
+	void Clear() {
 		m_validsize = 0;
 	};
 
-	bool IsEmpty() const 
-	{
+	bool IsEmpty() const {
 		return (m_validsize == 0);
 	}
 
-	uint32_t GetMaxBlockID() const 
-	{
+	uint32_t GetMaxBlockID() const {
 		if(m_validsize)
 			return m_array[m_validsize-1].start+m_array[m_validsize-1].size;
 		return 0;
 	};
 
-	uint32_t GetMinBlockID() const 
-	{
+	uint32_t GetMinBlockID() const {
 		if(m_validsize)
 			return m_array[0].start;
 		return UINT_MAX;
 	}
 
-	uint16_t GetValidSize() const 
-	{
+	uint16_t GetValidSize() const {
 		return m_validsize;
 	};
 
-	uint32_t GetCountInInterval(const uint32_t blockID, const uint32_t len) const 
-	{
+	uint32_t GetCountInInterval(const uint32_t blockID, const uint32_t len) const {
 		uint32_t total = 0;
 
 		BlockInterval result, in;
@@ -285,25 +244,19 @@ public:
 		return total;
 	};
 
-	uint32_t GetContinousCount(const uint32_t blockID) const 
-	{
-		for(uint16_t i = 0; i < m_validsize; ++i) 
-		{
+	uint32_t GetContinousCount(const uint32_t blockID) const {
+		for(uint16_t i = 0; i < m_validsize; ++i) {
 			if(m_array[i].start > blockID)
 				return 0;
-
-			else if(m_array[i].start+m_array[i].size > blockID) 
-			{
+			else if(m_array[i].start+m_array[i].size > blockID) {
 				return m_array[i].start+m_array[i].size-blockID;
 			}
 		}
 		return 0;
 	};
 
-	void PopFront(BlockInterval& bi) 
-	{
-		if(m_validsize) 
-		{
+	void PopFront(BlockInterval& bi) {
+		if(m_validsize) {
 			bi = m_array[0];
 			SafeDelete(0);
 		}
@@ -311,19 +264,15 @@ public:
 			memset(&bi, 0, sizeof(bi));
 	}
 
-	void Print() const
-	{
+	void Print() const {
 		printf("\nTOTAL: %d, VALID: %d.\n", m_totalsize, m_validsize);
-		for(uint16_t i = 0; i < m_validsize; ++i) 
-		{
+		for(uint16_t i = 0; i < m_validsize; ++i) {
 			printf("START: %d, END: %d, SIZE: %d.\n", m_array[i].start, m_array[i].start+m_array[i].size, m_array[i].size);
 		}
 	}
 
-	bool Verify() const 
-	{
-		for(uint16_t i = 0; i < m_validsize; ++i) 
-		{
+	bool Verify() const {
+		for(uint16_t i = 0; i < m_validsize; ++i) {
 			if(m_array[i].size == 0)
 				return false;
 			if(UINT_MAX - m_array[i].start < m_array[i].size)
@@ -337,8 +286,7 @@ public:
 	}
 
 protected:
-	void SafeInsert(uint16_t i, uint32_t start, uint32_t size)
-	{
+	void SafeInsert(uint16_t i, uint32_t start, uint32_t size)	{
 		assert(m_validsize <= m_totalsize);
 		assert(i <= m_validsize);
 		assert(m_validsize <= 0xffff);
@@ -347,8 +295,7 @@ protected:
 			return;
 
 		BlockInterval* temp = m_array;
-		if(m_totalsize == m_validsize)
-		{
+		if(m_totalsize == m_validsize)	{
 			m_array = new BlockInterval[m_validsize+1];
 			memcpy(m_array, temp, i*sizeof(BlockInterval));
 		}
@@ -358,8 +305,7 @@ protected:
 		m_array[i].start = start;
 		m_array[i].size = size;
 
-		if(m_totalsize == m_validsize) 
-		{
+		if(m_totalsize == m_validsize) {
 			delete [] temp;
 			++m_totalsize;
 		}
@@ -368,8 +314,7 @@ protected:
 		assert(m_validsize <= 0xffff);
 	};
 
-	void SafeDelete(uint16_t i) 
-	{
+	void SafeDelete(uint16_t i) {
 		assert(i < m_validsize);
 		::memmove(m_array+i, m_array+i+1, (m_validsize-i-1)*sizeof(BlockInterval));
 		--m_validsize;
@@ -381,6 +326,6 @@ private:
 	uint16_t m_validsize;
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif

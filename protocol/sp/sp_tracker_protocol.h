@@ -35,14 +35,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
-using namespace core;
+using namespace rs::core;
 
+namespace rs {
 namespace protocol {
 namespace sp {
 
 class RsSpTrackerProtocol : public RsThread,
-                            public virtual ITimerHandler
-{
+                            public virtual ITimerHandler {
 public:
 	RsSpTrackerProtocol(string ip, int port);
 	virtual ~RsSpTrackerProtocol();
@@ -93,7 +93,7 @@ protected:
 };
 
 
-} /* namespace protocol */
-} /* namespace sp  */
+
+} } }// namespace rs::protocol::sp
 
 #endif /* PROTOCOL_SP_TRACKER_PROTOCOL_H_ */

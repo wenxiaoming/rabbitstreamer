@@ -28,22 +28,22 @@
 
 #define SYS_CYCLE_INTERVAL 1000
 
-using namespace protocol::sp;
+using namespace rs::protocol::sp;
 
+namespace rs {
 namespace app {
 namespace common {
 
-RsBaseServer::RsBaseServer(ServerType type) {
+RsBaseServer::RsBaseServer(ServerType type)
+{
 	servertype = type;
 }
 
 RsBaseServer::~RsBaseServer() {
 }
 
-void RsBaseServer::loop()
-{
-	while(true)
-	{
+void RsBaseServer::loop() {
+	while(true) {
 		st_usleep(SYS_CYCLE_INTERVAL * 1000);
 
 		update_system_time_ms();
@@ -52,5 +52,4 @@ void RsBaseServer::loop()
 	}
 }
 
-} /* namespace common */
-} /* namespace app */
+} } } // namespace rs::app::common

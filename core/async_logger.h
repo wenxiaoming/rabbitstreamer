@@ -14,10 +14,10 @@
 
 using namespace std;
 
+namespace rs {
 namespace core {
 
-class RsThreadContext : public RsContextBase
-{
+class RsThreadContext : public RsContextBase {
 private:
     map<st_thread_t, int> cache;
 public:
@@ -29,8 +29,7 @@ public:
     virtual int set_id(int v);
 };
 
-class RsAsyncLogger: public RsLogBase
-{
+class RsAsyncLogger: public RsLogBase {
 public:
     RsAsyncLogger();
     virtual ~RsAsyncLogger();
@@ -50,6 +49,6 @@ private:
     bool utc;
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif /* CORE_RS_ASYNC_LOGGER_H_ */

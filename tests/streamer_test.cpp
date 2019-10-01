@@ -3,7 +3,7 @@
 
 #include "core/streamer.h"
 
-namespace core {
+using namespace rs::core;
 
 TEST(StreamerTest, construct) {
     RsStreamer *streamer = new RsStreamer;
@@ -11,7 +11,4 @@ TEST(StreamerTest, construct) {
     streamer->initialize(buf, sizeof(buf));
 
     delete streamer;
-}
-
-
 }

@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <stdint.h>
 
+namespace rs {
 namespace core {
 
 #define rs_min(a, b) (((a) < (b))? (a) : (b))
@@ -35,6 +36,6 @@ int64_t get_system_time_ms();
 int64_t get_system_startup_time_ms();
 int64_t update_system_time_ms();
 
-} /* namespace core */
+} // namespace rs::coree rs::core
 
 #endif /* CORE_CORE_UTILITY_H_ */

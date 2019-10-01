@@ -26,13 +26,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/udp_listener.h"
 #include "protocol/tracker/tracker_np_protocol.h"
 
-using namespace protocol::tracker;
+using namespace rs::protocol::tracker;
 
+namespace rs {
 namespace app {
 namespace tracker {
 
-class TrackerNpManager : public IUdpHandler
-{
+class TrackerNpManager : public IUdpHandler {
 public:
     TrackerNpManager(string ip, int port);
     ~TrackerNpManager();
@@ -51,7 +51,6 @@ private:
     RsNpTracker* np_tracker;
 };
 
-} /* namespace app */
-} /* namespace tracker */
+} } } // namespace rabbitstreamer::app::tracker
 
 #endif /* APP_TRACKER_NP_MANAGER_H_ */

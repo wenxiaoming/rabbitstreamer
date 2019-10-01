@@ -23,9 +23,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CORE_RS_DEBUG_UTILITY_H_
 #define CORE_RS_DEBUG_UTILITY_H_
 
+namespace rs {
 namespace core {
 
 void print_backtrace(void);
 
-} /* namespace core */
+} // namespace rs::core
 #endif /* CORE_RS_DEBUG_UTILITY_H_ */

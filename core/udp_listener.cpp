@@ -30,12 +30,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "error_code.h"
 #include "logger.h"
 
+namespace rs {
 namespace core {
 
 #define UDP_RECEIVE_BUFFER_SIZE 65535
 
 RsUdpListener::RsUdpListener(string ip, int port, IUdpHandler* handler)
-              : RsThread("udplistener")
+    : RsThread("udplistener")
 {
     ip_addr = ip;
     listen_port = port;
@@ -45,26 +46,22 @@ RsUdpListener::RsUdpListener(string ip, int port, IUdpHandler* handler)
     recv_buffer = new char[UDP_RECEIVE_BUFFER_SIZE];
 }
 
-RsUdpListener::~RsUdpListener()
-{
+RsUdpListener::~RsUdpListener() {
 
 }
 
-int RsUdpListener::start_listen()
-{
+int RsUdpListener::start_listen() {
     int ret = ERROR_SUCCESS;
 
     socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
 
-    if(socket_fd == -1)
-    {
+    if(socket_fd == -1) {
         ret = ERROR_SOCKET_CREATE;
         return ret;
     }
 
     int reuse_flag = 1;
-    if(setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_flag, sizeof(reuse_flag)))
-    {
+    if(setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_flag, sizeof(reuse_flag))) {
         ret = ERROR_SOCKET_SETREUSE;
         return ret;
     }
@@ -73,16 +70,14 @@ int RsUdpListener::start_listen()
     addr.sin_family = AF_INET;
     addr.sin_port = htons(listen_port);
     addr.sin_addr.s_addr = inet_addr(ip_addr.c_str());
-    if(bind(socket_fd, (const sockaddr*)&addr, sizeof(addr)) == -1)
-    {
+    if(bind(socket_fd, (const sockaddr*)&addr, sizeof(addr)) == -1) {
         ret = ERROR_SOCKET_BIND;
         return ret;
     }
 
     st_socket_fd = st_netfd_open_socket(socket_fd);
 
-    if(st_socket_fd == NULL)
-    {
+    if(st_socket_fd == NULL) {
         ret = ERROR_ST_OPEN_SOCKET;
         return ret;
     }
@@ -93,28 +88,25 @@ int RsUdpListener::start_listen()
     return ret;
 }
 
-int RsUdpListener::on_thread_start()
-{
+int RsUdpListener::on_thread_start() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsUdpListener::on_before_loop()
-{
+int RsUdpListener::on_before_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsUdpListener::loop()
-{
+int RsUdpListener::loop() {
     int ret = ERROR_SUCCESS;
     sockaddr_in addr;
     int from_size = sizeof(sockaddr_in);
     int read_size = st_recvfrom(st_socket_fd, recv_buffer, buffer_size, (sockaddr*)&addr, &from_size, ST_UTIME_NO_TIMEOUT);
 
-    if(read_size <= 0){
+    if(read_size <= 0) {
         // ignore it since nothing received from the peer
         return ret;
     }
@@ -127,18 +119,16 @@ int RsUdpListener::loop()
     return ret;
 }
 
-int RsUdpListener::on_end_loop()
-{
+int RsUdpListener::on_end_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsUdpListener::on_thread_stop()
-{
+int RsUdpListener::on_thread_stop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-} /* namespace core */
+} // namespace rs::coree rs::core

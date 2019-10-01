@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "streamer.h"
 
+namespace rs {
 namespace core {
 
 RsStreamer::RsStreamer()
@@ -31,82 +32,69 @@ RsStreamer::RsStreamer()
     size = 0;
 }
 
-RsStreamer::~RsStreamer()
-{
+RsStreamer::~RsStreamer() {
 }
 
-void RsStreamer::initialize(char* buf, int nb)
-{
+void RsStreamer::initialize(char* buf, int nb) {
     base = curr = buf;
     size = nb;
 }
 
-uint8_t RsStreamer::read_char()
-{
+uint8_t RsStreamer::read_char() {
     uint8_t value = 0;
     get_as_type(value);
     return value;
 }
 
-uint16_t RsStreamer::read_short()
-{
+uint16_t RsStreamer::read_short() {
     uint16_t value = 0;
     get_as_type(value);
     return value;
 }
 
-uint32_t RsStreamer::read_int()
-{
+uint32_t RsStreamer::read_int() {
     uint32_t value = 0;
     get_as_type(value);
     return value;
 }
 
-uint64_t RsStreamer::read_long()
-{
+uint64_t RsStreamer::read_long() {
     uint64_t value = 0;
     get_as_type(value);
     return value;
 }
 
-char* RsStreamer::read_nbytes(int nb)
-{
+char* RsStreamer::read_nbytes(int nb) {
     char* buf = curr;
     assert((curr+nb)<=(base+size));
     curr += nb;
     return buf;
 }
 
-void RsStreamer::skip(int nb)
-{
+void RsStreamer::skip(int nb) {
     assert((curr+nb)<=(base+size));
     curr += nb;
 }
 
-void RsStreamer::write_char(char value)
-{
+void RsStreamer::write_char(char value) {
     *curr++ = value;
 }
 
-void RsStreamer::write_short(uint16_t value)
-{
+void RsStreamer::write_short(uint16_t value) {
     set_as_type(value);
 }
 
-void RsStreamer::write_int(uint32_t value)
-{
+void RsStreamer::write_int(uint32_t value) {
     set_as_type(value);
 }
 
-void RsStreamer::write_long(uint64_t value)
-{
+void RsStreamer::write_long(uint64_t value) {
     set_as_type(value);
 }
 
-void RsStreamer::write_nbytes(char* buf, int nb)
-{
+void RsStreamer::write_nbytes(char* buf, int nb) {
     memcpy(curr, buf, nb);
     curr += nb;
 }
 
-} /* namespace core */
+} // namespace rs::core

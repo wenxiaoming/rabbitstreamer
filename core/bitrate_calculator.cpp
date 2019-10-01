@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <sys/time.h>
 #include "logger.h"
 
+namespace rs {
 namespace core {
 
 RsBitrateCalculator::RsBitrateCalculator(string name)
@@ -33,13 +34,11 @@ RsBitrateCalculator::RsBitrateCalculator(string name)
     last_recv_msec = 0;
 }
 
-RsBitrateCalculator::~RsBitrateCalculator()
-{
+RsBitrateCalculator::~RsBitrateCalculator() {
 
 }
 
-void RsBitrateCalculator::update_buffersize(uint32_t size)
-{
+void RsBitrateCalculator::update_buffersize(uint32_t size) {
     timeval tv;
     recv_buffer_size += size;
     if (gettimeofday(&tv, NULL) == -1) {
@@ -48,12 +47,11 @@ void RsBitrateCalculator::update_buffersize(uint32_t size)
 
     uint32_t curr_ms = tv.tv_sec*1000 + tv.tv_usec/1000;
     uint32_t delta_ms = curr_ms - last_recv_msec;
-    if(delta_ms > 1000)
-    {
+    if(delta_ms > 1000) {
         RSLOGI("%s bitrate:%d kbps", calculator_name.c_str(), 1000*recv_buffer_size/(1024*delta_ms));
         recv_buffer_size = 0;
         last_recv_msec = curr_ms;
     }
 }
 
-} /* namespace core */
+} // namespace rs::core

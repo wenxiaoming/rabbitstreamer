@@ -26,8 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "app/common/server_base.h"
 #include "core/async_logger.h"
 
-using namespace app::common;
-using namespace app::tracker;
+using namespace rs::app::common;
+using namespace rs::app::tracker;
 
 int main()
 {

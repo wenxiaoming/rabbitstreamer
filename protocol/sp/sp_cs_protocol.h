@@ -30,15 +30,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/core_struct.h"
 #include "core/bitrate_calculator.h"
 
-using namespace core;
+using namespace rs::core;
 
+namespace rs {
 namespace protocol {
 namespace sp {
 
-class RsCsSpProtocol : public RsThread
-{
+class RsCsSpProtocol : public RsThread {
 public:
-    RsCsSpProtocol(st_netfd_t stfd);
+    explicit RsCsSpProtocol(st_netfd_t stfd);
     virtual ~RsCsSpProtocol();
 
 protected:
@@ -58,8 +58,7 @@ public:
     virtual int on_end_loop();
     virtual int on_thread_stop();
 private:
-    template <class T> int get_as_type(char* buf, T& x)
-    {
+    template <class T> int get_as_type(char* buf, T& x) {
         int typesize = sizeof(T);
         memcpy((char*)&x, buf, typesize);
         return 0;
@@ -75,7 +74,6 @@ private:
     RsBitrateCalculator* calculator;
 };
 
-} /* namespace protocol */
-} /* namespace sp  */
+} } }// namespace rs::protocol::sp
 
 #endif /* PROTOCOL_SP_CS_PROTOCOL_H_ */

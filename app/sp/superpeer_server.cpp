@@ -29,9 +29,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "protocol/sp/sp_source_manager.h"
 #include "core/async_logger.h"
 
-using namespace app::common;
-using namespace protocol::sp;
-using namespace app::sp;
+using namespace rs::app::common;
+using namespace rs::protocol::sp;
+using namespace rs::app::sp;
 
 int main()
 {    

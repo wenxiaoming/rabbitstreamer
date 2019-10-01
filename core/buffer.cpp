@@ -29,6 +29,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core_utility.h"
 #include "debug_utility.h"
 
+namespace rs {
 namespace core {
 
 #define DEFAULT_RECV_BUFFER_SIZE 131072
@@ -41,24 +42,20 @@ RsBuffer::RsBuffer()
     curr_ptr = end_ptr = buffer;
 }
 
-RsBuffer::~RsBuffer()
-{
+RsBuffer::~RsBuffer() {
     free(buffer);
     buffer = NULL;
 }
 
-int RsBuffer::current_size()
-{
+int RsBuffer::current_size() {
     return (int)(end_ptr - curr_ptr);
 }
 
-char* RsBuffer::bytes()
-{
+char* RsBuffer::bytes() {
     return curr_ptr;
 }
 
-void RsBuffer::set_buffer(int size)
-{
+void RsBuffer::set_buffer(int size) {
     // never exceed the max size.
     if (size > MAX_SOCKET_BUFFER) {
         return;
@@ -82,26 +79,22 @@ void RsBuffer::set_buffer(int size)
     end_ptr = curr_ptr + nb_bytes;
 }
 
-char RsBuffer::read_byte()
-{
+char RsBuffer::read_byte() {
     return *curr_ptr++;
 }
 
-char* RsBuffer::read_nbytes(int size)
-{
+char* RsBuffer::read_nbytes(int size) {
     char* ptr = curr_ptr;
     curr_ptr += size;
 
     return ptr;
 }
 
-void RsBuffer::skip(int size)
-{
+void RsBuffer::skip(int size) {
     curr_ptr += size;
 }
 
-int RsBuffer::fill_buffer(RsSocket* io, int size)
-{
+int RsBuffer::fill_buffer(RsSocket* io, int size) {
     int ret = ERROR_SUCCESS;
     if(size < 0)
         print_backtrace();
@@ -123,8 +116,7 @@ int RsBuffer::fill_buffer(RsSocket* io, int size)
 
     if(!exists_bytes)
         curr_ptr = end_ptr = buffer;//reset when buffer is consumed completely.
-    else if(free_space < size)
-    {
+    else if(free_space < size) {
         // move current buffer to the beginning.
         buffer = (char*)memmove(buffer, curr_ptr, exists_bytes);
         curr_ptr = buffer;
@@ -147,4 +139,4 @@ int RsBuffer::fill_buffer(RsSocket* io, int size)
     return ret;
 }
 
-} /* namespace core */
+} // namespace rs::coree rs::core

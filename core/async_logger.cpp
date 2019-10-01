@@ -34,18 +34,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace rs {
 namespace core {
 
 RsThreadContext::RsThreadContext()
 {
 }
 
-RsThreadContext::~RsThreadContext()
-{
+RsThreadContext::~RsThreadContext() {
 }
 
-int RsThreadContext::generate_id()
-{
+int RsThreadContext::generate_id() {
     static int id = 100;
 
     int gid = id++;
@@ -53,13 +52,11 @@ int RsThreadContext::generate_id()
     return gid;
 }
 
-int RsThreadContext::get_id()
-{
+int RsThreadContext::get_id() {
     return cache[st_thread_self()];
 }
 
-int RsThreadContext::set_id(int v)
-{
+int RsThreadContext::set_id(int v) {
     st_thread_t self = st_thread_self();
 
     int ov = 0;
@@ -91,8 +88,7 @@ RsAsyncLogger::RsAsyncLogger()
     utc = false;
 }
 
-RsAsyncLogger::~RsAsyncLogger()
-{
+RsAsyncLogger::~RsAsyncLogger() {
     if(log_data)
         delete[]log_data;
 
@@ -102,39 +98,36 @@ RsAsyncLogger::~RsAsyncLogger()
     }
 }
 
-int RsAsyncLogger::initialize()
-{
+int RsAsyncLogger::initialize() {
     int ret = ERROR_SUCCESS;
     return ret;
 }
 
-void RsAsyncLogger::log(LogLevel level, const char* tag, int context_id, const char* fmt, ...)
-{
+void RsAsyncLogger::log(LogLevel level, const char* tag, int context_id, const char* fmt, ...) {
     string level_name;
 
     if(log_level > level)
         return;
 
-    switch(level)
-    {
-        case Verbose:
-            level_name = "verb";
-            break;
-        case Info:
-            level_name = "info";
-            break;
-        case Trace:
-            level_name = "trace";
-            break;
-        case Warn:
-            level_name = "warn";
-            break;
-        case Error:
-            level_name = "error";
-            break;
-        default:
-            level_name = "unknow";
-            break;
+    switch(level) {
+    case Verbose:
+        level_name = "verb";
+        break;
+    case Info:
+        level_name = "info";
+        break;
+    case Trace:
+        level_name = "trace";
+        break;
+    case Warn:
+        level_name = "warn";
+        break;
+    case Error:
+        level_name = "error";
+        break;
+    default:
+        level_name = "unknow";
+        break;
     }
 
     int size = 0;
@@ -152,8 +145,7 @@ void RsAsyncLogger::log(LogLevel level, const char* tag, int context_id, const c
 }
 
 
-bool RsAsyncLogger::generate_header(bool error, const char* tag, int context_id, const char* level_name, int* header_size)
-{
+bool RsAsyncLogger::generate_header(bool error, const char* tag, int context_id, const char* level_name, int* header_size) {
     // clock time
     timeval tv;
     if (gettimeofday(&tv, NULL) == -1) {
@@ -178,26 +170,26 @@ bool RsAsyncLogger::generate_header(bool error, const char* tag, int context_id,
     if (error) {
         if (tag) {
             log_header_size = snprintf(log_data, LOG_MAX_SIZE,
-                "[%d-%02d-%02d %02d:%02d:%02d.%03d][%s][%s][%d][%d][%d] ",
-                1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000),
-                level_name, tag, getpid(), context_id, errno);
+                                       "[%d-%02d-%02d %02d:%02d:%02d.%03d][%s][%s][%d][%d][%d] ",
+                                       1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000),
+                                       level_name, tag, getpid(), context_id, errno);
         } else {
             log_header_size = snprintf(log_data, LOG_MAX_SIZE,
-                "[%d-%02d-%02d %02d:%02d:%02d.%03d][%s][%d][%d][%d] ",
-                1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000),
-                level_name, getpid(), context_id, errno);
+                                       "[%d-%02d-%02d %02d:%02d:%02d.%03d][%s][%d][%d][%d] ",
+                                       1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000),
+                                       level_name, getpid(), context_id, errno);
         }
     } else {
         if (tag) {
             log_header_size = snprintf(log_data, LOG_MAX_SIZE,
-                "[%d-%02d-%02d %02d:%02d:%02d.%03d][%s][%s][%d][%d] ",
-                1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000),
-                level_name, tag, getpid(), context_id);
+                                       "[%d-%02d-%02d %02d:%02d:%02d.%03d][%s][%s][%d][%d] ",
+                                       1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000),
+                                       level_name, tag, getpid(), context_id);
         } else {
             log_header_size = snprintf(log_data, LOG_MAX_SIZE,
-                "[%d-%02d-%02d %02d:%02d:%02d.%03d][%s][%d][%d] ",
-                1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000),
-                level_name, getpid(), context_id);
+                                       "[%d-%02d-%02d %02d:%02d:%02d.%03d][%s][%d][%d] ",
+                                       1900 + tm->tm_year, 1 + tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, (int)(tv.tv_usec / 1000),
+                                       level_name, getpid(), context_id);
         }
     }
 
@@ -211,8 +203,7 @@ bool RsAsyncLogger::generate_header(bool error, const char* tag, int context_id,
     return true;
 }
 
-void RsAsyncLogger::write_log(int& fd, char *str_log, int size, int level)
-{
+void RsAsyncLogger::write_log(int& fd, char *str_log, int size, int level) {
     // ensure the tail and EOF of string
     //      LOG_TAIL_SIZE for the TAIL char.
     //      1 for the last char(0).
@@ -232,7 +223,7 @@ void RsAsyncLogger::write_log(int& fd, char *str_log, int size, int level)
             printf("%.*s", size, str_log);
         } else if (level == Warn) {
             printf("\033[33m%.*s\033[0m", size, str_log);
-        } else{
+        } else {
             printf("\033[31m%.*s\033[0m", size, str_log);
         }
 
@@ -250,8 +241,7 @@ void RsAsyncLogger::write_log(int& fd, char *str_log, int size, int level)
     }
 }
 
-void RsAsyncLogger::open_log_file()
-{
+void RsAsyncLogger::open_log_file() {
     timeval tv;
     if (gettimeofday(&tv, NULL) == -1) {
         return;
@@ -270,9 +260,9 @@ void RsAsyncLogger::open_log_file()
 
     if(fd == -1 && errno == ENOENT) {
         fd = open(filename,
-            O_RDWR | O_CREAT | O_TRUNC,
-            S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-        );
+                  O_RDWR | O_CREAT | O_TRUNC,
+                  S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+                 );
     }
 }
 
@@ -280,14 +270,12 @@ static RsLogBase* sRsLog = nullptr;
 
 static RsContextBase* sRscontext = nullptr;
 
-void init_log_system()
-{
+void init_log_system() {
     sRsLog = new RsAsyncLogger();
     sRscontext = new RsThreadContext();
 }
 
-void deinit_log_system()
-{
+void deinit_log_system() {
     if (sRsLog)
         delete sRsLog;
 
@@ -295,14 +283,12 @@ void deinit_log_system()
         delete sRscontext;
 }
 
-RsLogBase* rs_log()
-{
+RsLogBase* rs_log() {
     return sRsLog;
 }
 
-RsContextBase* rs_context()
-{
+RsContextBase* rs_context() {
     return sRscontext;
 }
 
-} /* namespace core */
+} // namespace rs::core

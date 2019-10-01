@@ -25,13 +25,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "st.h"
 
+namespace rs {
 namespace core {
 
 // every thread must inherit from this class to support actual threading operation
-class RsThread
-{
+class RsThread {
 public:
-	RsThread(const char* name);
+	explicit RsThread(const char* name);
 	virtual ~RsThread();
 public:
 	int start_thread();
@@ -61,6 +61,6 @@ public:
     int64_t cycle_interval_us;
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif

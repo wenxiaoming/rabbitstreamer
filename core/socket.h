@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <st.h>
 
+namespace rs {
 namespace core {
 
 class RsSocket
@@ -36,7 +37,7 @@ private:
     int64_t send_bytes;
     st_netfd_t stfd;
 public:
-    RsSocket(st_netfd_t client_stfd);
+    explicit RsSocket(st_netfd_t client_stfd);
     virtual ~RsSocket();
 public:
     virtual bool is_never_timeout(int64_t timeout_us);
@@ -65,6 +66,6 @@ extern int rs_st_init();
 // close the netfd, and close the underlayer fd.
 extern void rs_close_stfd(st_netfd_t& stfd);
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif /* CORE_RSSOCKET_H_ */

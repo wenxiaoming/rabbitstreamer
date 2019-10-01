@@ -24,6 +24,7 @@
 #ifndef APP_RS_SERVER_BASE_H
 #define APP_RS_SERVER_BASE_H
 
+namespace rs {
 namespace app {
 namespace common {
 
@@ -35,7 +36,7 @@ enum ServerType
 
 class RsBaseServer {
 	public:
-		RsBaseServer(ServerType type);
+		explicit RsBaseServer(ServerType type);
 		virtual ~RsBaseServer();
 
 	public:
@@ -45,7 +46,7 @@ class RsBaseServer {
 		ServerType servertype;
 };
 
-} /* namespace common */
-} /* namespace app */
+} } } // namespace rabbitstreamer::app::common
+
 
 #endif /* APP_RS_SERVER_BASE_H */

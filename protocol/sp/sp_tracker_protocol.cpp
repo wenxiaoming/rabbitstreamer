@@ -35,6 +35,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdio.h>
 #include <st.h>
 
+namespace rs {
 namespace protocol {
 namespace sp {
 
@@ -51,7 +52,7 @@ namespace sp {
 #define TRACKER_GET_SP_LIST_TIMER_ID 1
 
 RsSpTrackerProtocol::RsSpTrackerProtocol(string ip, int port)
-                    : RsThread("trackerprotocol")
+    : RsThread("trackerprotocol")
 {
     ip_address = ip;
     ip_port = port;
@@ -64,14 +65,12 @@ RsSpTrackerProtocol::RsSpTrackerProtocol(string ip, int port)
     cycle_interval_us = 120*1000;//sleep 120ms
 }
 
-RsSpTrackerProtocol::~RsSpTrackerProtocol()
-{
+RsSpTrackerProtocol::~RsSpTrackerProtocol() {
     if(io)
         delete io;
 }
 
-int RsSpTrackerProtocol::start_connect()
-{
+int RsSpTrackerProtocol::start_connect() {
     int ret = ERROR_SUCCESS;
     // open socket.
     int64_t timeout = TRACKER_UDP_CONNECT_TIMEOUT_US;
@@ -83,8 +82,7 @@ int RsSpTrackerProtocol::start_connect()
 
     ret = socket_connect(is_tcp, ip_address, ip_port, TRACKER_UDP_CONNECT_TIMEOUT_US, &tracker_udp_fd);
 
-    if(ERROR_SUCCESS == ret)
-    {
+    if(ERROR_SUCCESS == ret) {
         io = new RsSocket(tracker_udp_fd);
         start_thread();
     }
@@ -92,36 +90,31 @@ int RsSpTrackerProtocol::start_connect()
     return ret;
 }
 
-int RsSpTrackerProtocol::on_end_loop()
-{
+int RsSpTrackerProtocol::on_end_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsSpTrackerProtocol::on_thread_stop()
-{
+int RsSpTrackerProtocol::on_thread_stop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsSpTrackerProtocol::on_thread_start()
-{
+int RsSpTrackerProtocol::on_thread_start() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsSpTrackerProtocol::on_before_loop()
-{
+int RsSpTrackerProtocol::on_before_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsSpTrackerProtocol::send_register()
-{
+int RsSpTrackerProtocol::send_register() {
     printf("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsRegister register_msg;
@@ -137,8 +130,7 @@ int RsSpTrackerProtocol::send_register()
     return ret;
 }
 
-int RsSpTrackerProtocol::send_res_list()
-{
+int RsSpTrackerProtocol::send_res_list() {
     int ret = ERROR_SUCCESS;
     list<source_status> source_list;
     RsSourceManager::instance()->get_source_list(source_list);
@@ -154,8 +146,7 @@ int RsSpTrackerProtocol::send_res_list()
     res_list.res_info = new resource_info[res_list.resource_count];
     //update res list for each source
     list<source_status>::iterator  iter = source_list.begin();
-    for(; iter != source_list.end(); iter++)
-    {
+    for(; iter != source_list.end(); iter++) {
         memcpy(res_list.res_info[index].res_md5, iter->chnl_hash_.hash_, MD5_LEN);
         res_list.res_info[index].block_interval = iter->block_inter_;
         index++;
@@ -171,8 +162,7 @@ int RsSpTrackerProtocol::send_res_list()
     return ret;
 }
 
-int RsSpTrackerProtocol::send_sp_list()
-{
+int RsSpTrackerProtocol::send_sp_list() {
     //printf("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     Sp2TsSpList sp_list;
@@ -186,8 +176,7 @@ int RsSpTrackerProtocol::send_sp_list()
     return ret;
 }
 
-int RsSpTrackerProtocol::get_welcome(char* msg, int size)
-{
+int RsSpTrackerProtocol::get_welcome(char* msg, int size) {
     printf("%s\n", __FUNCTION__);
     int ret = ERROR_SUCCESS;
     Ts2SpWelcome welcome_msg;
@@ -199,15 +188,13 @@ int RsSpTrackerProtocol::get_welcome(char* msg, int size)
     return ret;
 }
 
-int RsSpTrackerProtocol::get_sp_list(char* msg, int size)
-{
+int RsSpTrackerProtocol::get_sp_list(char* msg, int size) {
     int ret = ERROR_SUCCESS;
     printf("%s\n", __FUNCTION__);
     return ret;
 }
 
-int RsSpTrackerProtocol::get_res_interval(char* msg, int size)
-{
+int RsSpTrackerProtocol::get_res_interval(char* msg, int size) {
     int ret = ERROR_SUCCESS;
     //printf("%s\n", __FUNCTION__);
     if(register_flag)
@@ -217,8 +204,7 @@ int RsSpTrackerProtocol::get_res_interval(char* msg, int size)
     return ret;
 }
 
-int RsSpTrackerProtocol::loop()
-{
+int RsSpTrackerProtocol::loop() {
     int ret = ERROR_SUCCESS;
 
     sockaddr_in from;
@@ -240,17 +226,16 @@ int RsSpTrackerProtocol::loop()
     msg_type = *recv_buf;
     recv_buf += 1;
 
-    switch(msg_type)
-    {
-        case TS2SP_WELCOME:
-            get_welcome(temp+5, msg_size-5);
-            break;
-        case TS2SP_SP_LIST:
-            get_sp_list(temp+5, msg_size-5);
-            break;
-        case TS2SP_GET_RES_LIST:
-            get_res_interval(temp+5, msg_size-5);
-            break;
+    switch(msg_type) {
+    case TS2SP_WELCOME:
+        get_welcome(temp+5, msg_size-5);
+        break;
+    case TS2SP_SP_LIST:
+        get_sp_list(temp+5, msg_size-5);
+        break;
+    case TS2SP_GET_RES_LIST:
+        get_res_interval(temp+5, msg_size-5);
+        break;
     }
 
     if (UDP_PACKET_RECV_CYCLE_INTERVAL_MS > 0) {
@@ -259,24 +244,23 @@ int RsSpTrackerProtocol::loop()
     return ret;
 }
 
-int RsSpTrackerProtocol::handle_timeout(int64_t timerid)
-{
+int RsSpTrackerProtocol::handle_timeout(int64_t timerid) {
     int ret = ERROR_SUCCESS;
 
     if(!register_flag)//send register info if not register
         return send_register();
 
-    switch(timerid)
-    {
-        case TRACKER_TIMER_ID:
-            send_res_list();
-            break;
-        case TRACKER_GET_SP_LIST_TIMER_ID:
-            send_sp_list();
-            break;
+    switch(timerid) {
+    case TRACKER_TIMER_ID:
+        send_res_list();
+        break;
+    case TRACKER_GET_SP_LIST_TIMER_ID:
+        send_sp_list();
+        break;
     }
     return ret;
 }
 
-} /* namespace protocol */
-} /* namespace sp  */
+}
+}
+}// namespace rs::protocol::sp

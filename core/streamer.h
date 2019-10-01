@@ -28,6 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdint.h>
 #include <assert.h>
 
+namespace rs {
 namespace core {
 
 class RsStreamer {
@@ -36,28 +37,24 @@ public:
     virtual ~RsStreamer();
     void initialize(char* buf, int nb);
 private:
-    template <class T> void get_as_type(T& x)
-    {
+    template <class T> void get_as_type(T& x) {
         int typesize = sizeof(T);
         assert((curr+typesize)<=(base+size));
         memcpy((char*)&x, curr, typesize);
         curr += typesize;
     }
-    template <class T> void set_as_type(T& x)
-    {
+    template <class T> void set_as_type(T& x) {
         int typesize = sizeof(T);
         assert((curr+typesize)<=(base+size));
         memcpy(curr, (char*)&x, typesize);
         curr += typesize;
     }
 public:
-    char* get_buffer()
-    {
+    char* get_buffer() {
         return base;
     }
 
-    uint32_t get_size()
-    {
+    uint32_t get_size() {
         return size;
     }
 
@@ -82,6 +79,6 @@ private:
     int size;
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif /* CORE_STREAMER_H_ */

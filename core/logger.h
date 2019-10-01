@@ -25,10 +25,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "error_code.h"
 
+namespace rs {
 namespace core {
 
-class RsLogBase
-{
+class RsLogBase {
 public:
 	enum LogLevel
 	{
@@ -49,8 +49,7 @@ public:
 };
 
 // the context for multiple clients.
-class RsContextBase
-{
+class RsContextBase {
 public:
     RsContextBase();
     virtual ~RsContextBase();
@@ -95,6 +94,6 @@ RsContextBase* rs_context();
 
 
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif

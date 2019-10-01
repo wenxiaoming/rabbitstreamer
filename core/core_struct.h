@@ -32,35 +32,30 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace rs {
 namespace core {
 
-class NetAddress
-{
+class NetAddress {
 public:
-    NetAddress()
-    {
+    NetAddress() {
         memset(this, 0, sizeof(NetAddress));
         sin_family = AF_INET;
     }
-    NetAddress& operator =(const NetAddress& addr)
-    {
+    NetAddress& operator =(const NetAddress& addr) {
         memcpy(this, &addr, sizeof(NetAddress));
         return *this;
     }
 
-    bool operator == (const NetAddress& addr) const
-    {
+    bool operator == (const NetAddress& addr) const {
         return ((this->sin_addr.s_addr == addr.sin_addr.s_addr) &&
                 (this->sin_port == addr.sin_port));
     }
 
-    bool operator != (const NetAddress& addr) const
-    {
+    bool operator != (const NetAddress& addr) const {
         return !(*this == addr);
     }
 	
-	bool IsNatIP()
-	{
+	bool IsNatIP() {
 		unsigned long wan_ip;
 		unsigned char temp;
 		//
@@ -201,6 +196,6 @@ public:
 
 #define UUID_LENGTH 16
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif

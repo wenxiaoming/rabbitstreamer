@@ -36,10 +36,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdio.h>
 #include <st.h>
 
-namespace protocol
-{
-namespace tracker
-{
+namespace rs {
+namespace protocol {
+namespace tracker {
 
 #define TRACKER_UDP_CONNECT_TIMEOUT_US (int64_t)(1 * 1000 * 1000LL)
 
@@ -67,8 +66,7 @@ RsSpTracker::RsSpTracker()
     cycle_interval_us = 120 * 1000; //sleep 120ms
 }
 
-RsSpTracker::~RsSpTracker()
-{
+RsSpTracker::~RsSpTracker() {
     // TODO Auto-generated destructor stub
     if (io)
         delete io;
@@ -77,36 +75,31 @@ RsSpTracker::~RsSpTracker()
         delete[] recv_buf;
 }
 
-int RsSpTracker::on_end_loop()
-{
+int RsSpTracker::on_end_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsSpTracker::on_thread_stop()
-{
+int RsSpTracker::on_thread_stop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsSpTracker::on_thread_start()
-{
+int RsSpTracker::on_thread_start() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsSpTracker::on_before_loop()
-{
+int RsSpTracker::on_before_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-void RsSpTracker::generate_uuid(map_str &digits)
-{
+void RsSpTracker::generate_uuid(map_str &digits) {
     int r1 = rand();
     int r2 = rand();
     int r3 = rand();
@@ -115,8 +108,7 @@ void RsSpTracker::generate_uuid(map_str &digits)
     sprintf(digits.str_, "%04x%04x%04x%04x", r1, r2, r3, r4);
 }
 
-int RsSpTracker::get_register(char *msg, int size)
-{
+int RsSpTracker::get_register(char *msg, int size) {
     printf("%s\n", __PRETTY_FUNCTION__);
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
@@ -151,8 +143,7 @@ int RsSpTracker::get_register(char *msg, int size)
     return send_welcome(uuid);
 }
 
-int RsSpTracker::get_res_list(char *msg, int size)
-{
+int RsSpTracker::get_res_list(char *msg, int size) {
     printf("%s\n", __PRETTY_FUNCTION__);
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
@@ -168,8 +159,7 @@ int RsSpTracker::get_res_list(char *msg, int size)
     ChannelNode pNode;
     StreamMgr *mgr = StreamMgr::instance();
 
-    if (mgr->get_channel(uuid, &pNode) == -1)
-    {
+    if (mgr->get_channel(uuid, &pNode) == -1) {
         printf("no resource UUID(16 bytes) channelNode| on_SP2TS_STATUS\n");
         send_errormsg();
         return 0;
@@ -181,8 +171,7 @@ int RsSpTracker::get_res_list(char *msg, int size)
     pNode.new_pHash();
 
     //resource MD5(MD5_LEN)
-    for (int i = 0; i < pNode.resourceCount; i++)
-    {
+    for (int i = 0; i < pNode.resourceCount; i++) {
         memcpy(pNode.pHash[i].hash_, res_list_msg.res_info[i].res_md5, MD5_LEN);
         pNode.pHash[i].hash_[MD5_LEN] = 0;
         pNode.pHash[i].blockInterval = res_list_msg.res_info[i].block_interval;
@@ -192,8 +181,7 @@ int RsSpTracker::get_res_list(char *msg, int size)
     mgr->insert_channel(uuid, &pNode);
 }
 
-int RsSpTracker::get_sp_list(char *msg, int size)
-{
+int RsSpTracker::get_sp_list(char *msg, int size) {
     printf("%s\n", __PRETTY_FUNCTION__);
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
@@ -209,8 +197,7 @@ int RsSpTracker::get_sp_list(char *msg, int size)
     send_sp_list(uuid);
 }
 
-int RsSpTracker::get_status(char *msg, int size)
-{
+int RsSpTracker::get_status(char *msg, int size) {
     printf("%s\n", __PRETTY_FUNCTION__);
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
@@ -227,8 +214,7 @@ int RsSpTracker::get_status(char *msg, int size)
     ChannelNode pNode;
     StreamMgr *mgr = StreamMgr::instance();
 
-    if (mgr->get_channel(uuid, &pNode) == -1)
-    {
+    if (mgr->get_channel(uuid, &pNode) == -1) {
         printf("no resource UUID(16 bytes) channelNode| on_SP2TS_STATUS\n");
         send_errormsg();
         return 0;
@@ -245,8 +231,7 @@ int RsSpTracker::get_status(char *msg, int size)
     return ret;
 }
 
-int RsSpTracker::get_logout(char *msg, int size)
-{
+int RsSpTracker::get_logout(char *msg, int size) {
     printf("%s\n", __PRETTY_FUNCTION__);
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
@@ -256,14 +241,12 @@ int RsSpTracker::get_logout(char *msg, int size)
     logout_msg.parse(&streamer);
 }
 
-int RsSpTracker::send_errormsg()
-{
+int RsSpTracker::send_errormsg() {
     int ret = ERROR_SUCCESS;
     return ret;
 }
 
-int RsSpTracker::send_sp_list(map_str uuid)
-{
+int RsSpTracker::send_sp_list(map_str uuid) {
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
 
@@ -274,8 +257,7 @@ int RsSpTracker::send_sp_list(map_str uuid)
 
     mgr->get_cp_address(spaddr, count, uuid);
 
-    if (count <= 0)
-    {
+    if (count <= 0) {
         if (NULL != spaddr)
             delete[] spaddr;
         return 0;
@@ -297,14 +279,12 @@ int RsSpTracker::send_sp_list(map_str uuid)
     return ret;
 }
 
-int RsSpTracker::loop()
-{
+int RsSpTracker::loop() {
     int ret = ERROR_SUCCESS;
     return ret;
 }
 
-int RsSpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *buf, int nb_buf)
-{
+int RsSpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *buf, int nb_buf) {
     int ret = ERROR_SUCCESS;
 
     if (buf == NULL || nb_buf == 0)
@@ -325,8 +305,7 @@ int RsSpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *bu
     buf += 1;
 
     RSLOGE("%s type:%d size:%d\n", __PRETTY_FUNCTION__, msg_type, msg_size);
-    switch (msg_type)
-    {
+    switch (msg_type) {
     case SP2TS_REGISTER:
         get_register(temp + 5, msg_size - 5);
         break;
@@ -343,19 +322,16 @@ int RsSpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *bu
         break;
     }
 
-    if (UDP_PACKET_RECV_CYCLE_INTERVAL_MS > 0)
-    {
+    if (UDP_PACKET_RECV_CYCLE_INTERVAL_MS > 0) {
         st_usleep(UDP_PACKET_RECV_CYCLE_INTERVAL_MS * 1000);
     }
     return ret;
 }
 
-int RsSpTracker::handle_timeout(int64_t timerid)
-{
+int RsSpTracker::handle_timeout(int64_t timerid) {
     int ret = ERROR_SUCCESS;
 
-    switch (timerid)
-    {
+    switch (timerid) {
     case TRACKER_TIMER_ID:
         //send_res_list();
         break;
@@ -366,8 +342,7 @@ int RsSpTracker::handle_timeout(int64_t timerid)
     return ret;
 }
 
-int RsSpTracker::send_buffer(char *buf, int size)
-{
+int RsSpTracker::send_buffer(char *buf, int size) {
     int ret = ERROR_SUCCESS;
     ssize_t nsize = 0;
     if ((buf != NULL) && (size != 0))
@@ -378,8 +353,7 @@ int RsSpTracker::send_buffer(char *buf, int size)
     return ret;
 }
 
-int RsSpTracker::send_welcome(map_str uuid)
-{
+int RsSpTracker::send_welcome(map_str uuid) {
     printf("%s\n", __PRETTY_FUNCTION__);
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     int ret = ERROR_SUCCESS;
@@ -393,9 +367,8 @@ int RsSpTracker::send_welcome(map_str uuid)
     send_buffer(payload, payload_nb);
 }
 
-int RsSpTracker::send_res_interval()
-{
+int RsSpTracker::send_res_interval() {
 }
 
-} // namespace tracker
-} // namespace protocol
+
+} } }// namespace rs::protocol::tracker

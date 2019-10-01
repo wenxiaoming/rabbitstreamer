@@ -33,15 +33,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string.h>
 #include <stdint.h>
 
-using namespace core;
+using namespace rs::core;
 
+namespace rs {
 namespace protocol {
 namespace sp {
 
-class RsNpSpProtocol : public RsThread
-{
+class RsNpSpProtocol : public RsThread {
 public:
-    RsNpSpProtocol(st_netfd_t stfd);
+    explicit RsNpSpProtocol(st_netfd_t stfd);
     virtual ~RsNpSpProtocol();
 public:
     int get_push_list(char* msg, int size);
@@ -64,6 +64,5 @@ private:
     RsBitrateCalculator* calculator;
 };
 
-} /* namespace protocol */
-} /* namespace sp  */
+} } }// namespace rs::protocol::sp
 #endif /* PROTOCOL_SP_NP_PROTOCOL_H_ */

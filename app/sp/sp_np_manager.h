@@ -29,14 +29,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string>
 #include <vector>
 
-using namespace core;
-using namespace protocol::sp;
+using namespace rs::core;
+using namespace rs::protocol::sp;
 
+namespace rs {
 namespace app {
 namespace sp {
 
-class SpNpManager : public ITcpHandler
-{
+class SpNpManager : public ITcpHandler {
 
 public:
     SpNpManager(std::string ip, uint32_t port);
@@ -56,7 +56,6 @@ private:
     std::vector<RsNpSpProtocol*> np_sp_protocol_vector;
 };
 
-} /* namespace app */
-} /* namespace sp */
+} } } // namespace rabbitstreamer::app::sp
 
 #endif /* APP_SP_NP_MANAGER_H */

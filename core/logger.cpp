@@ -22,48 +22,41 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "logger.h"
 
+namespace rs {
 namespace core {
 
 RsLogBase::RsLogBase()
 {
 }
 
-RsLogBase::~RsLogBase()
-{
+RsLogBase::~RsLogBase() {
 }
 
-int RsLogBase::initialize()
-{
+int RsLogBase::initialize() {
     return ERROR_SUCCESS;
 }
 
-void RsLogBase::log(LogLevel level, const char* tag, int context_id, const char* fmt, ...)
-{
+void RsLogBase::log(LogLevel level, const char* tag, int context_id, const char* fmt, ...) {
 
 }
 
 
-RsContextBase::RsContextBase()
-{
+RsContextBase::RsContextBase() {
 }
 
-RsContextBase::~RsContextBase()
-{
+RsContextBase::~RsContextBase() {
 }
 
-int RsContextBase::generate_id()
-{
+int RsContextBase::generate_id() {
     return 0;
 }
 
-int RsContextBase::get_id()
-{
+int RsContextBase::get_id() {
     return 0;
 }
 
-int RsContextBase::set_id(int v)
-{
+int RsContextBase::set_id(int v) {
     return 0;
 }
 
-} /* namespace core */
+} // namespace rs::coree rs::core

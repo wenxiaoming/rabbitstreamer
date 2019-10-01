@@ -29,27 +29,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <time.h>
 #include "core/core_struct.h"
 
-using namespace core;
+using namespace rs::core;
 
+namespace rs {
 namespace protocol {
 
-enum BUFFER_FLAG
-{
+enum BUFFER_FLAG {
     BUFFER_WRITING,
     BUFFER_READING,
     BUFFER_AVAILABLE
 };
 
-typedef struct media_buffer
-{
+typedef struct media_buffer {
     BUFFER_FLAG flag;
     int block_id;
     int block_size;
     char* buffer;
 }media_buffer;
 
-typedef struct media_type_header
-{
+typedef struct media_type_header {
     char* media_type;
     int header_size;
 }media_type_header;
@@ -100,6 +98,6 @@ private:
     std::vector<media_buffer*> buffer_vector;
 };
 
-} /* namespace protocol */
+} } }// namespace rs::protocol
 
 #endif /* PROTOCOL_BUFFER_QUEUE_H_ */

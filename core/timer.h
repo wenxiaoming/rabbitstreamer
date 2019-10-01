@@ -28,24 +28,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using namespace std;
 
+namespace rs {
 namespace core {
 
-class ITimerHandler
-{
+class ITimerHandler {
 public:
-    ITimerHandler()
-    {
+    ITimerHandler() {
     }
-    virtual ~ITimerHandler()
-    {
+    virtual ~ITimerHandler() {
     }
 
 public:
     virtual int handle_timeout(int64_t timerid) = 0;
 };
 
-typedef struct timer_item
-{
+typedef struct timer_item {
     int64_t timeout;
     int64_t timerid;
     int64_t last_signal_time;
@@ -59,8 +56,7 @@ typedef struct timer_item
     }
 }timer_item;
 
-class RsTimer : public RsThread
-{
+class RsTimer : public RsThread {
 private:
     static RsTimer* p;
 public:
@@ -88,6 +84,6 @@ private:
     vector<timer_item> timer_vector;
 };
 
-} /* namespace core */
+} // namespace rs::core
 
 #endif /* CORE_TIMER_H_ */

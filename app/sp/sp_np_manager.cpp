@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "sp_np_manager.h"
 
+namespace rabbitstreamer {
 namespace app {
 namespace sp {
 
@@ -33,26 +34,21 @@ SpNpManager::SpNpManager(string ip, uint32_t port)
     tcp_listener = NULL;
 }
 
-SpNpManager::~SpNpManager()
-{
+SpNpManager::~SpNpManager() {
 
 }
 
-int SpNpManager::start_listener()
-{
+int SpNpManager::start_listener() {
     tcp_listener = new RsTcpListener(ip_addr, listen_port, this);
     tcp_listener->start_listen();
     return 0;
 }
 
-int SpNpManager::handle_tcp_connect(st_netfd_t stfd)
-{
+int SpNpManager::handle_tcp_connect(st_netfd_t stfd) {
     RsNpSpProtocol* np_sp_protocol = new RsNpSpProtocol(stfd);
     np_sp_protocol->start_thread();
     np_sp_protocol_vector.push_back(np_sp_protocol);
     return 0;
 }
 
-} /* namespace app */
-} /* namespace sp */
-
+} } } // namespace rabbitstreamer::app::sp

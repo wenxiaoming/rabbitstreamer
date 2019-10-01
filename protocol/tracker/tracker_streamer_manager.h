@@ -30,15 +30,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/struct_define.h"
 
 using namespace std;
-using namespace core;
+using namespace rs::core;
 
-namespace protocol
-{
-namespace tracker
-{
+namespace rs {
+namespace protocol {
+namespace tracker {
 
-class StreamMgr
-{
+class StreamMgr {
 private:
     StreamMgr();
     static StreamMgr *p;
@@ -91,7 +89,7 @@ private:
     };
 };
 
-} // namespace tracker
-} // namespace protocol
+
+} } }// namespace rs::protocol::tracker
 
 #endif

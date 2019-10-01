@@ -27,14 +27,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/tcp_listener.h"
 #include "protocol/sp/sp_cs_protocol.h"
 
-using namespace core;
-using namespace protocol::sp;
+using namespace rs::core;
+using namespace rs::protocol::sp;
 
+namespace rs {
 namespace app {
 namespace sp {
 
-class SpCsManager : public ITcpHandler
-{
+class SpCsManager : public ITcpHandler {
 public:
     SpCsManager(string ip, int port);
     ~SpCsManager();
@@ -53,7 +53,6 @@ private:
     RsCsSpProtocol* cs_sp_protocol;
 };
 
-} /* namespace app */
-} /* namespace sp */
+} } } // namespace rabbitstreamer::app::sp
 
 #endif /* APP_SP_CS_MANAGER_H */
