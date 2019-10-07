@@ -54,4 +54,4 @@ void RsBitrateCalculator::update_buffersize(uint32_t size) {
     }
 }
 
-} // namespace rs::core
+} }  // namespace rs::core

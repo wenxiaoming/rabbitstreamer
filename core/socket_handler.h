@@ -51,5 +51,6 @@ public:
     virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf) = 0;
 };
 
-} // namespace rs::core
+} }  // namespace rs::core
+
 #endif /* CORE_RS_SOCKET_HANDLER_H_ */

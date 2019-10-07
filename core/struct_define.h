@@ -193,6 +193,6 @@ struct  NPNode {
 	 
 };
 
-} // namespace rs::core
+} } // namespace rs::core
 
 #endif

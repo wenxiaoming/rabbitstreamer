@@ -65,4 +65,5 @@ private:
 };
 
 } } }// namespace rs::protocol::sp
+
 #endif /* PROTOCOL_SP_NP_PROTOCOL_H_ */

@@ -97,4 +97,4 @@ void RsStreamer::write_nbytes(char* buf, int nb) {
     curr += nb;
 }
 
-} // namespace rs::core
+} }  // namespace rs::core

@@ -55,6 +55,6 @@ namespace core {
 #define ERROR_SOURCE_MGR_NOT_FOUND              2000
 #define ERROR_SOURCE_MGR_FAILT_TO_CREATE_SOURCE 2001
 
-} // namespace rs::core
+} }  // namespace rs::core
 
 #endif

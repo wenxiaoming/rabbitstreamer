@@ -135,4 +135,4 @@ void RsThread::dispose() {
 
 }
 
-} // namespace rs::core
+} } // namespace rs::core

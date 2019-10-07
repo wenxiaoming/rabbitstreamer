@@ -98,6 +98,6 @@ private:
     std::vector<media_buffer*> buffer_vector;
 };
 
-} } }// namespace rs::protocol
+} } // namespace rs::protocol
 
 #endif /* PROTOCOL_BUFFER_QUEUE_H_ */

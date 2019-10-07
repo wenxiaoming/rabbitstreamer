@@ -94,6 +94,6 @@ RsContextBase* rs_context();
 
 
 
-} // namespace rs::core
+} }  // namespace rs::core
 
 #endif

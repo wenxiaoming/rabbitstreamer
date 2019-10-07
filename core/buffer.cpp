@@ -139,4 +139,4 @@ int RsBuffer::fill_buffer(RsSocket* io, int size) {
     return ret;
 }
 
-} // namespace rs::coree rs::core
+} }  // namespace rs::coree rs::core

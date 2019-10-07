@@ -59,4 +59,4 @@ int RsContextBase::set_id(int v) {
     return 0;
 }
 
-} // namespace rs::coree rs::core
+} }  // namespace rs::core

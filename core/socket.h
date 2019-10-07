@@ -66,6 +66,6 @@ extern int rs_st_init();
 // close the netfd, and close the underlayer fd.
 extern void rs_close_stfd(st_netfd_t& stfd);
 
-} // namespace rs::core
+} }  // namespace rs::core
 
 #endif /* CORE_RSSOCKET_H_ */

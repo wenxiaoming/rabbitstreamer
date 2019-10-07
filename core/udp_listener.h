@@ -62,6 +62,6 @@ private:
     IUdpHandler* udp_handler;
 };
 
-} // namespace rs::core
+} } // namespace rs::core
 
 #endif /* CORE_UDP_LISTENER_H_ */

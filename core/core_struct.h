@@ -196,6 +196,6 @@ public:
 
 #define UUID_LENGTH 16
 
-} // namespace rs::core
+} } // namespace rs::core
 
 #endif

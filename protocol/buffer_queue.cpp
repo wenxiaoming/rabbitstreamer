@@ -120,6 +120,4 @@ void RsBufferQueue::get_header(char*& header, int& size) {
     size = media_header.header_size;
 }
 
-}
-}
-}// namespace rs::protocol
+} } // namespace rs::protocol

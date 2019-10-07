@@ -61,6 +61,6 @@ public:
     int64_t cycle_interval_us;
 };
 
-} // namespace rs::core
+} } // namespace rs::core
 
 #endif

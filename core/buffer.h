@@ -65,6 +65,6 @@ private:
     int buffer_size;//the total size of the buffer
 };
 
-} // namespace rs::core
+} }  // namespace rs::core
 
 #endif /* CORE_BUFFER_H_ */

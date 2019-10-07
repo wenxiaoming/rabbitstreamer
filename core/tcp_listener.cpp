@@ -137,4 +137,4 @@ int RsTcpListener::on_thread_stop() {
     return ret;
 }
 
-} // namespace rs::core
+} } // namespace rs::core

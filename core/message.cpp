@@ -837,4 +837,4 @@ int Ts2NpMsg::reserve_pack_size() {
     return total_size;
 }
 
-} // namespace rs::core
+} }  // namespace rs::core

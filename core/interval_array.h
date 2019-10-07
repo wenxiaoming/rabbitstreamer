@@ -326,6 +326,6 @@ private:
 	uint16_t m_validsize;
 };
 
-} // namespace rs::core
+} }  // namespace rs::core
 
 #endif

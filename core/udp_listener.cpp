@@ -131,4 +131,4 @@ int RsUdpListener::on_thread_stop() {
     return ret;
 }
 
-} // namespace rs::coree rs::core
+} } // namespace rs::coree rs::core

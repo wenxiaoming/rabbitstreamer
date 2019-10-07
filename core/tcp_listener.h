@@ -57,6 +57,6 @@ private:
     ITcpHandler* tcp_handler;
 };
 
-} // namespace rs::core
+} } // namespace rs::core
 
 #endif

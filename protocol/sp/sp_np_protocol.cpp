@@ -253,6 +253,4 @@ int RsNpSpProtocol::on_thread_stop() {
     return ret;
 }
 
-}
-}
-}// namespace rs::protocol::sp
+} } } // namespace rs::protocol::sp

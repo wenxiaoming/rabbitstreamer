@@ -74,6 +74,6 @@ private:
     RsBitrateCalculator* calculator;
 };
 
-} } }// namespace rs::protocol::sp
+} } } // namespace rs::protocol::sp
 
 #endif /* PROTOCOL_SP_CS_PROTOCOL_H_ */

@@ -187,7 +187,5 @@ int RsSourceManager::get_header (const MD5_Hash_Str& chnl_hash, char*& header, i
     return ret;
 }
 
-}
-}
-}// namespace rs::protocol::sp
+} } } // namespace rs::protocol::sp
 

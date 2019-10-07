@@ -28,7 +28,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/core_struct.h"
 #include "protocol/buffer_queue.h"
 
-using namespace std;
+//using namespace std;
 
 using namespace rs::core;
 
@@ -102,7 +102,7 @@ public:
 private:
     RsBufferQueue* get_buffer_queue(MD5_Hash_Str hash);
 private:
-    map<MD5_Hash_Str, RsBufferQueue*> source_hashmap;
+    std::map<MD5_Hash_Str, RsBufferQueue*> source_hashmap;
     string tracker_address;
 };
 

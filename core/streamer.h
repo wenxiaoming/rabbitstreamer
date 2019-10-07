@@ -79,6 +79,6 @@ private:
     int size;
 };
 
-} // namespace rs::core
+} }  // namespace rs::core
 
 #endif /* CORE_STREAMER_H_ */

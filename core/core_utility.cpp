@@ -76,4 +76,4 @@ int64_t get_system_startup_time_ms() {
     return _srs_system_time_startup_time / 1000;
 }
 
-} // namespace rs::core
+} }  // namespace rs::core

@@ -43,6 +43,6 @@ private:
     uint32_t last_recv_msec;
 };
 
-} // namespace rs::coree rs::core
+} }  // namespace rs::core
 
 #endif /* CORE_BITRATE_CALCULATOR_H_ */

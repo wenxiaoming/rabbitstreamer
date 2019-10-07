@@ -84,6 +84,6 @@ private:
     vector<timer_item> timer_vector;
 };
 
-} // namespace rs::core
+} } // namespace rs::core
 
 #endif /* CORE_TIMER_H_ */

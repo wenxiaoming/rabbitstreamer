@@ -151,6 +151,6 @@ enum P2PMESSAGE
     SP2SP_MSG           = 0x53,
 };
 
-} // namespace rs::core
+} }  // namespace rs::core
 
 #endif

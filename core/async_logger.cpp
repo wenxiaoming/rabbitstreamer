@@ -291,4 +291,4 @@ RsContextBase* rs_context() {
     return sRscontext;
 }
 
-} // namespace rs::core
+} }  // namespace rs::core

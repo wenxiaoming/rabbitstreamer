@@ -215,4 +215,4 @@ void rs_close_stfd(st_netfd_t& stfd) {
     }
 }
 
-} // namespace rs::core
+} }  // namespace rs::core

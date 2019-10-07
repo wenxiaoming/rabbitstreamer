@@ -50,4 +50,4 @@ void print_backtrace(void) {
     fclose(fp);
 }
 
-} // namespace rs::core
+} }  // namespace rs::core

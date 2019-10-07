@@ -36,6 +36,6 @@ int64_t get_system_time_ms();
 int64_t get_system_startup_time_ms();
 int64_t update_system_time_ms();
 
-} // namespace rs::coree rs::core
+} }  // namespace rs::coree rs::core
 
 #endif /* CORE_CORE_UTILITY_H_ */

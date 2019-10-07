@@ -83,4 +83,4 @@ failed:
     return ret;
 }
 
-} // namespace rs::core
+} } // namespace rs::core

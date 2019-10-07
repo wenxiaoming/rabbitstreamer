@@ -387,6 +387,6 @@ public:
     char* block_data;
 };
 
-} // namespace rs::core
+} }  // namespace rs::core
 
 #endif /* CORE_RS_MESSAGE_H_ */

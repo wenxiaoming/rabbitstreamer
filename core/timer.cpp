@@ -141,4 +141,4 @@ void RsTimer::check_timeout()
     return;
 }
 
-} // namespace rs::core
+} } // namespace rs::core

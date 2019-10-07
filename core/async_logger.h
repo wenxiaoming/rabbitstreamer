@@ -49,6 +49,6 @@ private:
     bool utc;
 };
 
-} // namespace rs::core
+} } // namespace rs::core
 
 #endif /* CORE_RS_ASYNC_LOGGER_H_ */
