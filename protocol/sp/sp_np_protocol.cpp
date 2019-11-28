@@ -60,6 +60,8 @@ RsNpSpProtocol::~RsNpSpProtocol() {
     if(np_dump_file)
         fclose(np_dump_file);
 #endif
+    if (calculator)
+        delete calculator;
 }
 
 int RsNpSpProtocol::on_thread_start() {
@@ -100,7 +102,7 @@ int RsNpSpProtocol::send_media_type(char* resource_hash) {
     RsSourceManager::instance()->get_source_list(source_list);
     list<source_status>::iterator  iter = source_list.begin();
     for(; iter != source_list.end(); iter++) {
-        if(!memcmp(iter->chnl_hash_.hash_, mediatype_msg.resource_md5, MD5_LEN)) {
+        if(!memcmp(iter->chnl_hash.hash_, mediatype_msg.resource_md5, MD5_LEN)) {
             mediatype_msg.block_start_id = 0;//iter->block_inter_.start;
             mediatype_msg.block_num = -1;//iter->block_inter_.size;
             mediatype_msg.program_name = (char*)iter->chnl_name_.c_str();

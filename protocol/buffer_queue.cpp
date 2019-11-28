@@ -65,7 +65,7 @@ media_buffer* RsBufferQueue::queue_buffer() {
 
     if(buffer_full_flag) {
         min_block_id++;
-        min_block_index = (queue_index+1)%(buffer_number);//the min block's index is the next one of queue index
+        min_block_index = (queue_index+1)%(buffer_number);// the min block's index is the next one of queue index
     }
 
     //printf("RsBufferQueue::queue_buffer() min_block_id:%d \n", min_block_id);

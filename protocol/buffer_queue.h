@@ -34,23 +34,23 @@ using namespace rs::core;
 namespace rs {
 namespace protocol {
 
-enum BUFFER_FLAG {
+enum BUFFER_FLAG: uint8_t {
     BUFFER_WRITING,
     BUFFER_READING,
     BUFFER_AVAILABLE
 };
 
-typedef struct media_buffer {
+struct media_buffer {
     BUFFER_FLAG flag;
     int block_id;
     int block_size;
     char* buffer;
-}media_buffer;
+};
 
-typedef struct media_type_header {
+struct media_type_header {
     char* media_type;
     int header_size;
-}media_type_header;
+};
 
 // RsBufferQueue is similar to android's gui's BufferQueue
 // it will use queue_buffer to get one free buffer for storing buffer from capture server
@@ -60,22 +60,25 @@ class RsBufferQueue {
 public:
     RsBufferQueue(const MD5_Hash_Str& hash, const string& name, bool source);
     virtual ~RsBufferQueue();
+
 public:
     void reserve_buffer(int size);
     media_buffer* queue_buffer();
     media_buffer* dequeue_buffer(int block_id);
     int update_buffer_attr(int block_id, BUFFER_FLAG flag);
+
 public:
     int get_buffer_interval(int& start, int& end);
-    MD5_Hash_Str get_source_hash(){return source_hash;}
-    string get_source_name(){return source_name;}
-    time_t get_create_time(){return create_time;}
-    bool is_source_flag(){return is_source;}
+    MD5_Hash_Str get_source_hash() { return source_hash; }
+    string get_source_name() { return source_name; }
+    time_t get_create_time() { return create_time; }
+    bool is_source_flag() { return is_source; }
+
 public:
     void set_header(const char* header, int size);
     void get_header(char*& header, int& size);
 private:
-    //disable copy and assign
+    // disable copy and assign
     RsBufferQueue (const RsBufferQueue &);
     RsBufferQueue &operator= (const RsBufferQueue &);
 private:

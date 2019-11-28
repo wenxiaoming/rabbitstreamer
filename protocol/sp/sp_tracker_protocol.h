@@ -49,18 +49,18 @@ public:
 public:
 	int start_connect();
 public:
-    //implement rs_thread's virtual function
+    // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
 public:
-    //implement ITimerHandler
+    // implement ITimerHandler
     virtual int handle_timeout(int64_t timerid);
 
 private:
-    char* recv_buf;
+    char* recv_buf = nullptr;
     int buf_size;
     bool register_flag;
     int register_retry;
@@ -70,7 +70,7 @@ private:
     string ip_address;
     int ip_port;
     st_netfd_t tracker_udp_fd;
-    RsSocket* io;
+    RsSocket* io = nullptr;
 protected:
     int get_welcome(char* msg, int size);
     int get_sp_list(char* msg, int size);
@@ -84,10 +84,8 @@ protected:
 
     // uuid of super peer on tracker
     char sp_id[UUID_LENGTH];
-
-    // recved welcome
-    bool login_done_;
-
+    // received welcome
+    bool login_done;
     // sp port
     uint16_t sp_port;
 };

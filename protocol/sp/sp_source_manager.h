@@ -28,8 +28,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/core_struct.h"
 #include "protocol/buffer_queue.h"
 
-//using namespace std;
-
 using namespace rs::core;
 
 namespace rs {
@@ -38,7 +36,7 @@ namespace sp {
 
 struct source_status {
     // hash of channel
-    MD5_Hash_Str chnl_hash_;
+    MD5_Hash_Str chnl_hash;
     string program_name;
     uint32_t program_time;
     // Channel Name
@@ -49,7 +47,7 @@ struct source_status {
     BlockInterval block_inter_;
 };
 
-//manage the source from capture server, it is single instance
+// manage the source from capture server, it is single instance
 class RsSourceManager {
 private:
     RsSourceManager() { }
@@ -82,7 +80,7 @@ public:
     int get_header (const MD5_Hash_Str& chnl_hash, char*& header, int& size);
 
     int write_source_channel_list_txt();
-    //not implemented
+    // not implemented
     ////////////////////////////////////////////
     int initialize (const string& data_store_path, const string& xml_store_path, const string& tracker_addr);
 
@@ -95,7 +93,7 @@ public:
     int deactivate_channel(const MD5_Hash_Str& chnl_hash);
 
     // check if this channel exists
-    bool find_channel(const MD5_Hash_Str& chnl_hash) {return get_buffer_queue(chnl_hash) != NULL;};
+    bool find_channel(const MD5_Hash_Str& chnl_hash) { return get_buffer_queue(chnl_hash) != NULL; }
 
     int get_max_blockid(const MD5_Hash_Str& chnl_hash, int& block_id);
 

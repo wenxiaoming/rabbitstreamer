@@ -97,7 +97,7 @@ protected:
     // uuid of super peer on tracker
     char sp_id[UUID_LENGTH];
     // recved welcome
-    bool login_done_;
+    bool login_done;
 };
 
 

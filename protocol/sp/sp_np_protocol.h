@@ -48,7 +48,7 @@ public:
     int send_push_list(char* resource_hash, uint8_t count, uint32_t* array);
     int send_media_type(char* resource_hash);
 public:
-    //implement rs_thread's virtual function
+    // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
@@ -57,11 +57,11 @@ public:
 private:
     int send_one_block(char* resource_hash, uint8_t count, uint32_t id);
 private:
-    st_netfd_t st_fd;
-    RsSocket* io_socket;
-    RsBuffer* np_buffer;
-    bool media_type_flag;
-    RsBitrateCalculator* calculator;
+    st_netfd_t st_fd = nullptr;
+    RsSocket* io_socket = nullptr;
+    RsBuffer* np_buffer = nullptr;
+    bool media_type_flag = false;
+    RsBitrateCalculator* calculator = nullptr;
 };
 
 } } }// namespace rs::protocol::sp

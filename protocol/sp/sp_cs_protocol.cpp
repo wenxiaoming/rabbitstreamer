@@ -64,11 +64,13 @@ RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd)
 
 RsCsSpProtocol::~RsCsSpProtocol() {
     if(read_buffer)
-        delete[]read_buffer;
+        delete[] read_buffer;
 #ifdef DUMP_MEDIA_DATA_FROM_CS
     if(dump_file)
         fclose(dump_file);
 #endif
+    if (calculator)
+        delete calculator;
 }
 
 int RsCsSpProtocol::on_thread_start() {
@@ -147,7 +149,7 @@ int RsCsSpProtocol::get_mediatype(char* msg, int size) {
         fwrite(msg+4, 1, mediatype_size, dump_file);
 #endif
     printf("%s mediatype_size:%d \n", __FUNCTION__, mediatype_size);
-    RsSourceManager::instance()->add_header(chnl_hash_, msg+4, mediatype_size);
+    RsSourceManager::instance()->add_header(chnl_hash, msg+4, mediatype_size);
     return ret;
 }
 
@@ -177,11 +179,11 @@ int RsCsSpProtocol::get_register(char* msg, int size) {
     md5.update(reinterpret_cast<unsigned char*>(channel_name), (unsigned int)channel_size);
     md5.finalize();
     char* hash = md5.hex_digest();
-    strcpy(chnl_hash_.hash_, hash);
+    strcpy(chnl_hash.hash_, hash);
     delete [] hash;
-    chnl_hash_.hash_[MD5_LEN] = 0;
+    chnl_hash.hash_[MD5_LEN] = 0;
 
-    printf("chnl_hash_.hash:%s\n", chnl_hash_.hash_);
+    printf("chnl_hash.hash:%s\n", chnl_hash.hash_);
 
     char user_password[MD5_LEN+1];
     memcpy(user_password, msg, MD5_LEN);
@@ -209,7 +211,7 @@ int RsCsSpProtocol::get_register(char* msg, int size) {
     msg += sizeof(header_size);
 
     //add source info to source manager
-    RsSourceManager::instance()->create_source(chnl_hash_, channel_name, true);
+    RsSourceManager::instance()->create_source(chnl_hash, channel_name, true);
     free(channel_name);
 
     if(header_size==0) {
@@ -225,7 +227,7 @@ int RsCsSpProtocol::get_register(char* msg, int size) {
         fwrite(header_data, 1, header_size, dump_file);
 #endif
 
-    RsSourceManager::instance()->add_header(chnl_hash_, header_data, header_size);
+    RsSourceManager::instance()->add_header(chnl_hash, header_data, header_size);
 
     free(header_data);
 
@@ -250,8 +252,6 @@ int RsCsSpProtocol::get_block(char* msg, int size) {
     get_as_type(msg, block_size);
     msg += sizeof(block_size);
 
-
-
     //data_offset (UINT32)
     int data_offset = 0;
     get_as_type(msg, data_offset);
@@ -262,7 +262,7 @@ int RsCsSpProtocol::get_block(char* msg, int size) {
 
     //block data
     char* block_data = NULL;
-    RsSourceManager::instance()->queue_block(chnl_hash_, &block_data, block_size);
+    RsSourceManager::instance()->queue_block(chnl_hash, &block_data, block_size);
     memcpy(block_data, msg-4, block_size);
     //dump to file
 #ifdef DUMP_MEDIA_DATA_FROM_CS
@@ -282,7 +282,7 @@ int RsCsSpProtocol::get_block(char* msg, int size) {
             fwrite(block_data+4, 1, block_size-4, dump_file);
     }
 #endif
-    RsSourceManager::instance()->set_block_available(chnl_hash_, block_id);
+    RsSourceManager::instance()->set_block_available(chnl_hash, block_id);
     //free(block_data);
     calculator->update_buffersize(block_size);
     return ret;

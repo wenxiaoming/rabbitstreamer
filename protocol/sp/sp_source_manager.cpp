@@ -154,7 +154,7 @@ void RsSourceManager::get_source_list(list<source_status>& source_list) {
     for(; iter != source_hashmap.end(); iter++) {
         int start = 0;
         int end = 0;
-        state.chnl_hash_ = iter->second->get_source_hash();
+        state.chnl_hash = iter->second->get_source_hash();
         state.chnl_name_ = iter->second->get_source_name();
         state.created_time_ = iter->second->get_create_time();
         iter->second->get_buffer_interval(start, end);

@@ -68,6 +68,9 @@ RsSpTrackerProtocol::RsSpTrackerProtocol(string ip, int port)
 RsSpTrackerProtocol::~RsSpTrackerProtocol() {
     if(io)
         delete io;
+
+    if (recv_buf)
+        delete[] recv_buf;
 }
 
 int RsSpTrackerProtocol::start_connect() {
@@ -147,7 +150,7 @@ int RsSpTrackerProtocol::send_res_list() {
     //update res list for each source
     list<source_status>::iterator  iter = source_list.begin();
     for(; iter != source_list.end(); iter++) {
-        memcpy(res_list.res_info[index].res_md5, iter->chnl_hash_.hash_, MD5_LEN);
+        memcpy(res_list.res_info[index].res_md5, iter->chnl_hash.hash_, MD5_LEN);
         res_list.res_info[index].block_interval = iter->block_inter_;
         index++;
     }

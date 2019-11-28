@@ -51,7 +51,7 @@ protected:
     int send_welcome();
     int send_err_msg();
 public:
-    //implement rs_thread's virtual function
+    // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
@@ -65,13 +65,13 @@ private:
     }
 
 private:
-    MD5_Hash_Str chnl_hash_;
-    st_netfd_t st_fd;
-    RsSocket* io_socket;
-    char *read_buffer;
-    int read_size;
-    RsBuffer* cs_buffer;
-    RsBitrateCalculator* calculator;
+    MD5_Hash_Str chnl_hash;
+    st_netfd_t st_fd = nullptr;
+    RsSocket* io_socket = nullptr;
+    char *read_buffer = nullptr;
+    int read_size = 0;
+    RsBuffer* cs_buffer = nullptr;
+    RsBitrateCalculator* calculator = nullptr;
 };
 
 } } } // namespace rs::protocol::sp
