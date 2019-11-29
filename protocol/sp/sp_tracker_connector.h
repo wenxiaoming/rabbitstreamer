@@ -44,10 +44,12 @@ namespace sp {
 class RsSpTrackerProtocol : public RsThread,
                             public virtual ITimerHandler {
 public:
-	RsSpTrackerProtocol(string ip, int port);
-	virtual ~RsSpTrackerProtocol();
+    RsSpTrackerProtocol(string ip, int port);
+    virtual ~RsSpTrackerProtocol();
+
 public:
-	int start_connect();
+    int start_connect();
+
 public:
     // implement rs_thread's virtual function
     virtual int on_thread_start();
