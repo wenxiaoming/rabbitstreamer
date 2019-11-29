@@ -36,7 +36,6 @@ namespace core {
 // nginx also set to 512
 #define SERVER_LISTEN_BACKLOG 512
 
-
 RsTcpListener::RsTcpListener(string ip, int port, ITcpHandler* handler)
     : RsThread("tcplistener") 
 {

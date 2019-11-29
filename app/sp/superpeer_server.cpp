@@ -39,18 +39,18 @@ int main()
 
     rs_st_init();
 
-    //start the listener of super peer server
+    // start the listener of super peer server
     SpNpManager* np_manager = new SpNpManager("68.168.137.118", 2222);
     np_manager->start_listener();
 
-    //listen from capture server
+    // listen from capture server
     SpCsManager* cs_manager = new SpCsManager("68.168.137.118", 12345);
     cs_manager->start_listener();
 
-    //listen from normal peer or supoer peer
+    // listen from normal peer or supoer peer
     RsSourceManager::instance()->initialize("", "", "68.168.137.118:3333");
 
-    //update and check status with tracker server
+    // update and check status with tracker server
     SpTrackerManager* tracker_manager = new SpTrackerManager("68.168.137.118", 4444);
     tracker_manager->start_connect();
 

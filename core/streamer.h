@@ -43,12 +43,14 @@ private:
         memcpy((char*)&x, curr, typesize);
         curr += typesize;
     }
+
     template <class T> void set_as_type(T& x) {
         int typesize = sizeof(T);
         assert((curr+typesize)<=(base+size));
         memcpy(curr, (char*)&x, typesize);
         curr += typesize;
     }
+
 public:
     char* get_buffer() {
         return base;

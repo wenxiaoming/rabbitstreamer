@@ -47,6 +47,7 @@ typedef struct timer_item {
     int64_t timerid;
     int64_t last_signal_time;
     ITimerHandler* callback;
+
     bool operator==(const timer_item& rhs)
     {
         if((callback==rhs.callback)&&(timeout==rhs.timeout)
@@ -63,17 +64,17 @@ public:
     RsTimer();
     virtual ~RsTimer();
 public:
-    //for single instance
+    // for single instance
     static RsTimer* instance();
 public:
-    //implement rs_thread's virtual function
+    // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
 public:
-    //for others to get timer service
+    // for others to get timer service
     void add_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback);
     void delete_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback);
 private:

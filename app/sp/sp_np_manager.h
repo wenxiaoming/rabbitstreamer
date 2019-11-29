@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define APP_SP_NP_MANAGER_H_
 
 #include "core/tcp_listener.h"
-#include "protocol/sp/sp_np_protocol.h"
+#include "protocol/sp/sp_np_connector.h"
 #include <string>
 #include <vector>
 
@@ -37,7 +37,6 @@ namespace app {
 namespace sp {
 
 class SpNpManager : public ITcpHandler {
-
 public:
     SpNpManager(std::string ip, uint32_t port);
     ~SpNpManager();

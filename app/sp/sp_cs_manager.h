@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define APP_SP_CS_MANAGER_H_
 
 #include "core/tcp_listener.h"
-#include "protocol/sp/sp_cs_protocol.h"
+#include "protocol/sp/sp_cs_connector.h"
 
 using namespace rs::core;
 using namespace rs::protocol::sp;
@@ -43,7 +43,7 @@ public:
     int start_listener();
 
 public:
-    //implement interface ITcpHandler
+    // implement interface ITcpHandler
     virtual int handle_tcp_connect(st_netfd_t stfd);
 
 private:

@@ -82,7 +82,7 @@ int RsUdpListener::start_listen() {
         return ret;
     }
 
-    //call baseclass RsThread's method start_thread() to start the thread.
+    // call baseclass RsThread's method start_thread() to start the thread.
     start_thread();
 
     return ret;

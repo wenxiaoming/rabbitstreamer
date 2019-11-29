@@ -30,20 +30,20 @@ namespace common {
 
 enum ServerType
 {
-	SUPER_PEER,
-	TRACKER,
+   SUPER_PEER,
+   TRACKER,
 };
 
 class RsBaseServer {
-	public:
-		explicit RsBaseServer(ServerType type);
-		virtual ~RsBaseServer();
+public:
+	explicit RsBaseServer(ServerType type);
+	virtual ~RsBaseServer();
 
-	public:
-		void loop();
+public:
+	void loop();
 
-	private:
-		ServerType servertype;
+private:
+	ServerType servertype;
 };
 
 } } } // namespace rabbitstreamer::app::common

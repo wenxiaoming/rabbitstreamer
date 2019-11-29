@@ -32,7 +32,6 @@ namespace core {
 class IntervalArray 
 {
 public:
-
 	explicit IntervalArray() : m_array(NULL), m_totalsize(0), m_validsize(0) {
 	};
 

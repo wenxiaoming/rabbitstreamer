@@ -23,18 +23,7 @@
 #include <time.h>
 #include "../core/core_struct.h"
 #include "../core/interval_array.h"
-//#include "../protocol/tracker/tracker_sp_protocol.h"
 
-//using namespace protocol;
-
-//using namespace tracker;
-namespace protocol {
-	namespace tracker {
-		class RsSpTracker;
-	}
-}
-
-//class RsSpTracker;
 namespace rs {
 namespace core {
 
@@ -110,7 +99,6 @@ struct  ChannelNode {
 	bool exceedMaxConn;
 	float bandwidth;
 	NetAddress spAddress;
-	//RsSpTracker* spService;
 	void* spService;
 	
 	MD5_Hash_Str* pHash;

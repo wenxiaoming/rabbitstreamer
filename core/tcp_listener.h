@@ -41,7 +41,7 @@ public:
 public:
     int start_listen();
 public:
-    //implement rs_thread's virtual function
+    // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();

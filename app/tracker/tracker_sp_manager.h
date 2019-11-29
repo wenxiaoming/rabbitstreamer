@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define APP_TRACKER_SP_MANAGER_H_
 
 #include "core/udp_listener.h"
-#include "protocol/tracker/tracker_sp_protocol.h"
+#include "protocol/tracker/tracker_sp_connector.h"
 
 using namespace rs::protocol::tracker;
 
@@ -41,7 +41,7 @@ public:
     int start_listener();
 
 public:
-    //implement interface IUdpHandler
+    // implement interface IUdpHandler
 	virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf);
 
 private:

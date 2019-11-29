@@ -30,7 +30,6 @@ namespace rs {
 namespace core {
 
 class RsBuffer {
-
 public:
     RsBuffer();
     virtual ~RsBuffer();
@@ -58,11 +57,11 @@ private:
 	   |____________|___________|________|
 
     ******************************************/
-    char* curr_ptr; //the pointer for the current position of the using buffer
-    char* end_ptr; //the pointer for the end position of the using buffer
+    char* curr_ptr; // the pointer for the current position of the using buffer
+    char* end_ptr; // the pointer for the end position of the using buffer
 
-    char* buffer;//the pointer for the base position of the buffer
-    int buffer_size;//the total size of the buffer
+    char* buffer; // the pointer for the base position of the buffer
+    int buffer_size; // the total size of the buffer
 };
 
 } }  // namespace rs::core

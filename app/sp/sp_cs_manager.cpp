@@ -43,7 +43,7 @@ int SpCsManager::start_listener() {
     return 0;
 }
 
-//the cs connect sp, the connection is ok, then call this function
+// the cs connect sp, the connection is ok, then call this function
 int SpCsManager::handle_tcp_connect(st_netfd_t stfd) {
     RsCsSpProtocol* cs_sp_protocol = new RsCsSpProtocol(stfd);
     cs_sp_protocol->start_thread();
