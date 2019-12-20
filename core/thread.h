@@ -28,39 +28,46 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace rs {
 namespace core {
 
-// every thread must inherit from this class to support actual threading operation
+// every thread must inherit from this class to support actual threading
+// operation
 class RsThread {
-public:
-	explicit RsThread(const char* name);
-	virtual ~RsThread();
-public:
-	int start_thread();
-	void stop_thread();       
-	// inherited class must implement those functions
-	virtual int on_thread_start() = 0;
-	virtual int on_before_loop() = 0;
-	virtual int loop() = 0;
-	virtual int on_end_loop() = 0;
-	virtual int on_thread_stop() = 0;
-private:
+  public:
+    explicit RsThread(const char *name);
+    virtual ~RsThread();
+
+  public:
+    int start_thread();
+    void stop_thread();
+    // inherited class must implement those functions
+    virtual int on_thread_start() = 0;
+    virtual int on_before_loop() = 0;
+    virtual int loop() = 0;
+    virtual int on_end_loop() = 0;
+    virtual int on_thread_stop() = 0;
+
+  private:
     virtual void dispose();
-    static void* thread_intermediary(void* arg);
+    static void *thread_intermediary(void *arg);
     void thread_loop();
-public:
+
+  public:
     bool loop_flag;
-private:
+
+  private:
     st_thread_t tid;
     int _cid;
 
     bool can_run;
     bool really_terminated;
     bool _joinable;
-    const char* _name;
+    const char *_name;
     bool disposed;
-public:
+
+  public:
     int64_t cycle_interval_us;
 };
 
-} } // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif

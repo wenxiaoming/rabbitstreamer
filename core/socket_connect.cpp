@@ -20,22 +20,23 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#include "st.h"
-#include "socket.h"
 #include "socket_connect.h"
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <signal.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include "error_code.h"
 #include "logger.h"
+#include "socket.h"
+#include "st.h"
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 namespace rs {
 namespace core {
 
-int socket_connect(int socket_type, string server, int port, int64_t timeout, st_netfd_t* pstfd) {
+int socket_connect(int socket_type, string server, int port, int64_t timeout,
+                   st_netfd_t *pstfd) {
     int ret = ERROR_SUCCESS;
 
     *pstfd = NULL;
@@ -43,19 +44,19 @@ int socket_connect(int socket_type, string server, int port, int64_t timeout, st
     sockaddr_in addr;
 
     int sock = 0;
-    if(socket_type)
+    if (socket_type)
         sock = socket(AF_INET, SOCK_STREAM, 0);
     else
         sock = socket(AF_INET, SOCK_DGRAM, 0);
 
-    if(sock == -1){
+    if (sock == -1) {
         ret = ERROR_SOCKET_CREATE;
         RSLOGE("create socket error. ret=%d", ret);
         return ret;
     }
 
     stfd = st_netfd_open_socket(sock);
-    if(stfd == NULL){
+    if (stfd == NULL) {
         ret = ERROR_ST_OPEN_SOCKET;
         RSLOGE("st_netfd_open_socket failed. ret=%d", ret);
         return ret;
@@ -65,13 +66,16 @@ int socket_connect(int socket_type, string server, int port, int64_t timeout, st
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = inet_addr(server.c_str());
 
-    if (st_connect(stfd, (const struct sockaddr*)&addr, sizeof(sockaddr_in), timeout) == -1){
+    if (st_connect(stfd, (const struct sockaddr *)&addr, sizeof(sockaddr_in),
+                   timeout) == -1) {
         ret = ERROR_ST_CONNECT;
-        RSLOGE("connect to server error. ip=%s, port=%d, ret=%d", server.c_str(), port, ret);
+        RSLOGE("connect to server error. ip=%s, port=%d, ret=%d",
+               server.c_str(), port, ret);
         goto failed;
     }
 
-    RSLOGE("connect ok. server=%s, ip=%s, port=%d", server.c_str(), server.c_str(), port);
+    RSLOGE("connect ok. server=%s, ip=%s, port=%d", server.c_str(),
+           server.c_str(), port);
 
     *pstfd = stfd;
     return ret;
@@ -83,4 +87,5 @@ failed:
     return ret;
 }
 
-} } // namespace rs::core
+} // namespace core
+} // namespace rs

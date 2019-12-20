@@ -25,38 +25,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace rs {
 namespace core {
 
-RsLogBase::RsLogBase()
-{
-}
+RsLogBase::RsLogBase() {}
 
-RsLogBase::~RsLogBase() {
-}
+RsLogBase::~RsLogBase() {}
 
-int RsLogBase::initialize() {
-    return ERROR_SUCCESS;
-}
+int RsLogBase::initialize() { return ERROR_SUCCESS; }
 
-void RsLogBase::log(LogLevel level, const char* tag, int context_id, const char* fmt, ...) {
+void RsLogBase::log(LogLevel level, const char *tag, int context_id,
+                    const char *fmt, ...) {}
 
-}
+RsContextBase::RsContextBase() {}
 
+RsContextBase::~RsContextBase() {}
 
-RsContextBase::RsContextBase() {
-}
+int RsContextBase::generate_id() { return 0; }
 
-RsContextBase::~RsContextBase() {
-}
+int RsContextBase::get_id() { return 0; }
 
-int RsContextBase::generate_id() {
-    return 0;
-}
+int RsContextBase::set_id(int v) { return 0; }
 
-int RsContextBase::get_id() {
-    return 0;
-}
-
-int RsContextBase::set_id(int v) {
-    return 0;
-}
-
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs

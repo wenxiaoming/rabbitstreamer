@@ -22,9 +22,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #ifndef CORE_TIMER_H_
 #define CORE_TIMER_H_
-#include <vector>
-#include <stdint.h>
 #include "thread.h"
+#include <stdint.h>
+#include <vector>
 
 using namespace std;
 
@@ -32,13 +32,11 @@ namespace rs {
 namespace core {
 
 class ITimerHandler {
-public:
-    ITimerHandler() {
-    }
-    virtual ~ITimerHandler() {
-    }
+  public:
+    ITimerHandler() {}
+    virtual ~ITimerHandler() {}
 
-public:
+  public:
     virtual int handle_timeout(int64_t timerid) = 0;
 };
 
@@ -46,45 +44,52 @@ typedef struct timer_item {
     int64_t timeout;
     int64_t timerid;
     int64_t last_signal_time;
-    ITimerHandler* callback;
+    ITimerHandler *callback;
 
-    bool operator==(const timer_item& rhs)
-    {
-        if((callback==rhs.callback)&&(timeout==rhs.timeout)
-            &&(timerid==rhs.timerid))
+    bool operator==(const timer_item &rhs) {
+        if ((callback == rhs.callback) && (timeout == rhs.timeout) &&
+            (timerid == rhs.timerid))
             return true;
         return false;
     }
-}timer_item;
+} timer_item;
 
 class RsTimer : public RsThread {
-private:
-    static RsTimer* p;
-public:
+  private:
+    static RsTimer *p;
+
+  public:
     RsTimer();
     virtual ~RsTimer();
-public:
+
+  public:
     // for single instance
-    static RsTimer* instance();
-public:
+    static RsTimer *instance();
+
+  public:
     // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
-public:
+
+  public:
     // for others to get timer service
-    void add_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback);
-    void delete_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback);
-private:
+    void add_timer(int64_t timeout, int64_t timerid, ITimerHandler *callback);
+    void delete_timer(int64_t timeout, int64_t timerid,
+                      ITimerHandler *callback);
+
+  private:
     void check_timeout();
-private:
+
+  private:
     bool thread_start_flag;
     int64_t last_thread_time;
     vector<timer_item> timer_vector;
 };
 
-} } // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif /* CORE_TIMER_H_ */

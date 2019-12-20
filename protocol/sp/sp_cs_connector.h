@@ -24,11 +24,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef PROTOCOL_SP_CS_CONNECTOR_H_
 #define PROTOCOL_SP_CS_CONNECTOR_H_
 
-#include "core/socket.h"
-#include "core/thread.h"
+#include "core/bitrate_calculator.h"
 #include "core/buffer.h"
 #include "core/core_struct.h"
-#include "core/bitrate_calculator.h"
+#include "core/socket.h"
+#include "core/thread.h"
 
 using namespace rs::core;
 
@@ -37,43 +37,47 @@ namespace protocol {
 namespace sp {
 
 class RsCsSpProtocol : public RsThread {
-public:
+  public:
     explicit RsCsSpProtocol(st_netfd_t stfd);
     virtual ~RsCsSpProtocol();
 
-protected:
+  protected:
     int get_msg();
-    int get_register(char* msg, int size);
-    int get_update(char* msg, int size);
-    int get_block(char* msg, int size);
-    int get_mediatype(char* msg, int size);
+    int get_register(char *msg, int size);
+    int get_update(char *msg, int size);
+    int get_block(char *msg, int size);
+    int get_mediatype(char *msg, int size);
 
     int send_welcome();
     int send_err_msg();
-public:
+
+  public:
     // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
-private:
-    template <class T> int get_as_type(char* buf, T& x) {
+
+  private:
+    template <class T> int get_as_type(char *buf, T &x) {
         int typesize = sizeof(T);
-        memcpy((char*)&x, buf, typesize);
+        memcpy((char *)&x, buf, typesize);
         return 0;
     }
 
-private:
+  private:
     MD5_Hash_Str chnl_hash;
     st_netfd_t st_fd = nullptr;
-    RsSocket* io_socket = nullptr;
+    RsSocket *io_socket = nullptr;
     char *read_buffer = nullptr;
     int read_size = 0;
-    RsBuffer* cs_buffer = nullptr;
-    RsBitrateCalculator* calculator = nullptr;
+    RsBuffer *cs_buffer = nullptr;
+    RsBitrateCalculator *calculator = nullptr;
 };
 
-} } } // namespace rs::protocol::sp
+} // namespace sp
+} // namespace protocol
+} // namespace rs
 
 #endif /* PROTOCOL_SP_CS_PROTOCOL_H_ */

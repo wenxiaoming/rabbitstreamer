@@ -29,32 +29,28 @@ namespace rs {
 namespace core {
 
 class RsLogBase {
-public:
-	enum LogLevel
-	{
-	    Verbose,
-	    Info,
-	    Trace,
-	    Warn,
-	    Error,
-	    Disabled
-	};
-public:
+  public:
+    enum LogLevel { Verbose, Info, Trace, Warn, Error, Disabled };
+
+  public:
     RsLogBase();
     virtual ~RsLogBase();
-public:
+
+  public:
     virtual int initialize();
-public:
-    virtual void log(LogLevel level, const char* tag, int context_id, const char* fmt, ...);
+
+  public:
+    virtual void log(LogLevel level, const char *tag, int context_id,
+                     const char *fmt, ...);
 };
 
 // the context for multiple clients.
 class RsContextBase {
-public:
+  public:
     RsContextBase();
     virtual ~RsContextBase();
-public:
 
+  public:
     virtual int generate_id();
 
     virtual int get_id();
@@ -66,34 +62,58 @@ void init_log_system();
 
 void deinit_log_system();
 
-RsLogBase* rs_log();
-RsContextBase* rs_context();
+RsLogBase *rs_log();
+RsContextBase *rs_context();
 
 // donot print method
 #if 1
-    #define RSLOGV(msg, ...) rs_log()->log(RsLogBase::Verbose, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGI(msg, ...)    rs_log()->log(RsLogBase::Info, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGT(msg, ...)   rs_log()->log(RsLogBase::Trace, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGW(msg, ...)    rs_log()->log(RsLogBase::Warn, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGE(msg, ...)   rs_log()->log(RsLogBase::Error, NULL, rs_context()->get_id(), msg, ##__VA_ARGS__)
+#define RSLOGV(msg, ...)                                                       \
+    rs_log()->log(RsLogBase::Verbose, NULL, rs_context()->get_id(), msg,       \
+                  ##__VA_ARGS__)
+#define RSLOGI(msg, ...)                                                       \
+    rs_log()->log(RsLogBase::Info, NULL, rs_context()->get_id(), msg,          \
+                  ##__VA_ARGS__)
+#define RSLOGT(msg, ...)                                                       \
+    rs_log()->log(RsLogBase::Trace, NULL, rs_context()->get_id(), msg,         \
+                  ##__VA_ARGS__)
+#define RSLOGW(msg, ...)                                                       \
+    rs_log()->log(RsLogBase::Warn, NULL, rs_context()->get_id(), msg,          \
+                  ##__VA_ARGS__)
+#define RSLOGE(msg, ...)                                                       \
+    rs_log()->log(RsLogBase::Error, NULL, rs_context()->get_id(), msg,         \
+                  ##__VA_ARGS__)
 // use __FUNCTION__ to print c method
 #elif 0
-    #define RSLOGV(msg, ...) rs_log->log(Verbose, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGI(msg, ...)    rs_log->log(Info, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGT(msg, ...)   rs_log->log(Trace, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGW(msg, ...)    rs_log->log(Warn, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGE(msg, ...)   rs_log->log(Error, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
+#define RSLOGV(msg, ...)                                                       \
+    rs_log->log(Verbose, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
+#define RSLOGI(msg, ...)                                                       \
+    rs_log->log(Info, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
+#define RSLOGT(msg, ...)                                                       \
+    rs_log->log(Trace, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
+#define RSLOGW(msg, ...)                                                       \
+    rs_log->log(Warn, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
+#define RSLOGE(msg, ...)                                                       \
+    rs_log->log(Error, __FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
 // use __PRETTY_FUNCTION__ to print c++ class:method
 #else
-    #define RSLOGV(msg, ...) rs_log->log(Verbose, __PRETTY_FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGI(msg, ...)    rs_log->log(Info, __PRETTY_FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGT(msg, ...)   rs_log->log(Trace, __PRETTY_FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGW(msg, ...)    rs_log->log(Warn, __PRETTY_FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
-    #define RSLOGE(msg, ...)   rs_log->log(Error, __PRETTY_FUNCTION__, rs_context->get_id(), msg, ##__VA_ARGS__)
+#define RSLOGV(msg, ...)                                                       \
+    rs_log->log(Verbose, __PRETTY_FUNCTION__, rs_context->get_id(), msg,       \
+                ##__VA_ARGS__)
+#define RSLOGI(msg, ...)                                                       \
+    rs_log->log(Info, __PRETTY_FUNCTION__, rs_context->get_id(), msg,          \
+                ##__VA_ARGS__)
+#define RSLOGT(msg, ...)                                                       \
+    rs_log->log(Trace, __PRETTY_FUNCTION__, rs_context->get_id(), msg,         \
+                ##__VA_ARGS__)
+#define RSLOGW(msg, ...)                                                       \
+    rs_log->log(Warn, __PRETTY_FUNCTION__, rs_context->get_id(), msg,          \
+                ##__VA_ARGS__)
+#define RSLOGE(msg, ...)                                                       \
+    rs_log->log(Error, __PRETTY_FUNCTION__, rs_context->get_id(), msg,         \
+                ##__VA_ARGS__)
 #endif
 
-
-
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif

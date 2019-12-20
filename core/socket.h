@@ -28,18 +28,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace rs {
 namespace core {
 
-class RsSocket
-{
-private:
+class RsSocket {
+  private:
     int64_t recv_timeout;
     int64_t send_timeout;
     int64_t recv_bytes;
     int64_t send_bytes;
     st_netfd_t stfd;
-public:
+
+  public:
     explicit RsSocket(st_netfd_t client_stfd);
     virtual ~RsSocket();
-public:
+
+  public:
     virtual bool is_never_timeout(int64_t timeout_us);
     virtual void set_recv_timeout(int64_t timeout_us);
     virtual int64_t get_recv_timeout();
@@ -47,25 +48,27 @@ public:
     virtual int64_t get_send_timeout();
     virtual int64_t get_recv_bytes();
     virtual int64_t get_send_bytes();
-public:
+
+  public:
     /**
      * @param nread, the actual read bytes, ignore if NULL.
      */
-    virtual int read(void* buf, size_t size, ssize_t* nread);
-    virtual int read_fully(void* buf, size_t size, ssize_t* nread);
+    virtual int read(void *buf, size_t size, ssize_t *nread);
+    virtual int read_fully(void *buf, size_t size, ssize_t *nread);
     /**
      * @param nwrite, the actual write bytes, ignore if NULL.
      */
-    virtual int write(void* buf, size_t size, ssize_t* nwrite);
-    virtual int writev(const iovec *iov, int iov_size, ssize_t* nwrite);
+    virtual int write(void *buf, size_t size, ssize_t *nwrite);
+    virtual int writev(const iovec *iov, int iov_size, ssize_t *nwrite);
 };
 
 // initialize st, requires epoll.
 extern int rs_st_init();
 
 // close the netfd, and close the underlayer fd.
-extern void rs_close_stfd(st_netfd_t& stfd);
+extern void rs_close_stfd(st_netfd_t &stfd);
 
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif /* CORE_RSSOCKET_H_ */

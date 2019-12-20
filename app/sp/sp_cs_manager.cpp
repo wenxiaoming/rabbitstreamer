@@ -27,15 +27,12 @@ namespace rs {
 namespace app {
 namespace sp {
 
-SpCsManager::SpCsManager(string ip, int port)
-{
+SpCsManager::SpCsManager(string ip, int port) {
     ip_addr = ip;
     listen_port = port;
 }
 
-SpCsManager::~SpCsManager() {
-
-}
+SpCsManager::~SpCsManager() {}
 
 int SpCsManager::start_listener() {
     tcp_listener = new RsTcpListener(ip_addr, listen_port, this);
@@ -45,9 +42,11 @@ int SpCsManager::start_listener() {
 
 // the cs connect sp, the connection is ok, then call this function
 int SpCsManager::handle_tcp_connect(st_netfd_t stfd) {
-    RsCsSpProtocol* cs_sp_protocol = new RsCsSpProtocol(stfd);
+    RsCsSpProtocol *cs_sp_protocol = new RsCsSpProtocol(stfd);
     cs_sp_protocol->start_thread();
     return 0;
 }
 
-} } } // namespace rabbitstreamer::app::sp
+} // namespace sp
+} // namespace app
+} // namespace rs

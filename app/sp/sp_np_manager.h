@@ -37,24 +37,26 @@ namespace app {
 namespace sp {
 
 class SpNpManager : public ITcpHandler {
-public:
+  public:
     SpNpManager(std::string ip, uint32_t port);
     ~SpNpManager();
 
-public:
+  public:
     int start_listener();
 
-public:
+  public:
     // implement interface ITcpHandler
     virtual int handle_tcp_connect(st_netfd_t stfd);
 
-private:
-    RsTcpListener* tcp_listener;
+  private:
+    RsTcpListener *tcp_listener;
     string ip_addr;
     uint32_t listen_port;
-    std::vector<RsNpSpProtocol*> np_sp_protocol_vector;
+    std::vector<RsNpSpProtocol *> np_sp_protocol_vector;
 };
 
-} } } // namespace rabbitstreamer::app::sp
+} // namespace sp
+} // namespace app
+} // namespace rs
 
 #endif /* APP_SP_NP_MANAGER_H */

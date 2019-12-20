@@ -27,7 +27,7 @@ namespace rs {
 namespace core {
 
 void print_backtrace(void);
-
-} }  // namespace rs::core
+}
+} // namespace rs
 
 #endif /* CORE_RS_DEBUG_UTILITY_H_ */

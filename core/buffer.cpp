@@ -22,12 +22,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #include "buffer.h"
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include "error_code.h"
 #include "core_utility.h"
 #include "debug_utility.h"
+#include "error_code.h"
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 
 namespace rs {
 namespace core {
@@ -35,10 +35,9 @@ namespace core {
 #define DEFAULT_RECV_BUFFER_SIZE 131072
 #define MAX_SOCKET_BUFFER 262144
 
-RsBuffer::RsBuffer()
-{
+RsBuffer::RsBuffer() {
     buffer_size = DEFAULT_RECV_BUFFER_SIZE;
-    buffer = (char*)malloc(buffer_size);
+    buffer = (char *)malloc(buffer_size);
     curr_ptr = end_ptr = buffer;
 }
 
@@ -47,13 +46,9 @@ RsBuffer::~RsBuffer() {
     buffer = NULL;
 }
 
-int RsBuffer::current_size() {
-    return (int)(end_ptr - curr_ptr);
-}
+int RsBuffer::current_size() { return (int)(end_ptr - curr_ptr); }
 
-char* RsBuffer::bytes() {
-    return curr_ptr;
-}
+char *RsBuffer::bytes() { return curr_ptr; }
 
 void RsBuffer::set_buffer(int size) {
     // never exceed the max size.
@@ -73,30 +68,26 @@ void RsBuffer::set_buffer(int size) {
     int start = (int)(curr_ptr - buffer);
     int nb_bytes = (int)(end_ptr - curr_ptr);
 
-    buffer = (char*)realloc(buffer, nb_resize_buf);
+    buffer = (char *)realloc(buffer, nb_resize_buf);
     buffer_size = nb_resize_buf;
     curr_ptr = buffer + start;
     end_ptr = curr_ptr + nb_bytes;
 }
 
-char RsBuffer::read_byte() {
-    return *curr_ptr++;
-}
+char RsBuffer::read_byte() { return *curr_ptr++; }
 
-char* RsBuffer::read_nbytes(int size) {
-    char* ptr = curr_ptr;
+char *RsBuffer::read_nbytes(int size) {
+    char *ptr = curr_ptr;
     curr_ptr += size;
 
     return ptr;
 }
 
-void RsBuffer::skip(int size) {
-    curr_ptr += size;
-}
+void RsBuffer::skip(int size) { curr_ptr += size; }
 
-int RsBuffer::fill_buffer(RsSocket* io, int size) {
+int RsBuffer::fill_buffer(RsSocket *io, int size) {
     int ret = ERROR_SUCCESS;
-    if(size < 0)
+    if (size < 0)
         print_backtrace();
     assert(size >= 0);
     // current buffer is enough
@@ -107,18 +98,19 @@ int RsBuffer::fill_buffer(RsSocket* io, int size) {
     // the bytes will be consumed
     int exists_bytes = (int)(end_ptr - curr_ptr);
 
-    //enlarge the buffer
-    if(buffer_size < size)
-        set_buffer(size);//TODO,handle the error
+    // enlarge the buffer
+    if (buffer_size < size)
+        set_buffer(size); // TODO,handle the error
 
     // the free space of buffer,
     int free_space = (int)(buffer + buffer_size - end_ptr);
 
-    if(!exists_bytes)
-        curr_ptr = end_ptr = buffer;//reset when buffer is consumed completely.
-    else if(free_space < size) {
+    if (!exists_bytes)
+        curr_ptr = end_ptr = buffer; // reset when buffer is consumed
+                                     // completely.
+    else if (free_space < size) {
         // move current buffer to the beginning.
-        buffer = (char*)memmove(buffer, curr_ptr, exists_bytes);
+        buffer = (char *)memmove(buffer, curr_ptr, exists_bytes);
         curr_ptr = buffer;
         end_ptr = curr_ptr + exists_bytes;
         free_space = (int)(buffer + buffer_size - end_ptr);
@@ -129,7 +121,7 @@ int RsBuffer::fill_buffer(RsSocket* io, int size) {
         ssize_t nread;
         if ((ret = io->read(end_ptr, free_space, &nread)) != ERROR_SUCCESS) {
             print_backtrace();
-            return ret;//TODO:FIXME, how to handle this error
+            return ret; // TODO:FIXME, how to handle this error
         }
         assert((int)nread > 0);
         end_ptr += nread;
@@ -139,4 +131,5 @@ int RsBuffer::fill_buffer(RsSocket* io, int size) {
     return ret;
 }
 
-} }  // namespace rs::coree rs::core
+} // namespace core
+} // namespace rs

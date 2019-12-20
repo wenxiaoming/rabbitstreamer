@@ -23,40 +23,43 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CORE_TCP_LISTENER_H
 #define CORE_TCP_LISTENER_H
 
-#include <string>
+#include "socket_handler.h"
 #include "st.h"
 #include "thread.h"
-#include "socket_handler.h"
+#include <string>
 
 using namespace std;
 
 namespace rs {
 namespace core {
 
-class RsTcpListener: public RsThread {
-public:
-	RsTcpListener(string ip, int port, ITcpHandler* handler);
+class RsTcpListener : public RsThread {
+  public:
+    RsTcpListener(string ip, int port, ITcpHandler *handler);
     ~RsTcpListener();
 
-public:
+  public:
     int start_listen();
-public:
+
+  public:
     // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
-private:
+
+  private:
     int socket_fd;
     st_netfd_t st_socket_fd;
 
     string ip_addr;
     int listen_port;
 
-    ITcpHandler* tcp_handler;
+    ITcpHandler *tcp_handler;
 };
 
-} } // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif

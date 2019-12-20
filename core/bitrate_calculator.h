@@ -23,8 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CORE_BITRATE_CALCULATOR_H_
 #define CORE_BITRATE_CALCULATOR_H_
 
-#include <string>
 #include <stdint.h>
+#include <string>
 
 using namespace std;
 
@@ -32,17 +32,20 @@ namespace rs {
 namespace core {
 
 class RsBitrateCalculator {
-public:
+  public:
     RsBitrateCalculator(string name);
     virtual ~RsBitrateCalculator();
-public:
+
+  public:
     void update_buffersize(uint32_t size);
-private:
+
+  private:
     string calculator_name;
     uint32_t recv_buffer_size;
     uint32_t last_recv_msec;
 };
 
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif /* CORE_BITRATE_CALCULATOR_H_ */

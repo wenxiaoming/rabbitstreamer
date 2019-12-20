@@ -26,16 +26,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace rs {
 namespace core {
 
-RsStreamer::RsStreamer()
-{
+RsStreamer::RsStreamer() {
     curr = base = NULL;
     size = 0;
 }
 
-RsStreamer::~RsStreamer() {
-}
+RsStreamer::~RsStreamer() {}
 
-void RsStreamer::initialize(char* buf, int nb) {
+void RsStreamer::initialize(char *buf, int nb) {
     base = curr = buf;
     size = nb;
 }
@@ -64,37 +62,30 @@ uint64_t RsStreamer::read_long() {
     return value;
 }
 
-char* RsStreamer::read_nbytes(int nb) {
-    char* buf = curr;
-    assert((curr+nb)<=(base+size));
+char *RsStreamer::read_nbytes(int nb) {
+    char *buf = curr;
+    assert((curr + nb) <= (base + size));
     curr += nb;
     return buf;
 }
 
 void RsStreamer::skip(int nb) {
-    assert((curr+nb)<=(base+size));
+    assert((curr + nb) <= (base + size));
     curr += nb;
 }
 
-void RsStreamer::write_char(char value) {
-    *curr++ = value;
-}
+void RsStreamer::write_char(char value) { *curr++ = value; }
 
-void RsStreamer::write_short(uint16_t value) {
-    set_as_type(value);
-}
+void RsStreamer::write_short(uint16_t value) { set_as_type(value); }
 
-void RsStreamer::write_int(uint32_t value) {
-    set_as_type(value);
-}
+void RsStreamer::write_int(uint32_t value) { set_as_type(value); }
 
-void RsStreamer::write_long(uint64_t value) {
-    set_as_type(value);
-}
+void RsStreamer::write_long(uint64_t value) { set_as_type(value); }
 
-void RsStreamer::write_nbytes(char* buf, int nb) {
+void RsStreamer::write_nbytes(char *buf, int nb) {
     memcpy(curr, buf, nb);
     curr += nb;
 }
 
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs

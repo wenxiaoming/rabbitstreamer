@@ -26,35 +26,36 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace rs {
 namespace core {
 
-#define ERROR_SUCCESS                       0
+#define ERROR_SUCCESS 0
 // system error.
-#define ERROR_SOCKET_CREATE                 1000
-#define ERROR_SOCKET_SETREUSE               1001
-#define ERROR_SOCKET_BIND                   1002
-#define ERROR_SOCKET_LISTEN                 1003
-#define ERROR_SOCKET_CLOSED                 1004
-#define ERROR_SOCKET_GET_PEER_NAME          1005
-#define ERROR_SOCKET_GET_PEER_IP            1006
-#define ERROR_SOCKET_READ                   1007
-#define ERROR_SOCKET_READ_FULLY             1008
-#define ERROR_SOCKET_WRITE                  1009
-#define ERROR_SOCKET_WAIT                   1010
-#define ERROR_SOCKET_TIMEOUT                1011
-#define ERROR_SOCKET_CONNECT                1012
+#define ERROR_SOCKET_CREATE 1000
+#define ERROR_SOCKET_SETREUSE 1001
+#define ERROR_SOCKET_BIND 1002
+#define ERROR_SOCKET_LISTEN 1003
+#define ERROR_SOCKET_CLOSED 1004
+#define ERROR_SOCKET_GET_PEER_NAME 1005
+#define ERROR_SOCKET_GET_PEER_IP 1006
+#define ERROR_SOCKET_READ 1007
+#define ERROR_SOCKET_READ_FULLY 1008
+#define ERROR_SOCKET_WRITE 1009
+#define ERROR_SOCKET_WAIT 1010
+#define ERROR_SOCKET_TIMEOUT 1011
+#define ERROR_SOCKET_CONNECT 1012
 
-#define ERROR_ST_SET_EPOLL                  1013
-#define ERROR_ST_INITIALIZE                 1014
-#define ERROR_ST_OPEN_SOCKET                1015
-#define ERROR_ST_CREATE_LISTEN_THREAD       1016
-#define ERROR_ST_CREATE_CYCLE_THREAD        1017
-#define ERROR_ST_CONNECT                    1018
-#define ERROR_READER_BUFFER_OVERFLOW        1022
+#define ERROR_ST_SET_EPOLL 1013
+#define ERROR_ST_INITIALIZE 1014
+#define ERROR_ST_OPEN_SOCKET 1015
+#define ERROR_ST_CREATE_LISTEN_THREAD 1016
+#define ERROR_ST_CREATE_CYCLE_THREAD 1017
+#define ERROR_ST_CONNECT 1018
+#define ERROR_READER_BUFFER_OVERFLOW 1022
 
-#define ERROR_SYSTEM_FAIL_TO_ALLOCATE       1059
-//source manager error
-#define ERROR_SOURCE_MGR_NOT_FOUND              2000
+#define ERROR_SYSTEM_FAIL_TO_ALLOCATE 1059
+// source manager error
+#define ERROR_SOURCE_MGR_NOT_FOUND 2000
 #define ERROR_SOURCE_MGR_FAILT_TO_CREATE_SOURCE 2001
 
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif

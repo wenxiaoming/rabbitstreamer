@@ -23,8 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef PROTOCOL_TRACKER_NP_MANAGER_
 #define PROTOCOL_TRACKER_NP_MANAGER_
 
-#include <map>
 #include "core/struct_define.h"
+#include <map>
 
 using namespace rs::core;
 
@@ -34,15 +34,15 @@ namespace tracker {
 
 // manager of all channels
 class TrackerNpCoordinator {
-private:
+  private:
     TrackerNpCoordinator();
     static TrackerNpCoordinator *p;
 
-public:
+  public:
     virtual ~TrackerNpCoordinator();
 
-public:
-    //for single instance
+  public:
+    // for single instance
     static TrackerNpCoordinator *instance();
 
     int timer_check();
@@ -56,13 +56,13 @@ public:
 
     // find sp address
     int get_np_address(MD5_Hash_Str resHash, map_str uuid,
-                       PeerInfoWithAddr *&pPeerInfoWithAddr,
-                       int inCount, uint32_t currentblockID);
+                       PeerInfoWithAddr *&pPeerInfoWithAddr, int inCount,
+                       uint32_t currentblockID);
 
-protected:
+  protected:
     NPNode *get_Node(map_str digits);
 
-private:
+  private:
     typedef std::map<map_str, NPNode *> HashMap;
     typedef std::map<map_str, NPNode *>::iterator CMIt;
     typedef std::map<map_str, NPNode *>::const_iterator CCMIt;
@@ -70,14 +70,15 @@ private:
 
     HashMap NPNode_map_;
 
-    enum
-    {
-        // if a live channel stopped receiving block from cs for more than MAX_IDLE_TIME_SEC, it will be deleted
+    enum {
+        // if a live channel stopped receiving block from cs for more than
+        // MAX_IDLE_TIME_SEC, it will be deleted
         MAX_IDLE_TIME_SEC = 600,
     };
 };
 
-
-} } }// namespace rs::protocol::tracker
+} // namespace tracker
+} // namespace protocol
+} // namespace rs
 
 #endif

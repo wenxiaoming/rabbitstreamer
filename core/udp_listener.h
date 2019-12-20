@@ -23,26 +23,26 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CORE_UDP_LISTENER_H_
 #define CORE_UDP_LISTENER_H_
 
-#include <string>
+#include "socket_handler.h"
 #include "st.h"
 #include "thread.h"
-#include "socket_handler.h"
+#include <string>
 
 using namespace std;
 
 namespace rs {
 namespace core {
 
-class RsUdpListener: public RsThread {
+class RsUdpListener : public RsThread {
 
-public:
-	RsUdpListener(string ip, int port, IUdpHandler* handler);
+  public:
+    RsUdpListener(string ip, int port, IUdpHandler *handler);
     ~RsUdpListener();
 
-public:
+  public:
     int start_listen();
 
-public:
+  public:
     // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
@@ -50,18 +50,19 @@ public:
     virtual int on_end_loop();
     virtual int on_thread_stop();
 
-private:
+  private:
     int socket_fd;
     st_netfd_t st_socket_fd;
 
     string ip_addr;
     int listen_port;
 
-    char* recv_buffer;
+    char *recv_buffer;
     int buffer_size;
-    IUdpHandler* udp_handler;
+    IUdpHandler *udp_handler;
 };
 
-} } // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif /* CORE_UDP_LISTENER_H_ */

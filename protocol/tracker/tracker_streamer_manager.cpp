@@ -20,25 +20,20 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#include <stdio.h>
 #include "tracker_streamer_manager.h"
-#include "tracker_sp_connector.h"
-#include "third_party/md5/md5.h"
 #include "core/logger.h"
+#include "third_party/md5/md5.h"
+#include "tracker_sp_connector.h"
+#include <stdio.h>
 
 namespace rs {
 namespace protocol {
 namespace tracker {
 
 StreamMgr *StreamMgr::p = new StreamMgr;
-StreamMgr *StreamMgr::instance()
-{
-    return p;
-}
+StreamMgr *StreamMgr::instance() { return p; }
 
-StreamMgr::StreamMgr() {
-    chnl_map_.clear();
-}
+StreamMgr::StreamMgr() { chnl_map_.clear(); }
 StreamMgr::~StreamMgr() {
     for (CMIt it = chnl_map_.begin(); it != chnl_map_.end(); ++it) {
         ChannelNode *temp = it->second;
@@ -48,31 +43,31 @@ StreamMgr::~StreamMgr() {
     chnl_map_.clear();
 }
 
-int StreamMgr::initialize(const string &block_data_store_path) {
-    return 0;
-}
+int StreamMgr::initialize(const string &block_data_store_path) { return 0; }
 
 /*
 int StreamMgr::timer_check()
 {
-	for(CMIt it = chnl_map_.begin(); it != chnl_map_.end(); )
-	{
-		CMIt i = it;
-		it++;
-		// delete the channel if it idles too long
-		if (ACE_OS::time (NULL) - i->second->last_recv_report_time_ > MAX_IDLE_TIME_SEC)
-		{
-			ACE_DEBUG((LM_INFO, ACE_TEXT("Channel removed due to long time idle.\n")));
+        for(CMIt it = chnl_map_.begin(); it != chnl_map_.end(); )
+        {
+                CMIt i = it;
+                it++;
+                // delete the channel if it idles too long
+                if (ACE_OS::time (NULL) - i->second->last_recv_report_time_ >
+MAX_IDLE_TIME_SEC)
+                {
+                        ACE_DEBUG((LM_INFO, ACE_TEXT("Channel removed due to
+long time idle.\n")));
 
-			// delete this channel
-			ChannelNode* temp = i->second;
-			delete temp;
+                        // delete this channel
+                        ChannelNode* temp = i->second;
+                        delete temp;
 
-			chnl_map_.erase(i);
-		}
-	}
+                        chnl_map_.erase(i);
+                }
+        }
 
-	return 0;
+        return 0;
 }
 */
 
@@ -81,9 +76,10 @@ int StreamMgr::signal_get_res_interval(MD5_Hash_Str Channel_hash) {
         //
         for (int i = 0; i < it->second->resourceCount; i++) {
             if (it->second->pHash[i] == Channel_hash) {
-                RsSpTracker *sp = static_cast<RsSpTracker *>(it->second->spService);
+                RsSpTracker *sp =
+                    static_cast<RsSpTracker *>(it->second->spService);
                 if (sp) {
-                    //sp->send_TS2SP_GET_RES_LIST(); //Kevin.Wen,fixme
+                    // sp->send_TS2SP_GET_RES_LIST(); //Kevin.Wen,fixme
                     return 0;
                 }
             }
@@ -93,7 +89,8 @@ int StreamMgr::signal_get_res_interval(MD5_Hash_Str Channel_hash) {
     return 1;
 }
 
-int StreamMgr::get_channel_interval(MD5_Hash_Str Channel_hash, BlockInterval &blockInterval) {
+int StreamMgr::get_channel_interval(MD5_Hash_Str Channel_hash,
+                                    BlockInterval &blockInterval) {
     for (CCMIt it = chnl_map_.begin(); it != chnl_map_.end(); it++) {
         //
         for (int i = 0; i < it->second->resourceCount; i++) {
@@ -107,9 +104,7 @@ int StreamMgr::get_channel_interval(MD5_Hash_Str Channel_hash, BlockInterval &bl
     return 1;
 }
 
-int StreamMgr::get_channel_count() {
-    return chnl_map_.size();
-}
+int StreamMgr::get_channel_count() { return chnl_map_.size(); }
 
 int StreamMgr::insert_channel(map_str strMd5, ChannelNode *chnl) {
     ChannelNode Node;
@@ -123,7 +118,10 @@ int StreamMgr::insert_channel(map_str strMd5, ChannelNode *chnl) {
 
             *pNode = *chnl;
             //
-            bool ret = chnl_map_.insert(std::pair<map_str, ChannelNode *>(strMd5, pNode)).second;
+            bool ret =
+                chnl_map_
+                    .insert(std::pair<map_str, ChannelNode *>(strMd5, pNode))
+                    .second;
             if (!ret) {
                 RSLOGE("chnl_map_.insert error | new_channel.\n");
                 delete pNode;
@@ -189,7 +187,8 @@ int StreamMgr::get_cp_address(NetAddress *&pSPAddr, map_str chnlhash) {
     return 0;
 }
 
-int StreamMgr::get_all_cp_address(NetAddress *&pSPAddr, int &inCount, map_str uuid) {
+int StreamMgr::get_all_cp_address(NetAddress *&pSPAddr, int &inCount,
+                                  map_str uuid) {
     inCount = get_channel_count();
     //
     if (0 == inCount)
@@ -198,7 +197,8 @@ int StreamMgr::get_all_cp_address(NetAddress *&pSPAddr, int &inCount, map_str uu
     get_cp_address(pSPAddr, inCount, uuid);
 }
 
-int StreamMgr::get_cp_address(NetAddress *&pSPAddr, int &inCount, map_str uuid) {
+int StreamMgr::get_cp_address(NetAddress *&pSPAddr, int &inCount,
+                              map_str uuid) {
     NetAddress *sel = NULL;
     get_cp_address(sel, uuid);
 
@@ -259,7 +259,8 @@ int StreamMgr::get_cp_address(NetAddress *&pSPAddr, int inCount) {
     return index;
 }
 
-int StreamMgr::get_sp_address(MD5_Hash_Str resHash, NetAddress *&pSPAddr, int inCount) {
+int StreamMgr::get_sp_address(MD5_Hash_Str resHash, NetAddress *&pSPAddr,
+                              int inCount) {
     pSPAddr = new NetAddress[inCount];
 
     int index = 0;
@@ -280,7 +281,6 @@ int StreamMgr::get_sp_address(MD5_Hash_Str resHash, NetAddress *&pSPAddr, int in
     return index;
 }
 
-}
-}
-}// namespace rs::protocol::tracker
-
+} // namespace tracker
+} // namespace protocol
+} // namespace rs

@@ -24,14 +24,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef PROTOCOL_SP_NP_CONNECTOR_H_
 #define PROTOCOL_SP_NP_CONNECTOR_H_
 
-#include "core/thread.h"
-#include "core/socket.h"
+#include "core/bitrate_calculator.h"
 #include "core/buffer.h"
 #include "core/p2p_protocol.h"
-#include "core/bitrate_calculator.h"
+#include "core/socket.h"
+#include "core/thread.h"
 #include <st.h>
-#include <string.h>
 #include <stdint.h>
+#include <string.h>
 
 using namespace rs::core;
 
@@ -40,30 +40,36 @@ namespace protocol {
 namespace sp {
 
 class RsNpSpProtocol : public RsThread {
-public:
+  public:
     explicit RsNpSpProtocol(st_netfd_t stfd);
     virtual ~RsNpSpProtocol();
-public:
-    int get_push_list(char* msg, int size);
-    int send_push_list(char* resource_hash, uint8_t count, uint32_t* array);
-    int send_media_type(char* resource_hash);
-public:
+
+  public:
+    int get_push_list(char *msg, int size);
+    int send_push_list(char *resource_hash, uint8_t count, uint32_t *array);
+    int send_media_type(char *resource_hash);
+
+  public:
     // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
-private:
-    int send_one_block(char* resource_hash, uint8_t count, uint32_t id);
-private:
+
+  private:
+    int send_one_block(char *resource_hash, uint8_t count, uint32_t id);
+
+  private:
     st_netfd_t st_fd = nullptr;
-    RsSocket* io_socket = nullptr;
-    RsBuffer* np_buffer = nullptr;
+    RsSocket *io_socket = nullptr;
+    RsBuffer *np_buffer = nullptr;
     bool media_type_flag = false;
-    RsBitrateCalculator* calculator = nullptr;
+    RsBitrateCalculator *calculator = nullptr;
 };
 
-} } }// namespace rs::protocol::sp
+} // namespace sp
+} // namespace protocol
+} // namespace rs
 
 #endif /* PROTOCOL_SP_NP_PROTOCOL_H_ */

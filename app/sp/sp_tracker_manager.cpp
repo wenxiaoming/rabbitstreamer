@@ -28,15 +28,12 @@ namespace rs {
 namespace app {
 namespace sp {
 
-SpTrackerManager::SpTrackerManager(string ip, uint32_t port)
-{
+SpTrackerManager::SpTrackerManager(string ip, uint32_t port) {
     ip_address = ip;
     ip_port = port;
 }
 
-SpTrackerManager::~SpTrackerManager() {
-
-}
+SpTrackerManager::~SpTrackerManager() {}
 
 int SpTrackerManager::start_connect() {
     int ret = ERROR_SUCCESS;
@@ -48,6 +45,6 @@ int SpTrackerManager::start_connect() {
     return ret;
 }
 
-} } } // namespace rabbitstreamer::app::sp
-
-
+} // namespace sp
+} // namespace app
+} // namespace rs

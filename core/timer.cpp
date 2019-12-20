@@ -21,75 +21,61 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "timer.h"
-#include "error_code.h"
 #include "core_utility.h"
-#include <st.h>
-#include <assert.h>
+#include "error_code.h"
 #include <algorithm>
+#include <assert.h>
+#include <st.h>
 
 namespace rs {
 namespace core {
 
-#define SYS_TIMER_LOOP_INTERVAL 500 //sleep for 500ms
+#define SYS_TIMER_LOOP_INTERVAL 500 // sleep for 500ms
 
-RsTimer* RsTimer::p = new RsTimer;
-RsTimer* RsTimer::instance()
-{
-    return p;
-}
+RsTimer *RsTimer::p = new RsTimer;
+RsTimer *RsTimer::instance() { return p; }
 
-RsTimer::RsTimer()
-        : RsThread("rstimer")
-{
+RsTimer::RsTimer() : RsThread("rstimer") {
     last_thread_time = 0;
     thread_start_flag = false;
 }
 
-RsTimer::~RsTimer()
-{
+RsTimer::~RsTimer() {}
 
-}
-
-int RsTimer::on_end_loop()
-{
+int RsTimer::on_end_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsTimer::on_thread_stop()
-{
+int RsTimer::on_thread_stop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsTimer::on_thread_start()
-{
+int RsTimer::on_thread_start() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsTimer::on_before_loop()
-{
+int RsTimer::on_before_loop() {
     int ret = ERROR_SUCCESS;
 
     return ret;
 }
 
-int RsTimer::loop()
-{
+int RsTimer::loop() {
     int ret = ERROR_SUCCESS;
     check_timeout();
     st_usleep(SYS_TIMER_LOOP_INTERVAL * 1000);
     return ret;
 }
-void RsTimer::add_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback)
-{
-    assert(callback!=NULL);
-    if(!thread_start_flag)
-    {
+void RsTimer::add_timer(int64_t timeout, int64_t timerid,
+                        ITimerHandler *callback) {
+    assert(callback != NULL);
+    if (!thread_start_flag) {
         start_thread();
         thread_start_flag = true;
     }
@@ -101,8 +87,8 @@ void RsTimer::add_timer(int64_t timeout, int64_t timerid, ITimerHandler* callbac
     timer_vector.push_back(item);
 }
 
-void RsTimer::delete_timer(int64_t timeout, int64_t timerid, ITimerHandler* callback)
-{
+void RsTimer::delete_timer(int64_t timeout, int64_t timerid,
+                           ITimerHandler *callback) {
     timer_item item;
     item.timeout = timeout;
     item.timerid = timerid;
@@ -110,35 +96,31 @@ void RsTimer::delete_timer(int64_t timeout, int64_t timerid, ITimerHandler* call
     timer_vector.erase(remove(timer_vector.begin(), timer_vector.end(), item));
 }
 
-void RsTimer::check_timeout()
-{
+void RsTimer::check_timeout() {
     int64_t curr = get_system_time_ms();
 
     vector<timer_item>::iterator iter = timer_vector.begin();
-    //init the first signal time
-    if(last_thread_time == 0)
-    {
+    // init the first signal time
+    if (last_thread_time == 0) {
         last_thread_time = curr;
-        for(; iter < timer_vector.end(); iter++)
-        {
+        for (; iter < timer_vector.end(); iter++) {
             iter->last_signal_time = curr;
         }
         return;
     }
     int64_t delta = 0;
-    //iterate the vector to trigger the timer's callback
+    // iterate the vector to trigger the timer's callback
     iter = timer_vector.begin();
-    for(; iter < timer_vector.end(); iter++)
-    {
-       int64_t timeout = iter->timeout;
-       delta = curr-iter->last_signal_time;
-       if(delta >= timeout)
-       {
-           (iter->callback)->handle_timeout(iter->timerid);
-           iter->last_signal_time = curr;
-       }
+    for (; iter < timer_vector.end(); iter++) {
+        int64_t timeout = iter->timeout;
+        delta = curr - iter->last_signal_time;
+        if (delta >= timeout) {
+            (iter->callback)->handle_timeout(iter->timerid);
+            iter->last_signal_time = curr;
+        }
     }
     return;
 }
 
-} } // namespace rs::core
+} // namespace core
+} // namespace rs

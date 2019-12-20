@@ -35,24 +35,26 @@ namespace app {
 namespace sp {
 
 class SpCsManager : public ITcpHandler {
-public:
+  public:
     SpCsManager(string ip, int port);
     ~SpCsManager();
 
-public:
+  public:
     int start_listener();
 
-public:
+  public:
     // implement interface ITcpHandler
     virtual int handle_tcp_connect(st_netfd_t stfd);
 
-private:
-    RsTcpListener* tcp_listener;
+  private:
+    RsTcpListener *tcp_listener;
     string ip_addr;
     int listen_port;
-    RsCsSpProtocol* cs_sp_protocol;
+    RsCsSpProtocol *cs_sp_protocol;
 };
 
-} } } // namespace rabbitstreamer::app::sp
+} // namespace sp
+} // namespace app
+} // namespace rs
 
 #endif /* APP_SP_CS_MANAGER_H */

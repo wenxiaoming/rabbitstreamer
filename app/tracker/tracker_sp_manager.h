@@ -33,24 +33,27 @@ namespace app {
 namespace tracker {
 
 class TrackerSpManager : public IUdpHandler {
-public:
+  public:
     TrackerSpManager(string ip, int port);
     ~TrackerSpManager();
 
-public:
+  public:
     int start_listener();
 
-public:
+  public:
     // implement interface IUdpHandler
-	virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf);
+    virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from,
+                                  char *buf, int nb_buf);
 
-private:
-    RsUdpListener* udp_listener;
+  private:
+    RsUdpListener *udp_listener;
     string ip_addr;
     int listen_port;
-    RsSpTracker* sp_tracker;
+    RsSpTracker *sp_tracker;
 };
 
-} } } // namespace rabbitstreamer::app::tracker
+} // namespace tracker
+} // namespace app
+} // namespace rs
 
 #endif /* APP_TRACKER_SP_MANAGER_H_ */

@@ -37,20 +37,20 @@ namespace protocol {
 namespace tracker {
 
 class StreamMgr {
-private:
+  private:
     StreamMgr();
     static StreamMgr *p;
 
-public:
+  public:
     virtual ~StreamMgr();
 
-public:
-    //for single instance
+  public:
+    // for single instance
     static StreamMgr *instance();
 
     int initialize(const string &block_data_store_path);
 
-    //return is the count result
+    // return is the count result
     int get_channel_count();
     // add a new channel
     int insert_channel(map_str strMd5, ChannelNode *chnl);
@@ -67,14 +67,15 @@ public:
     int get_sp_address(MD5_Hash_Str resHash, NetAddress *&pSPAddr, int inCount);
 
     //
-    int get_channel_interval(MD5_Hash_Str Channel_hash, BlockInterval &blockInterval);
+    int get_channel_interval(MD5_Hash_Str Channel_hash,
+                             BlockInterval &blockInterval);
 
     int signal_get_res_interval(MD5_Hash_Str Channel_hash);
     //
-protected:
+  protected:
     ChannelNode *get_node(map_str chnlhash);
 
-private:
+  private:
     typedef std::map<map_str, ChannelNode *> ChannelHashMap;
     typedef std::map<map_str, ChannelNode *>::iterator CMIt;
     typedef std::map<map_str, ChannelNode *>::const_iterator CCMIt;
@@ -82,14 +83,15 @@ private:
 
     ChannelHashMap chnl_map_;
 
-    enum
-    {
-        // if a live channel stopped receiving block from cs for more than MAX_IDLE_TIME_SEC, it will be deleted
+    enum {
+        // if a live channel stopped receiving block from cs for more than
+        // MAX_IDLE_TIME_SEC, it will be deleted
         MAX_IDLE_TIME_SEC = 100,
     };
 };
 
-
-} } }// namespace rs::protocol::tracker
+} // namespace tracker
+} // namespace protocol
+} // namespace rs
 
 #endif

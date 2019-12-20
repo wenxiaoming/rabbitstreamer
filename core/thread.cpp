@@ -21,15 +21,14 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "thread.h"
-#include "st.h"
 #include "error_code.h"
 #include "logger.h"
+#include "st.h"
 
 namespace rs {
 namespace core {
 
-RsThread::RsThread(const char* name)
-{
+RsThread::RsThread(const char *name) {
     _name = name;
     _cid = -1;
     tid = 0;
@@ -37,19 +36,18 @@ RsThread::RsThread(const char* name)
     loop_flag = false;
 }
 
-RsThread::~RsThread() {
-    tid = 0;
-}
+RsThread::~RsThread() { tid = 0; }
 
 int RsThread::start_thread() {
     int ret = ERROR_SUCCESS;
 
-    if(tid) {
+    if (tid) {
         RSLOGE("thread %s already running.", _name);
         return ret;
     }
 
-    if((tid = st_thread_create(thread_intermediary, this, (_joinable? 1:0), 0)) == NULL) {
+    if ((tid = st_thread_create(thread_intermediary, this, (_joinable ? 1 : 0),
+                                0)) == NULL) {
         ret = ERROR_ST_CREATE_CYCLE_THREAD;
         RSLOGE("st_thread_create failed. ret=%d", ret);
         return ret;
@@ -73,9 +71,7 @@ int RsThread::start_thread() {
 void RsThread::thread_loop() {
     int ret = ERROR_SUCCESS;
 
-
-    _cid = 0;//hard code;
-
+    _cid = 0; // hard code;
 
     on_thread_start();
 
@@ -89,7 +85,9 @@ void RsThread::thread_loop() {
 
     while (loop_flag) {
         if ((ret = on_before_loop()) != ERROR_SUCCESS) {
-            RSLOGE("thread %s on before cycle failed, ignored and retry, ret=%d", _name, ret);
+            RSLOGE(
+                "thread %s on before cycle failed, ignored and retry, ret=%d",
+                _name, ret);
             goto failed;
         }
         RSLOGE("thread %s on before cycle success", _name);
@@ -99,12 +97,13 @@ void RsThread::thread_loop() {
         }
 
         if ((ret = on_end_loop()) != ERROR_SUCCESS) {
-            RSLOGE("thread %s on end cycle failed, ignored and retry, ret=%d", _name, ret);
+            RSLOGE("thread %s on end cycle failed, ignored and retry, ret=%d",
+                   _name, ret);
             goto failed;
         }
         RSLOGE("thread %s on end cycle success", _name);
 
-failed:
+    failed:
         if (!loop_flag) {
             break;
         }
@@ -120,19 +119,16 @@ failed:
     on_thread_stop();
 }
 
-void RsThread::stop_thread() {
+void RsThread::stop_thread() {}
 
-}
-
-//the thread loop
-void* RsThread::thread_intermediary(void* arg) {
-    RsThread* obj = (RsThread*)arg;
+// the thread loop
+void *RsThread::thread_intermediary(void *arg) {
+    RsThread *obj = (RsThread *)arg;
 
     obj->thread_loop();
 }
 
-void RsThread::dispose() {
+void RsThread::dispose() {}
 
-}
-
-} } // namespace rs::core
+} // namespace core
+} // namespace rs

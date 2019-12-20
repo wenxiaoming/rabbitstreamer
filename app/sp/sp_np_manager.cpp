@@ -27,16 +27,13 @@ namespace rs {
 namespace app {
 namespace sp {
 
-SpNpManager::SpNpManager(string ip, uint32_t port)
-{
+SpNpManager::SpNpManager(string ip, uint32_t port) {
     ip_addr = ip;
     listen_port = port;
     tcp_listener = NULL;
 }
 
-SpNpManager::~SpNpManager() {
-
-}
+SpNpManager::~SpNpManager() {}
 
 int SpNpManager::start_listener() {
     tcp_listener = new RsTcpListener(ip_addr, listen_port, this);
@@ -45,10 +42,12 @@ int SpNpManager::start_listener() {
 }
 
 int SpNpManager::handle_tcp_connect(st_netfd_t stfd) {
-    RsNpSpProtocol* np_sp_protocol = new RsNpSpProtocol(stfd);
+    RsNpSpProtocol *np_sp_protocol = new RsNpSpProtocol(stfd);
     np_sp_protocol->start_thread();
     np_sp_protocol_vector.push_back(np_sp_protocol);
     return 0;
 }
 
-} } } // namespace rabbitstreamer::app::sp
+} // namespace sp
+} // namespace app
+} // namespace rs

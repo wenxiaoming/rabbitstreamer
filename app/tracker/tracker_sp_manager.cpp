@@ -26,26 +26,26 @@ namespace rs {
 namespace app {
 namespace tracker {
 
-TrackerSpManager::TrackerSpManager(string ip, int port)
-{
+TrackerSpManager::TrackerSpManager(string ip, int port) {
     ip_addr = ip;
     listen_port = port;
 }
 
-TrackerSpManager::~TrackerSpManager() {
-
-}
+TrackerSpManager::~TrackerSpManager() {}
 
 int TrackerSpManager::start_listener() {
     udp_listener = new RsUdpListener(ip_addr, listen_port, this);
     udp_listener->start_listen();
-    sp_tracker= new RsSpTracker();
+    sp_tracker = new RsSpTracker();
     return 0;
 }
 
-int TrackerSpManager::handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf) {
+int TrackerSpManager::handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from,
+                                        char *buf, int nb_buf) {
     sp_tracker->handle_udp_packet(st_fd, from, buf, nb_buf);
     return 0;
 }
 
-} } } // namespace rabbitstreamer::app::tracker
+} // namespace tracker
+} // namespace app
+} // namespace rs

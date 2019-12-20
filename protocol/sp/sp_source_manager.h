@@ -23,10 +23,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef PROTOCOL_SP_SOURCE_MANAGER_H_
 #define PROTOCOL_SP_SOURCE_MANAGER_H_
 
-#include <map>
-#include <list>
 #include "core/core_struct.h"
 #include "protocol/buffer_queue.h"
+#include <list>
+#include <map>
 
 using namespace rs::core;
 
@@ -49,61 +49,72 @@ struct source_status {
 
 // manage the source from capture server, it is single instance
 class RsSourceManager {
-private:
-    RsSourceManager() { }
-    static RsSourceManager* p;
-public:
+  private:
+    RsSourceManager() {}
+    static RsSourceManager *p;
+
+  public:
     virtual ~RsSourceManager();
-public:
-    //for single instance
-    static RsSourceManager* instance();
-public:
-    void reserve_buffer(MD5_Hash_Str hash,int size);
+
+  public:
+    // for single instance
+    static RsSourceManager *instance();
+
+  public:
+    void reserve_buffer(MD5_Hash_Str hash, int size);
     void queue_buffer(MD5_Hash_Str hash);
     void dequeue_buffer(MD5_Hash_Str hash);
-public:
+
+  public:
     // add a new channel
-    int create_source (const MD5_Hash_Str& source_hash, const string& source_name, bool source);
+    int create_source(const MD5_Hash_Str &source_hash,
+                      const string &source_name, bool source);
     // save a block into queue
-    int queue_block (const MD5_Hash_Str& chnl_hash, char** block, int size);
+    int queue_block(const MD5_Hash_Str &chnl_hash, char **block, int size);
     // get a block from queue
-    int dequeue_block (const MD5_Hash_Str& chnl_hash, int block_id, char*& block,
-            uint32_t& block_size, bool& notfound);
+    int dequeue_block(const MD5_Hash_Str &chnl_hash, int block_id, char *&block,
+                      uint32_t &block_size, bool &notfound);
 
     // update buffer's flag
-    int set_block_available (const MD5_Hash_Str& chnl_hash, int block_id);
+    int set_block_available(const MD5_Hash_Str &chnl_hash, int block_id);
     // get source channel list
-    void get_source_list(list<source_status>& source_list);
+    void get_source_list(list<source_status> &source_list);
     // save media header
-    int add_header (const MD5_Hash_Str& chnl_hash, const char* header, int size);
+    int add_header(const MD5_Hash_Str &chnl_hash, const char *header, int size);
     // get media header
-    int get_header (const MD5_Hash_Str& chnl_hash, char*& header, int& size);
+    int get_header(const MD5_Hash_Str &chnl_hash, char *&header, int &size);
 
     int write_source_channel_list_txt();
     // not implemented
     ////////////////////////////////////////////
-    int initialize (const string& data_store_path, const string& xml_store_path, const string& tracker_addr);
+    int initialize(const string &data_store_path, const string &xml_store_path,
+                   const string &tracker_addr);
 
     // check the status of channel
     void check_channel();
 
-	bool find_channel_is_source(const MD5_Hash_Str& chnl_hash);
+    bool find_channel_is_source(const MD5_Hash_Str &chnl_hash);
 
     // set this channel as deactivated
-    int deactivate_channel(const MD5_Hash_Str& chnl_hash);
+    int deactivate_channel(const MD5_Hash_Str &chnl_hash);
 
     // check if this channel exists
-    bool find_channel(const MD5_Hash_Str& chnl_hash) { return get_buffer_queue(chnl_hash) != NULL; }
+    bool find_channel(const MD5_Hash_Str &chnl_hash) {
+        return get_buffer_queue(chnl_hash) != NULL;
+    }
 
-    int get_max_blockid(const MD5_Hash_Str& chnl_hash, int& block_id);
+    int get_max_blockid(const MD5_Hash_Str &chnl_hash, int &block_id);
 
-private:
-    RsBufferQueue* get_buffer_queue(MD5_Hash_Str hash);
-private:
-    std::map<MD5_Hash_Str, RsBufferQueue*> source_hashmap;
+  private:
+    RsBufferQueue *get_buffer_queue(MD5_Hash_Str hash);
+
+  private:
+    std::map<MD5_Hash_Str, RsBufferQueue *> source_hashmap;
     string tracker_address;
 };
 
-} } }// namespace rs::protocol::sp
+} // namespace sp
+} // namespace protocol
+} // namespace rs
 
 #endif /* PROTOCOL_SP_SOURCE_MANAGER_H_ */

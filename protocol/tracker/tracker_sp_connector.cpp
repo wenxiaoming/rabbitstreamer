@@ -21,20 +21,20 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "tracker_sp_connector.h"
-#include "tracker_streamer_manager.h"
 #include "core/error_code.h"
-#include "core/socket_connect.h"
+#include "core/logger.h"
 #include "core/message.h"
 #include "core/p2p_protocol.h"
-#include "core/logger.h"
-#include <sys/types.h>
-#include <sys/socket.h>
+#include "core/socket_connect.h"
+#include "tracker_streamer_manager.h"
 #include <arpa/inet.h>
-#include <signal.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-#include <stdio.h>
+#include <signal.h>
 #include <st.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 namespace rs {
 namespace protocol {
@@ -46,15 +46,13 @@ namespace tracker {
 
 #define UDP_PACKET_RECV_CYCLE_INTERVAL_MS 0
 
-#define TRACKER_TIMEOUT 1000                  //timeout is 1s
-#define TRACKER_GET_SP_LIST_TIMEOUT 50 * 1000 //timeout is 50s
+#define TRACKER_TIMEOUT 1000                  // timeout is 1s
+#define TRACKER_GET_SP_LIST_TIMEOUT 50 * 1000 // timeout is 50s
 
 #define TRACKER_TIMER_ID 0
 #define TRACKER_GET_SP_LIST_TIMER_ID 1
 
-RsSpTracker::RsSpTracker()
-    : RsThread("sptracker")
-{
+RsSpTracker::RsSpTracker() : RsThread("sptracker") {
     // TODO Auto-generated constructor stub
     buf_size = UDP_MAX_PACKET_SIZE;
     recv_buf = new char[UDP_MAX_PACKET_SIZE];
@@ -63,7 +61,7 @@ RsSpTracker::RsSpTracker()
 
     io = new RsSocket(sp_fd);
 
-    cycle_interval_us = 120 * 1000; //sleep 120ms
+    cycle_interval_us = 120 * 1000; // sleep 120ms
 }
 
 RsSpTracker::~RsSpTracker() {
@@ -170,12 +168,14 @@ int RsSpTracker::get_res_list(char *msg, int size) {
 
     pNode.new_pHash();
 
-    //resource MD5(MD5_LEN)
+    // resource MD5(MD5_LEN)
     for (int i = 0; i < pNode.resourceCount; i++) {
         memcpy(pNode.pHash[i].hash_, res_list_msg.res_info[i].res_md5, MD5_LEN);
         pNode.pHash[i].hash_[MD5_LEN] = 0;
         pNode.pHash[i].blockInterval = res_list_msg.res_info[i].block_interval;
-        RSLOGE("index:%d block_interval start %d size %d\n", i, pNode.pHash[i].blockInterval.start, pNode.pHash[i].blockInterval.size);
+        RSLOGE("index:%d block_interval start %d size %d\n", i,
+               pNode.pHash[i].blockInterval.start,
+               pNode.pHash[i].blockInterval.size);
     }
 
     mgr->insert_channel(uuid, &pNode);
@@ -284,22 +284,23 @@ int RsSpTracker::loop() {
     return ret;
 }
 
-int RsSpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *buf, int nb_buf) {
+int RsSpTracker::handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from,
+                                   char *buf, int nb_buf) {
     int ret = ERROR_SUCCESS;
 
     if (buf == NULL || nb_buf == 0)
-        return -1; //fixme, error code
+        return -1; // fixme, error code
 
     sp_fd = st_fd;
-    //save the remote address
+    // save the remote address
     last_receive_addr = *from;
-    //get message size
+    // get message size
     char *temp = buf;
     int msg_size = 0; //(temp[3]<<24)|(temp[2]<<16)|(temp[1]<<8)|temp[0];
     memcpy((char *)&msg_size, buf, 4);
     buf += 4;
 
-    //get the message type
+    // get the message type
     char msg_type = 0;
     msg_type = *buf;
     buf += 1;
@@ -333,10 +334,10 @@ int RsSpTracker::handle_timeout(int64_t timerid) {
 
     switch (timerid) {
     case TRACKER_TIMER_ID:
-        //send_res_list();
+        // send_res_list();
         break;
     case TRACKER_GET_SP_LIST_TIMER_ID:
-        //send_sp_list();
+        // send_sp_list();
         break;
     }
     return ret;
@@ -346,10 +347,11 @@ int RsSpTracker::send_buffer(char *buf, int size) {
     int ret = ERROR_SUCCESS;
     ssize_t nsize = 0;
     if ((buf != NULL) && (size != 0))
-        nsize = st_sendto(sp_fd, buf, size, (sockaddr *)&last_receive_addr, sizeof(last_receive_addr), ST_UTIME_NO_TIMEOUT);
+        nsize = st_sendto(sp_fd, buf, size, (sockaddr *)&last_receive_addr,
+                          sizeof(last_receive_addr), ST_UTIME_NO_TIMEOUT);
 
     if (nsize != size)
-        return -1; //todo, Kevin, handle error code
+        return -1; // todo, Kevin, handle error code
     return ret;
 }
 
@@ -367,8 +369,8 @@ int RsSpTracker::send_welcome(map_str uuid) {
     send_buffer(payload, payload_nb);
 }
 
-int RsSpTracker::send_res_interval() {
-}
+int RsSpTracker::send_res_interval() {}
 
-
-} } }// namespace rs::protocol::tracker
+} // namespace tracker
+} // namespace protocol
+} // namespace rs

@@ -30,27 +30,25 @@ namespace rs {
 namespace core {
 
 class ITcpHandler {
-public:
-    ITcpHandler() {
-    }
-    virtual ~ITcpHandler() {
-    }
+  public:
+    ITcpHandler() {}
+    virtual ~ITcpHandler() {}
 
-public:
+  public:
     virtual int handle_tcp_connect(st_netfd_t stfd) = 0;
 };
 
 class IUdpHandler {
-public:
-    IUdpHandler() {
-	}
-    virtual ~IUdpHandler() {
-	}
+  public:
+    IUdpHandler() {}
+    virtual ~IUdpHandler() {}
 
-public:
-    virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in* from, char* buf, int nb_buf) = 0;
+  public:
+    virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from,
+                                  char *buf, int nb_buf) = 0;
 };
 
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif /* CORE_RS_SOCKET_HANDLER_H_ */

@@ -30,40 +30,41 @@ namespace rs {
 namespace core {
 
 class RsBuffer {
-public:
+  public:
     RsBuffer();
     virtual ~RsBuffer();
 
-public:
+  public:
     int current_size();
-    char* bytes();
+    char *bytes();
     void set_buffer(int size);
 
-public:
+  public:
     char read_byte();
 
-    char* read_nbytes(int size);
+    char *read_nbytes(int size);
 
     void skip(int size);
 
-    int fill_buffer(RsSocket* io, int size);
+    int fill_buffer(RsSocket *io, int size);
 
-private:
+  private:
     /*****************************************
-	               buffer_size
-	    ________________|________________
-	   |                                 |
-	 buffer     curr_ptr   end_ptr       |
-	   |____________|___________|________|
+                       buffer_size
+            ________________|________________
+           |                                 |
+         buffer     curr_ptr   end_ptr       |
+           |____________|___________|________|
 
     ******************************************/
-    char* curr_ptr; // the pointer for the current position of the using buffer
-    char* end_ptr; // the pointer for the end position of the using buffer
+    char *curr_ptr; // the pointer for the current position of the using buffer
+    char *end_ptr;  // the pointer for the end position of the using buffer
 
-    char* buffer; // the pointer for the base position of the buffer
+    char *buffer;    // the pointer for the base position of the buffer
     int buffer_size; // the total size of the buffer
 };
 
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif /* CORE_BUFFER_H_ */

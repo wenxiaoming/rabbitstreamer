@@ -31,8 +31,10 @@ namespace rs {
 namespace core {
 
 // client open socket and connect to server.
-int socket_connect(int socket_type, string server, int port, int64_t timeout, st_netfd_t* pstfd);
+int socket_connect(int socket_type, string server, int port, int64_t timeout,
+                   st_netfd_t *pstfd);
 
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs
 
 #endif /* CORE_RS_SOCKET_CONNECT_H_ */

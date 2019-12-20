@@ -37,7 +37,7 @@ void print_backtrace(void) {
     char cmd[512] = "addr2line -f -e ";
     char *prog = cmd + strlen(cmd);
 
-    int r = readlink("/proc/self/exe",prog,sizeof(cmd)-(prog-cmd)-1);
+    int r = readlink("/proc/self/exe", prog, sizeof(cmd) - (prog - cmd) - 1);
 
     /*printf("%s\n",cmd);*/
     FILE *fp = popen(cmd, "w");
@@ -50,4 +50,5 @@ void print_backtrace(void) {
     fclose(fp);
 }
 
-} }  // namespace rs::core
+} // namespace core
+} // namespace rs

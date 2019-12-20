@@ -23,15 +23,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef PROTOCOL_TRACKER_SP_PROTOCOL_H_
 #define PROTOCOL_TRACKER_SP_PROTOCOL_H_
 
-#include <st.h>
-#include <string>
-#include <stdint.h>
-#include "core/thread.h"
-#include "core/socket.h"
 #include "core/core_struct.h"
 #include "core/core_utility.h"
-#include "core/timer.h"
+#include "core/socket.h"
 #include "core/struct_define.h"
+#include "core/thread.h"
+#include "core/timer.h"
+#include <st.h>
+#include <stdint.h>
+#include <string>
 
 using namespace std;
 
@@ -41,54 +41,54 @@ namespace rs {
 namespace protocol {
 namespace tracker {
 
-class RsSpTracker : public RsThread,
-                    public virtual ITimerHandler {
-public:
+class RsSpTracker : public RsThread, public virtual ITimerHandler {
+  public:
     RsSpTracker();
     virtual ~RsSpTracker();
 
-public:
-    //implement rs_thread's virtual function
+  public:
+    // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
 
-private:
+  private:
     void generate_uuid(map_str &digits);
     int send_buffer(char *buf, int size);
 
-public:
-    //implement ITimerHandler
+  public:
+    // implement ITimerHandler
     virtual int handle_timeout(int64_t timerid);
 
-public:
-    int handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *buf, int nb_buf);
+  public:
+    int handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *buf,
+                          int nb_buf);
 
-private:
+  private:
     char *recv_buf;
     int buf_size;
     bool register_flag;
     int register_retry;
 
-private:
+  private:
     int64_t last_thread_time;
 
-private:
-    //string ip_address;
-    //int ip_port;
+  private:
+    // string ip_address;
+    // int ip_port;
     st_netfd_t sp_fd;
     RsSocket *io;
     sockaddr_in last_receive_addr;
 
-protected:
+  protected:
     int send_welcome(map_str uuid);
     int send_sp_list(map_str uuid);
     int send_errormsg();
     int send_res_interval();
 
-    //handle message from sp to tracker
+    // handle message from sp to tracker
     int get_register(char *msg, int size);
     int get_res_list(char *msg, int size);
     int get_sp_list(char *msg, int size);
@@ -100,7 +100,8 @@ protected:
     bool login_done;
 };
 
-
-} } }// namespace rs::protocol::tracker
+} // namespace tracker
+} // namespace protocol
+} // namespace rs
 
 #endif

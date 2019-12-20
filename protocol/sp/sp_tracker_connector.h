@@ -24,14 +24,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef PROTOCOL_SP_TRACKER_PROTOCOL_H_
 #define PROTOCOL_SP_TRACKER_PROTOCOL_H_
 
-#include <st.h>
-#include <string>
-#include <stdint.h>
-#include "core/thread.h"
-#include "core/socket.h"
 #include "core/core_struct.h"
 #include "core/core_utility.h"
+#include "core/socket.h"
+#include "core/thread.h"
 #include "core/timer.h"
+#include <st.h>
+#include <stdint.h>
+#include <string>
 
 using namespace std;
 
@@ -41,42 +41,45 @@ namespace rs {
 namespace protocol {
 namespace sp {
 
-class RsSpTrackerProtocol : public RsThread,
-                            public virtual ITimerHandler {
-public:
+class RsSpTrackerProtocol : public RsThread, public virtual ITimerHandler {
+  public:
     RsSpTrackerProtocol(string ip, int port);
     virtual ~RsSpTrackerProtocol();
 
-public:
+  public:
     int start_connect();
 
-public:
+  public:
     // implement rs_thread's virtual function
     virtual int on_thread_start();
     virtual int on_before_loop();
     virtual int loop();
     virtual int on_end_loop();
     virtual int on_thread_stop();
-public:
+
+  public:
     // implement ITimerHandler
     virtual int handle_timeout(int64_t timerid);
 
-private:
-    char* recv_buf = nullptr;
+  private:
+    char *recv_buf = nullptr;
     int buf_size;
     bool register_flag;
     int register_retry;
-private:
+
+  private:
     int64_t last_thread_time;
-private:
+
+  private:
     string ip_address;
     int ip_port;
     st_netfd_t tracker_udp_fd;
-    RsSocket* io = nullptr;
-protected:
-    int get_welcome(char* msg, int size);
-    int get_sp_list(char* msg, int size);
-    int get_res_interval(char* msg, int size);
+    RsSocket *io = nullptr;
+
+  protected:
+    int get_welcome(char *msg, int size);
+    int get_sp_list(char *msg, int size);
+    int get_res_interval(char *msg, int size);
 
     int send_register();
     int send_res_list();
@@ -92,8 +95,8 @@ protected:
     uint16_t sp_port;
 };
 
-
-
-} } }// namespace rs::protocol::sp
+} // namespace sp
+} // namespace protocol
+} // namespace rs
 
 #endif /* PROTOCOL_SP_TRACKER_PROTOCOL_H_ */
