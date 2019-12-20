@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "core/p2p_protocol.h"
 #include "core/socket_connect.h"
 #include "sp_source_manager.h"
-#include "sp_tracker_protocol.h"
+#include "sp_tracker_connector.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <signal.h>

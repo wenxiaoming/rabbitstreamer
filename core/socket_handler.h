@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef CORE_SOCKET_HANDLER_H_
 #define CORE_SOCKET_HANDLER_H_
 
+#include <st.h>
 #include <arpa/inet.h>
 
 namespace rs {

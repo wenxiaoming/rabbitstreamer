@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define CORE_SOCKET_CONNECT_H_
 
 #include <string>
+#include <st.h>
 
 using namespace std;
 
