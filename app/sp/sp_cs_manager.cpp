@@ -22,6 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #include "sp_cs_manager.h"
+#include "core/resource.h"
 
 namespace rs {
 namespace app {
@@ -35,14 +36,14 @@ SpCsManager::SpCsManager(string ip, int port) {
 SpCsManager::~SpCsManager() {}
 
 int SpCsManager::start_listener() {
-    tcp_listener = new RsTcpListener(ip_addr, listen_port, this);
+    tcp_listener = make_unique_ptr<RsTcpListener>(ip_addr, listen_port, this);
     tcp_listener->start_listen();
     return 0;
 }
 
 // the cs connect sp, the connection is ok, then call this function
 int SpCsManager::handle_tcp_connect(st_netfd_t stfd) {
-    RsCsSpProtocol *cs_sp_protocol = new RsCsSpProtocol(stfd);
+    std::unique_ptr<RsCsSpProtocol> cs_sp_protocol = make_unique_ptr<RsCsSpProtocol>(stfd);
     cs_sp_protocol->start_thread();
     return 0;
 }

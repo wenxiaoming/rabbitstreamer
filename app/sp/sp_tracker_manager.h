@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "protocol/sp/sp_tracker_connector.h"
 #include <string>
+#include <memory>
 
 using namespace std;
 using namespace rs::protocol::sp;
@@ -45,7 +46,7 @@ class SpTrackerManager {
   private:
     string ip_address;
     uint32_t ip_port;
-    RsSpTrackerProtocol *tracker_protocol;
+    std::unique_ptr<RsSpTrackerProtocol> tracker_protocol = nullptr;
 };
 
 } // namespace sp

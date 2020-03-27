@@ -20,11 +20,13 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
+#include <stdio.h>
 #include "app/common/server_base.h"
 #include "app/tracker/tracker_np_manager.h"
 #include "app/tracker/tracker_sp_manager.h"
 #include "core/async_logger.h"
-#include <stdio.h>
+#include "core/resource.h"
 
 using namespace rs::app::common;
 using namespace rs::app::tracker;
@@ -34,13 +36,13 @@ int main() {
 
     rs_st_init();
 
-    TrackerSpManager *sp_tracker = new TrackerSpManager("68.168.137.118", 4444);
+    std::unique_ptr<TrackerSpManager> sp_tracker = make_unique_ptr<TrackerSpManager>("68.168.137.118", 4444);
     sp_tracker->start_listener();
 
-    TrackerNpManager *np_tracker = new TrackerNpManager("68.168.137.118", 3333);
+    std::unique_ptr<TrackerNpManager> np_tracker = make_unique_ptr<TrackerNpManager>("68.168.137.118", 3333);
     np_tracker->start_listener();
 
-    RsBaseServer *server = new RsBaseServer(TRACKER);
+    std::unique_ptr<RsBaseServer> server = make_unique_ptr<RsBaseServer(TRACKER);
     server->loop();
 
     printf("hello tracker!\n");

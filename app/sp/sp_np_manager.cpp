@@ -22,6 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #include "sp_np_manager.h"
+#include "core/resource.h"
 
 namespace rs {
 namespace app {
@@ -30,21 +31,20 @@ namespace sp {
 SpNpManager::SpNpManager(string ip, uint32_t port) {
     ip_addr = ip;
     listen_port = port;
-    tcp_listener = NULL;
 }
 
 SpNpManager::~SpNpManager() {}
 
 int SpNpManager::start_listener() {
-    tcp_listener = new RsTcpListener(ip_addr, listen_port, this);
+    tcp_listener = make_unique_ptr<RsTcpListener>(ip_addr, listen_port, this);
     tcp_listener->start_listen();
     return 0;
 }
 
 int SpNpManager::handle_tcp_connect(st_netfd_t stfd) {
-    RsNpSpProtocol *np_sp_protocol = new RsNpSpProtocol(stfd);
+    std::unique_ptr<RsNpSpProtocol> np_sp_protocol = make_unique_ptr<RsNpSpProtocol>(stfd);
     np_sp_protocol->start_thread();
-    np_sp_protocol_vector.push_back(np_sp_protocol);
+    np_sp_protocol_vector.push_back(std::move(np_sp_protocol));
     return 0;
 }
 

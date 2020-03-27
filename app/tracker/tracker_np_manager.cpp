@@ -21,6 +21,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "tracker_np_manager.h"
+#include "core/resource.h"
 
 namespace rs {
 namespace app {
@@ -34,9 +35,9 @@ TrackerNpManager::TrackerNpManager(string ip, int port) {
 TrackerNpManager::~TrackerNpManager() {}
 
 int TrackerNpManager::start_listener() {
-    udp_listener = new RsUdpListener(ip_addr, listen_port, this);
+    udp_listener = make_unique_ptr<RsUdpListener>(ip_addr, listen_port, this);
     udp_listener->start_listen();
-    np_tracker = new RsNpTracker();
+    np_tracker = make_unique_ptr<RsNpTracker>();
     return 0;
 }
 

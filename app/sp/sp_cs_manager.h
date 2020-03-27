@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef APP_SP_CS_MANAGER_H_
 #define APP_SP_CS_MANAGER_H_
 
+#include <memory>
 #include "core/tcp_listener.h"
 #include "protocol/sp/sp_cs_connector.h"
 
@@ -47,10 +48,10 @@ class SpCsManager : public ITcpHandler {
     virtual int handle_tcp_connect(st_netfd_t stfd);
 
   private:
-    RsTcpListener *tcp_listener;
+    std::unique_ptr<RsTcpListener> tcp_listener = nullptr;
     string ip_addr;
     int listen_port;
-    RsCsSpProtocol *cs_sp_protocol;
+    std::unique_ptr<RsCsSpProtocol> cs_sp_protocol = nullptr;
 };
 
 } // namespace sp

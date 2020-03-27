@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 RabbitStreamer
+Copyright (c) 2016-2020 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -20,32 +20,29 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+#ifndef CORE_RS_RESOURCE_H_
+#define CORE_RS_RESOURCE_H_
 
-#include "sp_tracker_manager.h"
-#include "core/error_code.h"
-#include "core/resource.h"
+#include <memory>
 
-namespace rs {
-namespace app {
-namespace sp {
-
-SpTrackerManager::SpTrackerManager(string ip, uint32_t port) {
-    ip_address = ip;
-    ip_port = port;
+template <class Type, class... Args>
+inline typename std::enable_if<!std::is_array<Type>::value,
+                               std::unique_ptr<Type>>::type
+make_unique_ptr(Args &&... args) {
+    return std::unique_ptr<Type>(new Type(std::forward<Args>(args)...));
 }
 
-SpTrackerManager::~SpTrackerManager() {}
-
-int SpTrackerManager::start_connect() {
-    int ret = ERROR_SUCCESS;
-
-    tracker_protocol = make_unique_ptr<RsSpTrackerProtocol>(ip_address, ip_port);
-
-    tracker_protocol->start_connect();
-
-    return ret;
+template <class Type>
+inline typename std::enable_if<std::is_array<Type>::value &&
+                                   0 == std::extent<Type>::value,
+                               std::unique_ptr<Type>>::type
+make_unique_ptr(size_t size) {
+    typedef typename remove_extent<Type>::type U;
+    return std::unique_ptr<Type>(new U[size]());
 }
 
-} // namespace sp
-} // namespace app
-} // namespace rs
+template <class Type, class... Args>
+typename std::enable_if<std::extent<Type>::value != 0, void>::type
+make_unique_ptr(Args &&... args) = delete;
+
+#endif

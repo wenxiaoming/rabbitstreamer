@@ -21,13 +21,15 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <stdio.h>
+#include <memory>
 #include "app/common/server_base.h"
 #include "app/sp/sp_cs_manager.h"
 #include "app/sp/sp_np_manager.h"
 #include "app/sp/sp_tracker_manager.h"
 #include "core/async_logger.h"
 #include "protocol/sp/sp_source_manager.h"
-#include <stdio.h>
+#include "core/resource.h"
 
 using namespace rs::app::common;
 using namespace rs::protocol::sp;
@@ -39,11 +41,11 @@ int main() {
     rs_st_init();
 
     // start the listener of super peer server
-    SpNpManager *np_manager = new SpNpManager("68.168.137.118", 2222);
+    std::unique_ptr<SpNpManager> np_manager = make_unique_ptr<SpNpManager>("68.168.137.118", 2222);
     np_manager->start_listener();
 
     // listen from capture server
-    SpCsManager *cs_manager = new SpCsManager("68.168.137.118", 12345);
+    SpCsManager *cs_manager = make_unique_ptr<SpCsManager>("68.168.137.118", 12345);
     cs_manager->start_listener();
 
     // listen from normal peer or supoer peer
@@ -51,10 +53,10 @@ int main() {
 
     // update and check status with tracker server
     SpTrackerManager *tracker_manager =
-        new SpTrackerManager("68.168.137.118", 4444);
+        make_unique_ptr<SpTrackerManager>("68.168.137.118", 4444);
     tracker_manager->start_connect();
 
-    RsBaseServer *server = new RsBaseServer(SUPER_PEER);
+    RsBaseServer *server = make_unique_ptr<RsBaseServer>(SUPER_PEER);
     server->loop();
 
     deinit_log_system();

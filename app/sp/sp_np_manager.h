@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "core/tcp_listener.h"
 #include "protocol/sp/sp_np_connector.h"
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -49,10 +50,10 @@ class SpNpManager : public ITcpHandler {
     virtual int handle_tcp_connect(st_netfd_t stfd);
 
   private:
-    RsTcpListener *tcp_listener;
+    std::unique_ptr<RsTcpListener> tcp_listener = nullptr;
     string ip_addr;
     uint32_t listen_port;
-    std::vector<RsNpSpProtocol *> np_sp_protocol_vector;
+    std::vector<std::unique_ptr<RsNpSpProtocol>> np_sp_protocol_vector;
 };
 
 } // namespace sp

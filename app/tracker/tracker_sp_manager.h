@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef APP_TRACKER_SP_MANAGER_H_
 #define APP_TRACKER_SP_MANAGER_H_
 
+#include <memory>
 #include "core/udp_listener.h"
 #include "protocol/tracker/tracker_sp_connector.h"
 
@@ -46,10 +47,10 @@ class TrackerSpManager : public IUdpHandler {
                                   char *buf, int nb_buf);
 
   private:
-    RsUdpListener *udp_listener;
+    std::unique_ptr<RsUdpListener> udp_listener = nullptr;
     string ip_addr;
     int listen_port;
-    RsSpTracker *sp_tracker;
+    std::unique_ptr<RsSpTracker> sp_tracker = nullptr;
 };
 
 } // namespace tracker
