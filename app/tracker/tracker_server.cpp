@@ -47,12 +47,6 @@ int main() {
 
     printf("hello tracker!\n");
 
-    delete sp_tracker;
-
-    delete np_tracker;
-
-    delete server;
-
     deinit_log_system();
 
     return 0;
