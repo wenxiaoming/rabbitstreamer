@@ -20,33 +20,34 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef RS_CORE_RESOURCE_H_
-#define RS_CORE_RESOURCE_H_
+
+#ifndef RS_CORE_HASH_H_
+#define RS_CORE_HASH_H_
+
+#include <functional>
 
 namespace rs {
 namespace core {
 
-#include <memory>
-
-template <class Type, class... Args>
-inline typename std::enable_if<!std::is_array<Type>::value,
-                               std::unique_ptr<Type>>::type
-make_unique_ptr(Args &&... args) {
-    return std::unique_ptr<Type>(new Type(std::forward<Args>(args)...));
+template <typename T> inline void hash_combine(size_t seed, const T &value) {
+    seed ^= std::hash<T>()(value) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
-template <class Type>
-inline typename std::enable_if<std::is_array<Type>::value &&
-                                   0 == std::extent<Type>::value,
-                               std::unique_ptr<Type>>::type
-make_unique_ptr(size_t size) {
-    typedef typename remove_extent<Type>::type U;
-    return std::unique_ptr<Type>(new U[size]());
+template <typename T> inline void has_key(size_t &seed, const T &value) {
+    hash_combine(seed, value);
 }
 
-template <class Type, class... Args>
-typename std::enable_if<std::extent<Type>::value != 0, void>::type
-make_unique_ptr(Args &&... args) = delete;
+template <typename T, typename... Args>
+inline void hash_key(size &seed, const T &value, const Args &... args) {
+    hash_combine(seed, value);
+    hash_key(seed, args...);
+}
+
+template <typename... Args> inline size_t hash_key(const Args &... args) {
+    size_t seed = 0;
+    hash_val(seed, args...);
+    return seed;
+}
 
 } // namespace core
 } // namespace rs
