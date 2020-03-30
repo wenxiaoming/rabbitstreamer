@@ -45,18 +45,18 @@ int main() {
     np_manager->start_listener();
 
     // listen from capture server
-    SpCsManager *cs_manager = make_unique_ptr<SpCsManager>("68.168.137.118", 12345);
+    std::unique_ptr<SpCsManager> cs_manager = make_unique_ptr<SpCsManager>("68.168.137.118", 12345);
     cs_manager->start_listener();
 
     // listen from normal peer or supoer peer
     RsSourceManager::instance()->initialize("", "", "68.168.137.118:3333");
 
     // update and check status with tracker server
-    SpTrackerManager *tracker_manager =
+    std::unique_ptr<SpTrackerManager> tracker_manager =
         make_unique_ptr<SpTrackerManager>("68.168.137.118", 4444);
     tracker_manager->start_connect();
 
-    RsBaseServer *server = make_unique_ptr<RsBaseServer>(SUPER_PEER);
+    std::unique_ptr<RsBaseServer> server = make_unique_ptr<RsBaseServer>(SUPER_PEER);
     server->loop();
 
     deinit_log_system();
