@@ -54,8 +54,8 @@ else
 LINKS += -L$(STATICLIBPATH)
 endif
 
-CPPSRCS  = $(wildcard *.cpp ./third_party/md5/*.cpp ./app/common/*.cpp ./app/tracker/tracker_np_manager.cpp ./app/tracker/tracker_sp_manager.cpp ./app/sp/sp_cs_manager.cpp ./app/sp/sp_np_manager.cpp ./app/sp/sp_tracker_manager.cpp ./core/*.cpp ./protocol/*.cpp ./protocol/sp/*.cpp ./protocol/tracker/*.cpp)
-CSRCS  = $(wildcard *.c ./third_party/md5/*.c ./app/common/*.c ./app/sp/*.c ./core/*.c ./protocol/*.c ./protocol/sp/*.c ./protocol/tracker/*.c)
+CPPSRCS  = $(wildcard *.cpp ./third_party/md5/*.cpp ./app/common/*.cpp ./app/tracker/tracker_np_manager.cpp ./app/tracker/tracker_sp_manager.cpp ./app/sp/sp_cs_manager.cpp ./app/sp/sp_np_manager.cpp ./app/sp/sp_tracker_manager.cpp ./core/*.cpp ./protocol/*.cpp ./protocol/sp/*.cpp ./protocol/tracker/*.cpp ./protocol/common/*.cpp)
+CSRCS  = $(wildcard *.c ./third_party/md5/*.c ./app/common/*.c ./app/sp/*.c ./core/*.c ./protocol/*.c ./protocol/sp/*.c ./protocol/tracker/*.c ./protocol/common/*.c)
 CPPOBJS  = $(patsubst %.cpp,%.o,$(CPPSRCS))
 COBJS  = $(patsubst %.c,%.o,$(CSRCS))
 
