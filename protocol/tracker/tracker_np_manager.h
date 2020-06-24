@@ -63,10 +63,10 @@ class TrackerNpCoordinator {
     NPNode *get_Node(map_str digits);
 
   private:
-    using  HashMap = std::map<map_str, NPNode *> ;
-    using  CMIt = std::map<map_str, NPNode *>::iterator ;
-    using  CCMIt = std::map<map_str, NPNode *>::const_iterator ;
-    using  CMPair = std::pair<map_str, NPNode *> ;
+    using  HashMap = std::map<map_str, NPNode *>;
+    using  CMIt = std::map<map_str, NPNode *>::iterator;
+    using  CCMIt = std::map<map_str, NPNode *>::const_iterator;
+    using  CMPair = std::pair<map_str, NPNode *>;
 
     HashMap npnode_map;
 

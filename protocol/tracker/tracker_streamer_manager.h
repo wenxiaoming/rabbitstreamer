@@ -76,10 +76,10 @@ class StreamMgr {
     ChannelNode *get_node(map_str chnlhash);
 
   private:
-    using  ChannelHashMap = std::map<map_str, ChannelNode *> ;
-    using  CMIt = std::map<map_str, ChannelNode *>::iterator ;
-    using  CCMIt = std::map<map_str, ChannelNode *>::const_iterator ;
-    using CMPair = std::pair<map_str, ChannelNode *> ;
+    using  ChannelHashMap = std::map<map_str, ChannelNode *>;
+    using  CMIt = std::map<map_str, ChannelNode *>::iterator;
+    using  CCMIt = std::map<map_str, ChannelNode *>::const_iterator;
+    using CMPair = std::pair<map_str, ChannelNode *>;
 
     ChannelHashMap channel_map;
 

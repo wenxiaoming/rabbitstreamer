@@ -152,8 +152,7 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
 
     pPeerInfoWithAddr = new PeerInfoWithAddr[inCount];
 
-    typedef vector<int> INTVECTOR;
-    INTVECTOR theVector;
+    vector<int> theVector;
 
     int iSize = npnode_map.size();
     int iRange = iSize / 30 + 1;
