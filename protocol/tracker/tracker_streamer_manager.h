@@ -79,7 +79,7 @@ class StreamMgr {
     using  ChannelHashMap = std::map<map_str, ChannelNode *>;
     using  CMIt = std::map<map_str, ChannelNode *>::iterator;
     using  CCMIt = std::map<map_str, ChannelNode *>::const_iterator;
-    using CMPair = std::pair<map_str, ChannelNode *>;
+    using  CMPair = std::pair<map_str, ChannelNode *>;
 
     ChannelHashMap channel_map;
 

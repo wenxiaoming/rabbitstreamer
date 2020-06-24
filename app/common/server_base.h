@@ -24,18 +24,19 @@
 
 #ifndef APP_RS_SERVER_BASE_H
 #define APP_RS_SERVER_BASE_H
+#include <stdint.h>
 
 namespace rs {
 namespace app {
 namespace common {
 
-enum ServerType {
-    SUPER_PEER,
-    TRACKER,
-};
 
 class RsBaseServer {
   public:
+    enum class ServerType :uint8_t {
+      SUPER_PEER,
+      TRACKER,
+    };
     explicit RsBaseServer(ServerType type);
     virtual ~RsBaseServer();
 

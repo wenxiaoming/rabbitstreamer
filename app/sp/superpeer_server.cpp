@@ -56,7 +56,7 @@ int main() {
         make_unique_ptr<SpTrackerManager>("68.168.137.118", 4444);
     tracker_manager->start_connect();
 
-    std::unique_ptr<RsBaseServer> server = make_unique_ptr<RsBaseServer>(SUPER_PEER);
+    std::unique_ptr<RsBaseServer> server = make_unique_ptr<RsBaseServer>(RsBaseServer::ServerType::SUPER_PEER);
     server->loop();
 
     deinit_log_system();

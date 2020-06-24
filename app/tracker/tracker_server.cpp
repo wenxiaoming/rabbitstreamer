@@ -42,7 +42,7 @@ int main() {
     std::unique_ptr<TrackerNpManager> np_tracker = make_unique_ptr<TrackerNpManager>("68.168.137.118", 3333);
     np_tracker->start_listener();
 
-    std::unique_ptr<RsBaseServer> server = make_unique_ptr<RsBaseServer>(TRACKER);
+    std::unique_ptr<RsBaseServer> server = make_unique_ptr<RsBaseServer>(RsBaseServer::ServerType::TRACKER);
     server->loop();
 
     printf("hello tracker!\n");
