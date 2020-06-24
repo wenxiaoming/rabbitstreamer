@@ -63,12 +63,12 @@ class TrackerNpCoordinator {
     NPNode *get_Node(map_str digits);
 
   private:
-    typedef std::map<map_str, NPNode *> HashMap;
-    typedef std::map<map_str, NPNode *>::iterator CMIt;
-    typedef std::map<map_str, NPNode *>::const_iterator CCMIt;
-    typedef std::pair<map_str, NPNode *> CMPair;
+    using  HashMap = std::map<map_str, NPNode *> ;
+    using  CMIt = std::map<map_str, NPNode *>::iterator ;
+    using  CCMIt = std::map<map_str, NPNode *>::const_iterator ;
+    using  CMPair = std::pair<map_str, NPNode *> ;
 
-    HashMap NPNode_map_;
+    HashMap npnode_map;
 
     enum {
         // if a live channel stopped receiving block from cs for more than

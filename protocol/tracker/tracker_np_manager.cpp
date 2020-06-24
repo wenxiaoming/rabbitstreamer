@@ -34,19 +34,19 @@ namespace tracker {
 TrackerNpCoordinator *TrackerNpCoordinator::p = new TrackerNpCoordinator();
 TrackerNpCoordinator *TrackerNpCoordinator::instance() { return p; }
 
-TrackerNpCoordinator::TrackerNpCoordinator() { NPNode_map_.clear(); }
+TrackerNpCoordinator::TrackerNpCoordinator() { npnode_map.clear(); }
 
 TrackerNpCoordinator::~TrackerNpCoordinator() {
-    for (CMIt it = NPNode_map_.begin(); it != NPNode_map_.end(); ++it) {
+    for (CMIt it = npnode_map.begin(); it != npnode_map.end(); ++it) {
         NPNode *temp = it->second;
         delete temp;
     }
     //
-    NPNode_map_.clear();
+    npnode_map.clear();
 }
 
 int TrackerNpCoordinator::timer_check() {
-    for (CMIt it = NPNode_map_.begin(); it != NPNode_map_.end();) {
+    for (CMIt it = npnode_map.begin(); it != npnode_map.end();) {
         CMIt i = it;
         it++;
         time_t curr_time;
@@ -60,7 +60,7 @@ int TrackerNpCoordinator::timer_check() {
             NPNode *temp = i->second;
             delete temp;
 
-            NPNode_map_.erase(i);
+            npnode_map.erase(i);
         }
     }
 
@@ -83,10 +83,10 @@ int TrackerNpCoordinator::insert_Node(map_str digits, NPNode *node) {
             *pNode = *node;
 
             bool ret =
-                NPNode_map_.insert(std::pair<map_str, NPNode *>(digits, pNode))
+                npnode_map.insert(std::pair<map_str, NPNode *>(digits, pNode))
                     .second;
             if (!ret) {
-                RSLOGE("NPNode_map_.insert error | new_Node.\n");
+                RSLOGE("npnode_map.insert error | new_Node.\n");
                 delete pNode;
                 pNode = NULL;
                 return 0;
@@ -103,20 +103,20 @@ int TrackerNpCoordinator::insert_Node(map_str digits, NPNode *node) {
 }
 
 int TrackerNpCoordinator::deleteNode(map_str digits) {
-    CMIt it = NPNode_map_.find(digits);
+    CMIt it = npnode_map.find(digits);
     //
-    if (it != NPNode_map_.end()) {
+    if (it != npnode_map.end()) {
         delete (it->second);
 
-        NPNode_map_.erase(it);
+        npnode_map.erase(it);
     }
     //
     return 0;
 }
 
 int TrackerNpCoordinator::get_Node(map_str digits, NPNode *node) {
-    CCMIt it = NPNode_map_.find(digits);
-    if (it == NPNode_map_.end()) {
+    CCMIt it = npnode_map.find(digits);
+    if (it == npnode_map.end()) {
         return -1;
     }
     //
@@ -125,8 +125,8 @@ int TrackerNpCoordinator::get_Node(map_str digits, NPNode *node) {
 }
 
 NPNode *TrackerNpCoordinator::get_Node(map_str digits) {
-    CCMIt it = NPNode_map_.find(digits);
-    if (it == NPNode_map_.end()) {
+    CCMIt it = npnode_map.find(digits);
+    if (it == npnode_map.end()) {
         return NULL;
     }
     //
@@ -155,7 +155,7 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
     typedef vector<int> INTVECTOR;
     INTVECTOR theVector;
 
-    int iSize = NPNode_map_.size();
+    int iSize = npnode_map.size();
     int iRange = iSize / 30 + 1;
 
     for (int i = 0; i < iRange; i++) {
@@ -183,12 +183,12 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
         if (-1 == iPos)
             break;
 
-        CCMIt it = NPNode_map_.begin();
+        CCMIt it = npnode_map.begin();
         for (int m = 0; m < iPos * 30; m++) {
             it++;
         }
 
-        for (int iLimit = 0; it != NPNode_map_.end(); it++) {
+        for (int iLimit = 0; it != npnode_map.end(); it++) {
             if (30 <= iLimit) {
                 break;
             }
@@ -209,7 +209,7 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
             }
         }
 
-        if (it != NPNode_map_.end())
+        if (it != npnode_map.end())
             break;
         //
         if (index >= inCount) {

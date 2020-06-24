@@ -76,12 +76,12 @@ class StreamMgr {
     ChannelNode *get_node(map_str chnlhash);
 
   private:
-    typedef std::map<map_str, ChannelNode *> ChannelHashMap;
-    typedef std::map<map_str, ChannelNode *>::iterator CMIt;
-    typedef std::map<map_str, ChannelNode *>::const_iterator CCMIt;
-    typedef std::pair<map_str, ChannelNode *> CMPair;
+    using  ChannelHashMap = std::map<map_str, ChannelNode *> ;
+    using  CMIt = std::map<map_str, ChannelNode *>::iterator ;
+    using  CCMIt = std::map<map_str, ChannelNode *>::const_iterator ;
+    using CMPair = std::pair<map_str, ChannelNode *> ;
 
-    ChannelHashMap chnl_map_;
+    ChannelHashMap channel_map;
 
     enum {
         // if a live channel stopped receiving block from cs for more than

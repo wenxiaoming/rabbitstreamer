@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define PROTOCOL_SP_SOURCE_MANAGER_H_
 
 #include "core/core_struct.h"
-#include "protocol/buffer_queue.h"
+#include "protocol/common/buffer_queue.h"
 #include <list>
 #include <map>
 

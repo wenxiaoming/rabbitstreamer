@@ -33,14 +33,14 @@ namespace tracker {
 StreamMgr *StreamMgr::p = new StreamMgr;
 StreamMgr *StreamMgr::instance() { return p; }
 
-StreamMgr::StreamMgr() { chnl_map_.clear(); }
+StreamMgr::StreamMgr() { channel_map.clear(); }
 StreamMgr::~StreamMgr() {
-    for (CMIt it = chnl_map_.begin(); it != chnl_map_.end(); ++it) {
+    for (CMIt it = channel_map.begin(); it != channel_map.end(); ++it) {
         ChannelNode *temp = it->second;
         delete temp;
     }
     //
-    chnl_map_.clear();
+    channel_map.clear();
 }
 
 int StreamMgr::initialize(const string &block_data_store_path) { return 0; }
@@ -48,7 +48,7 @@ int StreamMgr::initialize(const string &block_data_store_path) { return 0; }
 /*
 int StreamMgr::timer_check()
 {
-        for(CMIt it = chnl_map_.begin(); it != chnl_map_.end(); )
+        for(CMIt it = channel_map.begin(); it != channel_map.end(); )
         {
                 CMIt i = it;
                 it++;
@@ -63,7 +63,7 @@ long time idle.\n")));
                         ChannelNode* temp = i->second;
                         delete temp;
 
-                        chnl_map_.erase(i);
+                        channel_map.erase(i);
                 }
         }
 
@@ -72,7 +72,7 @@ long time idle.\n")));
 */
 
 int StreamMgr::signal_get_res_interval(MD5_Hash_Str Channel_hash) {
-    for (CCMIt it = chnl_map_.begin(); it != chnl_map_.end(); it++) {
+    for (CCMIt it = channel_map.begin(); it != channel_map.end(); it++) {
         //
         for (int i = 0; i < it->second->resourceCount; i++) {
             if (it->second->pHash[i] == Channel_hash) {
@@ -91,7 +91,7 @@ int StreamMgr::signal_get_res_interval(MD5_Hash_Str Channel_hash) {
 
 int StreamMgr::get_channel_interval(MD5_Hash_Str Channel_hash,
                                     BlockInterval &blockInterval) {
-    for (CCMIt it = chnl_map_.begin(); it != chnl_map_.end(); it++) {
+    for (CCMIt it = channel_map.begin(); it != channel_map.end(); it++) {
         //
         for (int i = 0; i < it->second->resourceCount; i++) {
             if (it->second->pHash[i] == Channel_hash) {
@@ -104,7 +104,7 @@ int StreamMgr::get_channel_interval(MD5_Hash_Str Channel_hash,
     return 1;
 }
 
-int StreamMgr::get_channel_count() { return chnl_map_.size(); }
+int StreamMgr::get_channel_count() { return channel_map.size(); }
 
 int StreamMgr::insert_channel(map_str strMd5, ChannelNode *chnl) {
     ChannelNode Node;
@@ -119,11 +119,11 @@ int StreamMgr::insert_channel(map_str strMd5, ChannelNode *chnl) {
             *pNode = *chnl;
             //
             bool ret =
-                chnl_map_
+                channel_map
                     .insert(std::pair<map_str, ChannelNode *>(strMd5, pNode))
                     .second;
             if (!ret) {
-                RSLOGE("chnl_map_.insert error | new_channel.\n");
+                RSLOGE("channel_map.insert error | new_channel.\n");
                 delete pNode;
                 pNode = NULL;
                 return 0;
@@ -142,20 +142,20 @@ int StreamMgr::insert_channel(map_str strMd5, ChannelNode *chnl) {
 }
 
 int StreamMgr::delete_channel(map_str uuid) {
-    CMIt it = chnl_map_.find(uuid);
-    if (it == chnl_map_.end()) {
+    CMIt it = channel_map.find(uuid);
+    if (it == channel_map.end()) {
         return NULL;
     }
     //
     delete it->second;
-    chnl_map_.erase(it);
+    channel_map.erase(it);
     //
     return 0;
 }
 
 int StreamMgr::get_channel(map_str chnlhash, ChannelNode *Node) {
-    CCMIt it = chnl_map_.find(chnlhash);
-    if (it == chnl_map_.end()) {
+    CCMIt it = channel_map.find(chnlhash);
+    if (it == channel_map.end()) {
         return -1;
     }
     //
@@ -165,8 +165,8 @@ int StreamMgr::get_channel(map_str chnlhash, ChannelNode *Node) {
 }
 
 ChannelNode *StreamMgr::get_node(map_str chnlhash) {
-    CCMIt it = chnl_map_.find(chnlhash);
-    if (it == chnl_map_.end()) {
+    CCMIt it = channel_map.find(chnlhash);
+    if (it == channel_map.end()) {
         return NULL;
     }
     //
@@ -175,8 +175,8 @@ ChannelNode *StreamMgr::get_node(map_str chnlhash) {
 
 int StreamMgr::get_cp_address(NetAddress *&pSPAddr, map_str chnlhash) {
     pSPAddr = new NetAddress[1];
-    CCMIt it = chnl_map_.find(chnlhash);
-    if (it == chnl_map_.end()) {
+    CCMIt it = channel_map.find(chnlhash);
+    if (it == channel_map.end()) {
         delete pSPAddr;
         pSPAddr = NULL;
         return -1;
@@ -213,7 +213,7 @@ int StreamMgr::get_cp_address(NetAddress *&pSPAddr, int &inCount,
     pSPAddr = new NetAddress[inCount];
 
     int index = 0;
-    for (CCMIt it = chnl_map_.begin(); it != chnl_map_.end(); it++) {
+    for (CCMIt it = channel_map.begin(); it != channel_map.end(); it++) {
         if (NULL == sel || sel[0] != it->second->spAddress) {
             pSPAddr[index] = it->second->spAddress;
             index++;
@@ -233,7 +233,7 @@ int StreamMgr::get_cp_address(NetAddress *&pSPAddr, int inCount) {
 
     pSPAddr = new NetAddress[inCount];
 
-    int imax = chnl_map_.size();
+    int imax = channel_map.size();
     int imaxPos = imax - inCount;
     int iPos = 0; //
     if (imaxPos > 0) {
@@ -243,7 +243,7 @@ int StreamMgr::get_cp_address(NetAddress *&pSPAddr, int inCount) {
 
     int index = 0;
     int i = 0;
-    for (CCMIt it = chnl_map_.begin(); it != chnl_map_.end(); it++) {
+    for (CCMIt it = channel_map.begin(); it != channel_map.end(); it++) {
         if (i >= iPos) {
             if (index >= inCount) {
                 break;
@@ -264,7 +264,7 @@ int StreamMgr::get_sp_address(MD5_Hash_Str resHash, NetAddress *&pSPAddr,
     pSPAddr = new NetAddress[inCount];
 
     int index = 0;
-    for (CCMIt it = chnl_map_.begin(); it != chnl_map_.end(); it++) {
+    for (CCMIt it = channel_map.begin(); it != channel_map.end(); it++) {
         if (index >= inCount) {
             break;
         }
