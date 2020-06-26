@@ -33,17 +33,17 @@ namespace protocol {
 namespace tracker {
 
 // manager of all channels
-class TrackerNpCoordinator {
+class RsTrackerNpCoordinator {
   private:
-    TrackerNpCoordinator();
-    static TrackerNpCoordinator *p;
+    RsTrackerNpCoordinator();
+    static RsTrackerNpCoordinator *p;
 
   public:
-    virtual ~TrackerNpCoordinator();
+    virtual ~RsTrackerNpCoordinator();
 
   public:
     // for single instance
-    static TrackerNpCoordinator *instance();
+    static RsTrackerNpCoordinator *instance();
 
     int timer_check();
     // add a new channel
@@ -63,14 +63,14 @@ class TrackerNpCoordinator {
     NPNode *get_Node(map_str digits);
 
   private:
-    using  HashMap = std::map<map_str, NPNode *>;
-    using  CMIt = std::map<map_str, NPNode *>::iterator;
-    using  CCMIt = std::map<map_str, NPNode *>::const_iterator;
-    using  CMPair = std::pair<map_str, NPNode *>;
+    using HashMap = std::map<map_str, NPNode *>;
+    using CMIt = std::map<map_str, NPNode *>::iterator;
+    using CCMIt = std::map<map_str, NPNode *>::const_iterator;
+    using CMPair = std::pair<map_str, NPNode *>;
 
     HashMap npnode_map;
 
-    enum class MaxIdleTime: uint8_t {
+    enum MaxIdleTime : uint16_t {
         // if a live channel stopped receiving block from cs for more than
         // MAX_IDLE_TIME_SEC, it will be deleted
         MAX_IDLE_TIME_SEC = 600,

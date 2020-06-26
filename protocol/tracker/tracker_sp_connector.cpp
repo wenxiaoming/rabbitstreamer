@@ -115,7 +115,7 @@ int RsSpTracker::get_register(char *msg, int size) {
     streamer.initialize(msg, size);
     register_msg.parse(&streamer);
 
-    TrackerStreamManager *mgr = TrackerStreamManager::instance();
+    RsTrackerStreamManager *mgr = RsTrackerStreamManager::instance();
     //
     map_str uuid;
     generate_uuid(uuid);
@@ -155,7 +155,7 @@ int RsSpTracker::get_res_list(char *msg, int size) {
     uuid.str_[UUID_LENGTH] = 0;
 
     ChannelNode pNode;
-    TrackerStreamManager *mgr = TrackerStreamManager::instance();
+    RsTrackerStreamManager *mgr = RsTrackerStreamManager::instance();
 
     if (mgr->get_channel(uuid, &pNode) == -1) {
         printf("no resource UUID(16 bytes) channelNode| on_SP2TS_STATUS\n");
@@ -212,7 +212,7 @@ int RsSpTracker::get_status(char *msg, int size) {
     uuid.str_[UUID_LENGTH] = 0;
 
     ChannelNode pNode;
-    TrackerStreamManager *mgr = TrackerStreamManager::instance();
+    RsTrackerStreamManager *mgr = RsTrackerStreamManager::instance();
 
     if (mgr->get_channel(uuid, &pNode) == -1) {
         printf("no resource UUID(16 bytes) channelNode| on_SP2TS_STATUS\n");
@@ -253,7 +253,7 @@ int RsSpTracker::send_sp_list(map_str uuid) {
     NetAddress *spaddr = NULL;
     int count = 0;
 
-    TrackerStreamManager *mgr = TrackerStreamManager::instance();
+    RsTrackerStreamManager *mgr = RsTrackerStreamManager::instance();
 
     mgr->get_cp_address(spaddr, count, uuid);
 

@@ -31,13 +31,14 @@ namespace rs {
 namespace protocol {
 namespace tracker {
 
-TrackerNpCoordinator *TrackerNpCoordinator::p = new TrackerNpCoordinator();
-TrackerNpCoordinator *TrackerNpCoordinator::instance() { return p; }
+RsTrackerNpCoordinator *RsTrackerNpCoordinator::p =
+    new RsTrackerNpCoordinator();
+RsTrackerNpCoordinator *RsTrackerNpCoordinator::instance() { return p; }
 
-TrackerNpCoordinator::TrackerNpCoordinator() { npnode_map.clear(); }
+RsTrackerNpCoordinator::RsTrackerNpCoordinator() { npnode_map.clear(); }
 
-TrackerNpCoordinator::~TrackerNpCoordinator() {
-    for (const auto& val: npnode_map) {
+RsTrackerNpCoordinator::~RsTrackerNpCoordinator() {
+    for (const auto &val : npnode_map) {
         NPNode *temp = val.second;
         delete temp;
     }
@@ -45,7 +46,7 @@ TrackerNpCoordinator::~TrackerNpCoordinator() {
     npnode_map.clear();
 }
 
-int TrackerNpCoordinator::timer_check() {
+int RsTrackerNpCoordinator::timer_check() {
     for (CMIt it = npnode_map.begin(); it != npnode_map.end();) {
         CMIt i = it;
         it++;
@@ -67,7 +68,7 @@ int TrackerNpCoordinator::timer_check() {
     return 0;
 }
 
-int TrackerNpCoordinator::insert_Node(map_str digits, NPNode *node) {
+int RsTrackerNpCoordinator::insert_Node(map_str digits, NPNode *node) {
     NPNode *pNode = get_Node(digits);
     if (NULL == pNode) {
         // create a new channel
@@ -102,7 +103,7 @@ int TrackerNpCoordinator::insert_Node(map_str digits, NPNode *node) {
     return 0;
 }
 
-int TrackerNpCoordinator::deleteNode(map_str digits) {
+int RsTrackerNpCoordinator::deleteNode(map_str digits) {
     CMIt it = npnode_map.find(digits);
     //
     if (it != npnode_map.end()) {
@@ -114,7 +115,7 @@ int TrackerNpCoordinator::deleteNode(map_str digits) {
     return 0;
 }
 
-int TrackerNpCoordinator::get_Node(map_str digits, NPNode *node) {
+int RsTrackerNpCoordinator::get_Node(map_str digits, NPNode *node) {
     CCMIt it = npnode_map.find(digits);
     if (it == npnode_map.end()) {
         return -1;
@@ -124,7 +125,7 @@ int TrackerNpCoordinator::get_Node(map_str digits, NPNode *node) {
     return 0;
 }
 
-NPNode *TrackerNpCoordinator::get_Node(map_str digits) {
+NPNode *RsTrackerNpCoordinator::get_Node(map_str digits) {
     CCMIt it = npnode_map.find(digits);
     if (it == npnode_map.end()) {
         return NULL;
@@ -133,9 +134,10 @@ NPNode *TrackerNpCoordinator::get_Node(map_str digits) {
     return it->second;
 }
 
-int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
-                                         PeerInfoWithAddr *&pPeerInfoWithAddr,
-                                         int inCount, uint32_t currentblockID) {
+int RsTrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
+                                           PeerInfoWithAddr *&pPeerInfoWithAddr,
+                                           int inCount,
+                                           uint32_t currentblockID) {
     /*
         随机取node的算法思想
 

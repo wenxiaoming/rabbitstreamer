@@ -123,7 +123,7 @@ int RsNpTracker::get_login(char *msg, int size) {
     map_str digits;
     generate_uuid(digits);
 
-    TrackerNpCoordinator *mgr = TrackerNpCoordinator::instance();
+    RsTrackerNpCoordinator *mgr = RsTrackerNpCoordinator::instance();
 
     // login id(UINT32)
     uint32_t id = login_msg.login_id;
@@ -216,7 +216,7 @@ int RsNpTracker::get_report(char *msg, int size) {
     memcpy(digits.str_, report_msg.uuid, UUID_LENGTH);
     digits.str_[UUID_LENGTH] = 0;
 
-    TrackerNpCoordinator *mgr = TrackerNpCoordinator::instance();
+    RsTrackerNpCoordinator *mgr = RsTrackerNpCoordinator::instance();
     NPNode node;
 
     if (mgr->get_Node(digits, &node) == -1) {
@@ -300,7 +300,7 @@ int RsNpTracker::get_need_peers(char *msg, int size) {
     // current block(UINT32)
     uint32_t currentBlock = needpeers_msg.current_block;
 
-    TrackerNpCoordinator *mgr = TrackerNpCoordinator::instance();
+    RsTrackerNpCoordinator *mgr = RsTrackerNpCoordinator::instance();
     NPNode node;
 
     if (mgr->get_Node(digits, &node) == -1) {
@@ -327,7 +327,7 @@ int RsNpTracker::get_logout(char *msg, int size) {
 
     digits.str_[UUID_LENGTH] = 0;
 
-    TrackerNpCoordinator *mgr = TrackerNpCoordinator::instance();
+    RsTrackerNpCoordinator *mgr = RsTrackerNpCoordinator::instance();
 
     mgr->deleteNode(digits);
 
@@ -349,7 +349,7 @@ int RsNpTracker::get_res_interval(char *msg, int size) {
 
     digits.str_[UUID_LENGTH] = 0;
 
-    TrackerNpCoordinator *mgr = TrackerNpCoordinator::instance();
+    RsTrackerNpCoordinator *mgr = RsTrackerNpCoordinator::instance();
 
     NPNode node;
     if (mgr->get_Node(digits, &node) == -1) {
@@ -369,10 +369,10 @@ int RsNpTracker::send_peers(map_str uuid, MD5_Hash_Str resHash,
     NetAddress *pCPAddr = NULL;
     NetAddress *pSPAddr = NULL;
 
-    TrackerNpCoordinator *mgr = TrackerNpCoordinator::instance();
+    RsTrackerNpCoordinator *mgr = RsTrackerNpCoordinator::instance();
     NPNode pNode;
 
-    TrackerStreamManager *chn_mgr = TrackerStreamManager::instance();
+    RsTrackerStreamManager *chn_mgr = RsTrackerStreamManager::instance();
 
     uint8_t npCount = mgr->get_np_address(resHash, uuid, pPeerInfoWithAddr, 20,
                                           currentblockID);
@@ -457,7 +457,7 @@ int RsNpTracker::send_welcome(map_str digits, P2PAddress p2pAddr) {
 int RsNpTracker::send_res_interval(MD5_Hash_Str channel_hash) {
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     BlockInterval blockInterval;
-    TrackerStreamManager *mgr = TrackerStreamManager::instance();
+    RsTrackerStreamManager *mgr = RsTrackerStreamManager::instance();
     if (1 == mgr->get_channel_interval(channel_hash, blockInterval)) {
         RSLOGE("no blockInterval in send_TS2NP_RES_INTERVAL\n");
         return 0;

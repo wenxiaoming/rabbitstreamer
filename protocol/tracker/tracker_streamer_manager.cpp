@@ -30,43 +30,44 @@ namespace rs {
 namespace protocol {
 namespace tracker {
 
-TrackerStreamManager *TrackerStreamManager::p = new TrackerStreamManager;
-TrackerStreamManager *TrackerStreamManager::instance() { return p; }
+RsTrackerStreamManager *RsTrackerStreamManager::p = new RsTrackerStreamManager;
+RsTrackerStreamManager *RsTrackerStreamManager::instance() { return p; }
 
-TrackerStreamManager::TrackerStreamManager() { channel_map.clear(); }
-TrackerStreamManager::~TrackerStreamManager() {
-    for (const auto& val: channel_map) {
+RsTrackerStreamManager::RsTrackerStreamManager() { channel_map.clear(); }
+RsTrackerStreamManager::~RsTrackerStreamManager() {
+    for (const auto &val : channel_map) {
         ChannelNode *temp = val.second;
         delete temp;
     }
     channel_map.clear();
 }
 
-int TrackerStreamManager::initialize(const string &block_data_store_path) { return 0; }
+int RsTrackerStreamManager::initialize(const string &block_data_store_path) {
+    return 0;
+}
 
-
-int TrackerStreamManager::timer_check() {
-    for(CMIt it = channel_map.begin(); it != channel_map.end(); ) {
+int RsTrackerStreamManager::timer_check() {
+    for (CMIt it = channel_map.begin(); it != channel_map.end();) {
         CMIt i = it;
         it++;
         time_t curr_time;
         time(&curr_time);
         // delete the channel if it idles too long
-        if (curr_time - i->second->last_recv_report_time_ > 
+        if ((curr_time - i->second->last_recv_report_time_) >
             MaxIdleTime::MAX_IDLE_TIME_SEC) {
             RSLOGE("Channel removed due to long time idle.\n");
 
             // delete this channel
-            ChannelNode* temp = i->second;
+            ChannelNode *temp = i->second;
             delete temp;
             channel_map.erase(i);
         }
     }
-   return 0;
+    return 0;
 }
 
-int TrackerStreamManager::signal_get_res_interval(MD5_Hash_Str Channel_hash) {
-    for (const auto& val: channel_map) {
+int RsTrackerStreamManager::signal_get_res_interval(MD5_Hash_Str Channel_hash) {
+    for (const auto &val : channel_map) {
         for (int i = 0; i < val.second->resourceCount; i++) {
             if (val.second->pHash[i] == Channel_hash) {
                 RsSpTracker *sp =
@@ -82,9 +83,9 @@ int TrackerStreamManager::signal_get_res_interval(MD5_Hash_Str Channel_hash) {
     return 1;
 }
 
-int TrackerStreamManager::get_channel_interval(MD5_Hash_Str Channel_hash,
-                                    BlockInterval &blockInterval) {
-    for (const auto& val: channel_map) {
+int RsTrackerStreamManager::get_channel_interval(MD5_Hash_Str Channel_hash,
+                                               BlockInterval &blockInterval) {
+    for (const auto &val : channel_map) {
         for (int i = 0; i < val.second->resourceCount; i++) {
             if (val.second->pHash[i] == Channel_hash) {
                 blockInterval = val.second->pHash[i].blockInterval;
@@ -96,9 +97,9 @@ int TrackerStreamManager::get_channel_interval(MD5_Hash_Str Channel_hash,
     return 1;
 }
 
-int TrackerStreamManager::get_channel_count() { return channel_map.size(); }
+int RsTrackerStreamManager::get_channel_count() { return channel_map.size(); }
 
-int TrackerStreamManager::insert_channel(map_str strMd5, ChannelNode *chnl) {
+int RsTrackerStreamManager::insert_channel(map_str strMd5, ChannelNode *chnl) {
     ChannelNode Node;
     if (get_channel(strMd5, &Node) == -1) {
         try {
@@ -131,7 +132,7 @@ int TrackerStreamManager::insert_channel(map_str strMd5, ChannelNode *chnl) {
     return 0;
 }
 
-int TrackerStreamManager::delete_channel(map_str uuid) {
+int RsTrackerStreamManager::delete_channel(map_str uuid) {
     CMIt it = channel_map.find(uuid);
     if (it == channel_map.end()) {
         return NULL;
@@ -143,7 +144,7 @@ int TrackerStreamManager::delete_channel(map_str uuid) {
     return 0;
 }
 
-int TrackerStreamManager::get_channel(map_str chnlhash, ChannelNode *Node) {
+int RsTrackerStreamManager::get_channel(map_str chnlhash, ChannelNode *Node) {
     CCMIt it = channel_map.find(chnlhash);
     if (it == channel_map.end()) {
         return -1;
@@ -153,7 +154,7 @@ int TrackerStreamManager::get_channel(map_str chnlhash, ChannelNode *Node) {
     return 0;
 }
 
-ChannelNode *TrackerStreamManager::get_node(map_str chnlhash) {
+ChannelNode *RsTrackerStreamManager::get_node(map_str chnlhash) {
     CCMIt it = channel_map.find(chnlhash);
     if (it == channel_map.end()) {
         return NULL;
@@ -161,7 +162,8 @@ ChannelNode *TrackerStreamManager::get_node(map_str chnlhash) {
     return it->second;
 }
 
-int TrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, map_str chnlhash) {
+int RsTrackerStreamManager::get_cp_address(NetAddress *&pSPAddr,
+                                         map_str chnlhash) {
     pSPAddr = new NetAddress[1];
     CCMIt it = channel_map.find(chnlhash);
     if (it == channel_map.end()) {
@@ -174,8 +176,8 @@ int TrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, map_str chnlhash)
     return 0;
 }
 
-int TrackerStreamManager::get_all_cp_address(NetAddress *&pSPAddr, int &inCount,
-                                  map_str uuid) {
+int RsTrackerStreamManager::get_all_cp_address(NetAddress *&pSPAddr, int &inCount,
+                                             map_str uuid) {
     inCount = get_channel_count();
 
     if (0 == inCount)
@@ -184,8 +186,8 @@ int TrackerStreamManager::get_all_cp_address(NetAddress *&pSPAddr, int &inCount,
     get_cp_address(pSPAddr, inCount, uuid);
 }
 
-int TrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, int &inCount,
-                              map_str uuid) {
+int RsTrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, int &inCount,
+                                         map_str uuid) {
     NetAddress *sel = NULL;
     get_cp_address(sel, uuid);
 
@@ -200,12 +202,11 @@ int TrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, int &inCount,
     pSPAddr = new NetAddress[inCount];
 
     int index = 0;
-    for (const auto& val: channel_map) {
+    for (const auto &val : channel_map) {
         if (NULL == sel || sel[0] != val.second->spAddress) {
             pSPAddr[index] = val.second->spAddress;
             index++;
         }
-
     }
     inCount = index;
 
@@ -213,7 +214,7 @@ int TrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, int &inCount,
     return index;
 }
 
-int TrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, int inCount) {
+int RsTrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, int inCount) {
     time_t seed;
     time(&seed);
     srand(seed);
@@ -230,7 +231,7 @@ int TrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, int inCount) {
 
     int index = 0;
     int i = 0;
-    for (const auto& val: channel_map) {
+    for (const auto &val : channel_map) {
         if (i >= iPos) {
             if (index >= inCount) {
                 break;
@@ -245,12 +246,12 @@ int TrackerStreamManager::get_cp_address(NetAddress *&pSPAddr, int inCount) {
     return index;
 }
 
-int TrackerStreamManager::get_sp_address(MD5_Hash_Str resHash, NetAddress *&pSPAddr,
-                              int inCount) {
+int RsTrackerStreamManager::get_sp_address(MD5_Hash_Str resHash,
+                                         NetAddress *&pSPAddr, int inCount) {
     pSPAddr = new NetAddress[inCount];
 
     int index = 0;
-    for (const auto& val: channel_map) {
+    for (const auto &val : channel_map) {
         if (index >= inCount) {
             break;
         }

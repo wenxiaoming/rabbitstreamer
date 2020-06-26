@@ -44,7 +44,7 @@ void RsBaseServer::loop() {
         st_usleep(SYS_CYCLE_INTERVAL * 1000);
 
         update_system_time_ms();
-        if (servertype == SUPER_PEER)
+        if (servertype == ServerType::SUPER_PEER)
             RsSourceManager::instance()->write_source_channel_list_txt();
     }
 }

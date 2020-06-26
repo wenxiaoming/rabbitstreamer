@@ -36,20 +36,21 @@ namespace rs {
 namespace protocol {
 namespace tracker {
 
-class TrackerStreamManager {
+class RsTrackerStreamManager {
   private:
-    TrackerStreamManager();
-    static TrackerStreamManager *p;
+    RsTrackerStreamManager();
+    static RsTrackerStreamManager *p;
 
   public:
-    virtual ~TrackerStreamManager();
+    virtual ~RsTrackerStreamManager();
 
   public:
     // for single instance
-    static TrackerStreamManager *instance();
+    static RsTrackerStreamManager *instance();
 
     int initialize(const string &block_data_store_path);
 
+    int timer_check();
     // return is the count result
     int get_channel_count();
     // add a new channel
@@ -76,14 +77,14 @@ class TrackerStreamManager {
     ChannelNode *get_node(map_str chnlhash);
 
   private:
-    using  ChannelHashMap = std::map<map_str, ChannelNode *>;
-    using  CMIt = std::map<map_str, ChannelNode *>::iterator;
-    using  CCMIt = std::map<map_str, ChannelNode *>::const_iterator;
-    using  CMPair = std::pair<map_str, ChannelNode *>;
+    using ChannelHashMap = std::map<map_str, ChannelNode *>;
+    using CMIt = std::map<map_str, ChannelNode *>::iterator;
+    using CCMIt = std::map<map_str, ChannelNode *>::const_iterator;
+    using CMPair = std::pair<map_str, ChannelNode *>;
 
     ChannelHashMap channel_map;
 
-    enum class MaxIdleTime : uint8_t {
+    enum MaxIdleTime : uint16_t {
         // if a live channel stopped receiving block from cs for more than
         // MAX_IDLE_TIME_SEC, it will be deleted
         MAX_IDLE_TIME_SEC = 100,
