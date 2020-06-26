@@ -70,7 +70,7 @@ class TrackerNpCoordinator {
 
     HashMap npnode_map;
 
-    enum {
+    enum class MaxIdleTime: uint8_t {
         // if a live channel stopped receiving block from cs for more than
         // MAX_IDLE_TIME_SEC, it will be deleted
         MAX_IDLE_TIME_SEC = 600,

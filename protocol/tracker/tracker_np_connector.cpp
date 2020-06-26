@@ -372,7 +372,7 @@ int RsNpTracker::send_peers(map_str uuid, MD5_Hash_Str resHash,
     TrackerNpCoordinator *mgr = TrackerNpCoordinator::instance();
     NPNode pNode;
 
-    StreamMgr *chn_mgr = StreamMgr::instance();
+    TrackerStreamManager *chn_mgr = TrackerStreamManager::instance();
 
     uint8_t npCount = mgr->get_np_address(resHash, uuid, pPeerInfoWithAddr, 20,
                                           currentblockID);
@@ -457,7 +457,7 @@ int RsNpTracker::send_welcome(map_str digits, P2PAddress p2pAddr) {
 int RsNpTracker::send_res_interval(MD5_Hash_Str channel_hash) {
     RSLOGE("%s\n", __PRETTY_FUNCTION__);
     BlockInterval blockInterval;
-    StreamMgr *mgr = StreamMgr::instance();
+    TrackerStreamManager *mgr = TrackerStreamManager::instance();
     if (1 == mgr->get_channel_interval(channel_hash, blockInterval)) {
         RSLOGE("no blockInterval in send_TS2NP_RES_INTERVAL\n");
         return 0;

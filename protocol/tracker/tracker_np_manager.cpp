@@ -37,8 +37,8 @@ TrackerNpCoordinator *TrackerNpCoordinator::instance() { return p; }
 TrackerNpCoordinator::TrackerNpCoordinator() { npnode_map.clear(); }
 
 TrackerNpCoordinator::~TrackerNpCoordinator() {
-    for (CMIt it = npnode_map.begin(); it != npnode_map.end(); ++it) {
-        NPNode *temp = it->second;
+    for (const auto& val: npnode_map) {
+        NPNode *temp = val.second;
         delete temp;
     }
     //
@@ -53,7 +53,7 @@ int TrackerNpCoordinator::timer_check() {
         // delete the NPNode if it idles too long
         time(&curr_time);
         if ((curr_time - (i->second->last_recv_report_time_)) >
-            MAX_IDLE_TIME_SEC) {
+            MaxIdleTime::MAX_IDLE_TIME_SEC) {
             RSLOGE("NPNode removed due to long time idle.\n");
 
             // delete this NPNode
@@ -166,7 +166,7 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
     int index = 0;
     do {
         int iPos = 0;
-        //
+
         for (int f = 0; f < iRange; f++) {
             int r1 = rand();
             if (r1 != 0) {
@@ -174,7 +174,7 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
                 iPos = theVector[iVector];
                 theVector[iVector] = -1;
             }
-            //
+
             if (-1 == iPos)
                 continue;
         }
@@ -191,11 +191,11 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
             if (30 <= iLimit) {
                 break;
             }
-            //
+
             if (index >= inCount) {
                 break;
             }
-            //
+
             if (it->second->channelID_md5 == resHash //同一个频道
                 && it->second->digits != uuid        //不是自己
                 && it->second->intervalArray.FindBlock(
@@ -210,7 +210,6 @@ int TrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
 
         if (it != npnode_map.end())
             break;
-        //
         if (index >= inCount) {
             break;
         }

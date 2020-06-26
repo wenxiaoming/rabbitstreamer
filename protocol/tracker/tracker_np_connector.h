@@ -43,6 +43,7 @@ namespace rs {
 namespace protocol {
 namespace tracker {
 
+// handle communication between tracker and np
 class RsNpTracker : public RsThread, public virtual ITimerHandler {
   public:
     RsNpTracker();

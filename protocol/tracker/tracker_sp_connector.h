@@ -41,6 +41,7 @@ namespace rs {
 namespace protocol {
 namespace tracker {
 
+// handle communication between tracker and sp
 class RsSpTracker : public RsThread, public virtual ITimerHandler {
   public:
     RsSpTracker();

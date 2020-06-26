@@ -36,17 +36,17 @@ namespace rs {
 namespace protocol {
 namespace tracker {
 
-class StreamMgr {
+class TrackerStreamManager {
   private:
-    StreamMgr();
-    static StreamMgr *p;
+    TrackerStreamManager();
+    static TrackerStreamManager *p;
 
   public:
-    virtual ~StreamMgr();
+    virtual ~TrackerStreamManager();
 
   public:
     // for single instance
-    static StreamMgr *instance();
+    static TrackerStreamManager *instance();
 
     int initialize(const string &block_data_store_path);
 
@@ -83,7 +83,7 @@ class StreamMgr {
 
     ChannelHashMap channel_map;
 
-    enum {
+    enum class MaxIdleTime : uint8_t {
         // if a live channel stopped receiving block from cs for more than
         // MAX_IDLE_TIME_SEC, it will be deleted
         MAX_IDLE_TIME_SEC = 100,
