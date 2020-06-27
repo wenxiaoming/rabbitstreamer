@@ -20,12 +20,12 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+#include "sp_tracker_connector.h"
 #include "core/error_code.h"
 #include "core/message.h"
 #include "core/p2p_protocol.h"
 #include "core/socket_connect.h"
 #include "sp_source_manager.h"
-#include "sp_tracker_connector.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <signal.h>
@@ -52,9 +52,7 @@ namespace sp {
 #define TRACKER_GET_SP_LIST_TIMER_ID 1
 
 RsSpTrackerProtocol::RsSpTrackerProtocol(string ip, int port)
-    : RsThread("trackerprotocol") {
-    ip_address = ip;
-    ip_port = port;
+    : RsThread("trackerprotocol"), ip_address(ip), ip_port(port) {
     sp_port = 2222; // hard code the port for np to access sp through tcp
     buf_size = UDP_MAX_PACKET_SIZE;
     recv_buf = new char[UDP_MAX_PACKET_SIZE];

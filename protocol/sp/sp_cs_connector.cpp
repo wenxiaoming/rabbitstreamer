@@ -43,8 +43,8 @@ FILE *dump_file = NULL;
 static int block_counter = 0;
 static bool write_flag = false;
 #endif
-RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd) : RsThread("csspprotocol") {
-    st_fd = stfd;
+RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd)
+    : RsThread("csspprotocol"), st_fd(stfd) {
     io_socket = new RsSocket(st_fd);
 
     read_buffer = new char[CS_SP_READ_BUFFER_SIZE];

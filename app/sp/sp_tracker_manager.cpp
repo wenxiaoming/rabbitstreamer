@@ -29,17 +29,16 @@ namespace rs {
 namespace app {
 namespace sp {
 
-SpTrackerManager::SpTrackerManager(string ip, uint32_t port) {
-    ip_address = ip;
-    ip_port = port;
-}
+SpTrackerManager::SpTrackerManager(string ip, uint32_t port)
+    : ip_addr(ip), ip_port(port) {}
 
 SpTrackerManager::~SpTrackerManager() {}
 
 int SpTrackerManager::start_connect() {
     int ret = ERROR_SUCCESS;
 
-    tracker_protocol = make_unique_ptr<RsSpTrackerProtocol>(ip_address, ip_port);
+    tracker_protocol =
+        make_unique_ptr<RsSpTrackerProtocol>(ip_addr, ip_port);
 
     tracker_protocol->start_connect();
 

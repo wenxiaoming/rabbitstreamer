@@ -27,11 +27,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace rs {
 namespace core {
 
-RsBitrateCalculator::RsBitrateCalculator(string name) {
-    calculator_name = name;
-    recv_buffer_size = 0;
-    last_recv_msec = 0;
-}
+RsBitrateCalculator::RsBitrateCalculator(string name)
+    : calculator_name(name), recv_buffer_size(0), last_recv_msec(0) {}
 
 RsBitrateCalculator::~RsBitrateCalculator() {}
 

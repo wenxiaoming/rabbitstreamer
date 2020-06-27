@@ -28,10 +28,8 @@ namespace rs {
 namespace app {
 namespace sp {
 
-SpNpManager::SpNpManager(string ip, uint32_t port) {
-    ip_addr = ip;
-    listen_port = port;
-}
+SpNpManager::SpNpManager(string ip, uint32_t port)
+    : ip_addr(ip), listen_port(port) {}
 
 SpNpManager::~SpNpManager() {}
 
@@ -42,7 +40,8 @@ int SpNpManager::start_listener() {
 }
 
 int SpNpManager::handle_tcp_connect(st_netfd_t stfd) {
-    std::unique_ptr<RsNpSpProtocol> np_sp_protocol = make_unique_ptr<RsNpSpProtocol>(stfd);
+    std::unique_ptr<RsNpSpProtocol> np_sp_protocol =
+        make_unique_ptr<RsNpSpProtocol>(stfd);
     np_sp_protocol->start_thread();
     np_sp_protocol_vector.push_back(std::move(np_sp_protocol));
     return 0;

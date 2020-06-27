@@ -73,14 +73,7 @@ int RsThreadContext::set_id(int v) {
 
 #define MAX_PATH 255
 
-RsAsyncLogger::RsAsyncLogger() {
-    log_level = Verbose;
-    log_data = new char[LOG_MAX_SIZE];
-
-    fd = -1;
-    log_to_file_tank = true;
-    utc = false;
-}
+RsAsyncLogger::RsAsyncLogger() { log_data = new char[LOG_MAX_SIZE]; }
 
 RsAsyncLogger::~RsAsyncLogger() {
     if (log_data)

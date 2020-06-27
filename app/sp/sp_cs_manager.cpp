@@ -28,10 +28,8 @@ namespace rs {
 namespace app {
 namespace sp {
 
-SpCsManager::SpCsManager(string ip, int port) {
-    ip_addr = ip;
-    listen_port = port;
-}
+SpCsManager::SpCsManager(string ip, int port)
+    : ip_addr(ip), listen_port(port) {}
 
 SpCsManager::~SpCsManager() {}
 
@@ -43,7 +41,8 @@ int SpCsManager::start_listener() {
 
 // the cs connect sp, the connection is ok, then call this function
 int SpCsManager::handle_tcp_connect(st_netfd_t stfd) {
-    std::unique_ptr<RsCsSpProtocol> cs_sp_protocol = make_unique_ptr<RsCsSpProtocol>(stfd);
+    std::unique_ptr<RsCsSpProtocol> cs_sp_protocol =
+        make_unique_ptr<RsCsSpProtocol>(stfd);
     cs_sp_protocol->start_thread();
     return 0;
 }

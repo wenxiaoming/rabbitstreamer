@@ -23,9 +23,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef APP_TRACKER_SP_MANAGER_H_
 #define APP_TRACKER_SP_MANAGER_H_
 
-#include <memory>
 #include "core/udp_listener.h"
 #include "protocol/tracker/tracker_sp_connector.h"
+#include <memory>
 
 using namespace rs::protocol::tracker;
 

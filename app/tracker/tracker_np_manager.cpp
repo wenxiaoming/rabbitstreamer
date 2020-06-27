@@ -27,10 +27,8 @@ namespace rs {
 namespace app {
 namespace tracker {
 
-TrackerNpManager::TrackerNpManager(string ip, int port) {
-    ip_addr = ip;
-    listen_port = port;
-}
+TrackerNpManager::TrackerNpManager(string ip, int port)
+    : ip_addr(ip), listen_port(port) {}
 
 TrackerNpManager::~TrackerNpManager() {}
 

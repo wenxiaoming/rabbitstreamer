@@ -30,16 +30,11 @@ namespace rs {
 namespace protocol {
 
 RsBufferQueue::RsBufferQueue(const MD5_Hash_Str &hash, const string &name,
-                             bool source) {
-    queue_index = 0;
-    dequeue_index = 0;
-    min_block_id = 0;
-    min_block_index = 0;
-    buffer_full_flag = false;
-    buffer_number = 0;
-    source_hash = hash;
-    source_name = name;
-    is_source = source;
+                             bool source)
+    : queue_index(0), dequeue_index(0), min_block_id(0), min_block_index(0),
+      buffer_full_flag(false), buffer_number(0), source_hash(hash),
+      source_name(name), is_source(source) {
+
     time(&create_time);
 }
 

@@ -38,8 +38,8 @@ namespace sp {
 FILE *np_dump_file = NULL;
 #endif
 
-RsNpSpProtocol::RsNpSpProtocol(st_netfd_t stfd) : RsThread("npspprotocol") {
-    st_fd = stfd;
+RsNpSpProtocol::RsNpSpProtocol(st_netfd_t stfd)
+    : RsThread("npspprotocol"), st_fd(stfd) {
     io_socket = new RsSocket(st_fd);
     np_buffer = new RsBuffer;
     media_type_flag = false;

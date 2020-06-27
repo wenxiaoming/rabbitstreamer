@@ -50,11 +50,11 @@ class RsAsyncLogger : public RsLogBase {
     virtual void open_log_file();
 
   private:
-    int log_level;
+    int log_level = Verbose;
     char *log_data;
-    int fd;
-    bool log_to_file_tank;
-    bool utc;
+    int fd = -1;
+    bool log_to_file_tank = true;
+    bool utc = false;
 };
 
 } // namespace core
