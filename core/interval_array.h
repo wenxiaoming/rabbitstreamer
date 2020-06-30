@@ -58,6 +58,9 @@ class IntervalArray {
         return true;
     };
     IntervalArray &operator=(const IntervalArray &another) {
+        if (&another == this)
+            return *this;
+
         m_totalsize = m_validsize = another.m_validsize;
         delete[] m_array;
         m_array = NULL;

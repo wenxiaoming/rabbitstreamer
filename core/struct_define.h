@@ -37,7 +37,10 @@ class map_str {
         return strncasecmp(str_, other.str_, UUID_LENGTH) != 0;
     }
 
-    map_str &operator=(const map_str other) {
+    map_str &operator=(const map_str &other) {
+        if (&other == this)
+            return *this;
+
         memcpy(str_, other.str_, sizeof(str_));
 
         return *this;
@@ -149,6 +152,9 @@ struct NPNode {
     }
 
     NPNode &operator=(const NPNode &node) {
+        if (&node == this)
+            return *this;
+
         digits = node.digits;
         last_recv_report_time_ = node.last_recv_report_time_;
         fVersion = node.fVersion;           // version of client(float)

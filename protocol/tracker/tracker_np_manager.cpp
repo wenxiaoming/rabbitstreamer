@@ -134,33 +134,24 @@ NPNode *RsTrackerNpCoordinator::get_Node(map_str digits) {
     return it->second;
 }
 
+// get the node peers's address, then we can connect with these peers to get media block
 int RsTrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
                                            PeerInfoWithAddr *&pPeerInfoWithAddr,
                                            int inCount,
                                            uint32_t currentblockID) {
-    /*
-        随机取node的算法思想
-
-        因为用的是map存储的node节点，现在要找的是：在同看一个频道、不是自己、还拥有需要的数据块。
-        并且要随机的在整个map表中找出20个需要的node。
-
-        这里用的方法是：
-        1、取得map节点的个数
-        2、把map按30一组分成 iRange = mapsize/ 30 组
-        3、把从0.....iRange个数依序存在向量数组中theVector
-        4、随机的从theVector中取出一个数，作为查找map的开始点
-        5、一组查完了再从4开始重复，知道找到自己需要的节点数
-    */
-
+    
+    // todo, no need to allocate memory every time
     pPeerInfoWithAddr = new PeerInfoWithAddr[inCount];
 
-    vector<int> theVector;
+    vector<int> groupID;
 
+    // split the npnode_map into groups, one group has 30 nodes
     int iSize = npnode_map.size();
     int iRange = iSize / 30 + 1;
 
+    // store the group id in groupID
     for (int i = 0; i < iRange; i++) {
-        theVector.push_back(i);
+        groupID.push_back(i);
     }
 
     int r1 = rand();
@@ -169,39 +160,44 @@ int RsTrackerNpCoordinator::get_np_address(MD5_Hash_Str resHash, map_str uuid,
     do {
         int iPos = 0;
 
+        // find the group id
         for (int f = 0; f < iRange; f++) {
             int r1 = rand();
             if (r1 != 0) {
-                int iVector = r1 % iRange;
-                iPos = theVector[iVector];
-                theVector[iVector] = -1;
+                int id = r1 % iRange;
+                iPos = groupID[id];
+                groupID[id] = -1;
             }
 
+            // we have tried this group before
             if (-1 == iPos)
                 continue;
         }
 
+        // we have tried all groups, just exits the loop
         if (-1 == iPos)
             break;
 
+        // seek to the specific group by its group id iPos
         CCMIt it = npnode_map.begin();
         for (int m = 0; m < iPos * 30; m++) {
             it++;
         }
 
         for (int iLimit = 0; it != npnode_map.end(); it++) {
-            if (30 <= iLimit) {
+            if (30 <= iLimit) { // try 30 times at most
                 break;
             }
 
+            // we have got enough nodes
             if (index >= inCount) {
                 break;
             }
 
-            if (it->second->channelID_md5 == resHash //同一个频道
-                && it->second->digits != uuid        //不是自己
+            if (it->second->channelID_md5 == resHash // same channel
+                && it->second->digits != uuid        // not himself
                 && it->second->intervalArray.FindBlock(
-                       currentblockID)) { //拥有自己需要的数据块
+                       currentblockID)) { // the node has the block whose id is currentblockID
                 *(CorePeerInfo *)&pPeerInfoWithAddr[index] =
                     it->second->coreInfo;
                 *(P2PAddress *)&pPeerInfoWithAddr[index] =

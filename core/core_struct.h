@@ -42,6 +42,9 @@ class NetAddress {
         sin_family = AF_INET;
     }
     NetAddress &operator=(const NetAddress &addr) {
+        if (&addr == this)
+            return *this;
+
         memcpy(this, &addr, sizeof(NetAddress));
         return *this;
     }
@@ -97,6 +100,8 @@ class P2PAddress {
     };
 
     P2PAddress &operator=(const P2PAddress &addr) {
+        if (&addr == this)
+            return *this;
         outerIP = addr.outerIP;
         subnetIP = addr.subnetIP;
         return *this;
@@ -143,6 +148,9 @@ class BlockInterval {
         return (start == a.start && size == a.size);
     };
     BlockInterval &operator=(const BlockInterval &another) {
+        if (&another == this)
+            return *this;
+
         start = another.start;
         size = another.size;
         return *this;
