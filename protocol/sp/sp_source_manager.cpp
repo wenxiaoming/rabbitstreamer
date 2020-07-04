@@ -115,7 +115,7 @@ int RsSourceManager::queue_block(const MD5_Hash_Str &chnl_hash, char **block,
         return ERROR_SOURCE_MGR_NOT_FOUND;
     }
 
-    media_buffer *buf = buffer_queue->queue_buffer();
+    RsBufferQueue::media_buffer *buf = buffer_queue->queue_buffer();
     *block = buf->buffer;
     return ret;
 }
@@ -130,7 +130,7 @@ int RsSourceManager::dequeue_block(const MD5_Hash_Str &chnl_hash, int block_id,
         return ERROR_SOURCE_MGR_NOT_FOUND;
     }
 
-    media_buffer *buf = buffer_queue->dequeue_buffer(block_id);
+    RsBufferQueue::media_buffer *buf = buffer_queue->dequeue_buffer(block_id);
     if (buf) {
         block = buf->buffer;
         block_size = buf->block_size;

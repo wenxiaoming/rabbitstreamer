@@ -34,21 +34,22 @@ namespace rs {
 namespace protocol {
 namespace sp {
 
-struct source_status {
-    // hash of channel
-    MD5_Hash_Str chnl_hash;
-    string program_name;
-    uint32_t program_time;
-    // Channel Name
-    string chnl_name_;
-    // Channel created time
-    time_t created_time_;
-    // block interval of channel
-    BlockInterval block_inter_;
-};
-
 // manage the source from capture server, it is single instance
 class RsSourceManager {
+  public:
+    struct source_status {
+      // hash of channel
+      MD5_Hash_Str chnl_hash;
+      string program_name;
+      uint32_t program_time;
+      // Channel Name
+      string chnl_name_;
+      // Channel created time
+      time_t created_time_;
+      // block interval of channel
+      BlockInterval block_inter_;
+  };
+
   private:
     RsSourceManager() {}
     static RsSourceManager *p;

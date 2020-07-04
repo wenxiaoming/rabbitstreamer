@@ -34,26 +34,27 @@ using namespace rs::core;
 namespace rs {
 namespace protocol {
 
-enum BUFFER_FLAG : uint8_t { BUFFER_WRITING, BUFFER_READING, BUFFER_AVAILABLE };
-
-struct media_buffer {
-    BUFFER_FLAG flag;
-    int block_id;
-    int block_size;
-    char *buffer;
-};
-
-struct media_type_header {
-    char *media_type;
-    int header_size;
-};
-
 // RsBufferQueue is similar to android's gui's BufferQueue
 // it will use queue_buffer to get one free buffer for storing buffer from
 // capture server and the socket from NP will use dequeue_buffer to get one
 // media buffer for consuming in the player. currently sp or tracker runs within
 // one thread using st, no need to lock the resource in it
 class RsBufferQueue {
+  public:
+    enum BUFFER_FLAG : uint8_t { BUFFER_WRITING, BUFFER_READING, BUFFER_AVAILABLE };
+
+    struct media_buffer {
+      BUFFER_FLAG flag;
+      int block_id;
+      int block_size;
+      char *buffer;
+    };
+
+    struct media_type_header {
+      char *media_type;
+      int header_size;
+  };
+
   public:
     RsBufferQueue(const MD5_Hash_Str &hash, const string &name, bool source);
     virtual ~RsBufferQueue();

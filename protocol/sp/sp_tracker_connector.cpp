@@ -51,6 +51,8 @@ namespace sp {
 #define TRACKER_TIMER_ID 0
 #define TRACKER_GET_SP_LIST_TIMER_ID 1
 
+using source_status = RsSourceManager::source_status;
+
 RsSpTrackerProtocol::RsSpTrackerProtocol(string ip, int port)
     : RsThread("trackerprotocol"), ip_address(ip), ip_port(port) {
     sp_port = 2222; // hard code the port for np to access sp through tcp

@@ -32,6 +32,7 @@ namespace rs {
 namespace protocol {
 namespace sp {
 
+using source_status = RsSourceManager::source_status;
 //#define DUMP_SEND_MEDIA
 
 #ifdef DUMP_SEND_MEDIA
