@@ -42,7 +42,8 @@ RsBuffer::RsBuffer() {
 }
 
 RsBuffer::~RsBuffer() {
-    free(buffer);
+    if (buffer)
+        free(buffer);
     buffer = NULL;
 }
 
