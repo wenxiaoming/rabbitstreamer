@@ -58,6 +58,12 @@ RsNpSpProtocol::~RsNpSpProtocol() {
     if (np_dump_file)
         fclose(np_dump_file);
 #endif
+    if (io_socket)
+        delete io_socket;
+
+    if (np_buffer)
+        delete np_buffer;
+
     if (calculator)
         delete calculator;
 }

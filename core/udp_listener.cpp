@@ -45,7 +45,10 @@ RsUdpListener::RsUdpListener(string ip, int port, IUdpHandler *handler)
     recv_buffer = new char[UDP_RECEIVE_BUFFER_SIZE];
 }
 
-RsUdpListener::~RsUdpListener() {}
+RsUdpListener::~RsUdpListener() {
+    if (cs_buffer)
+        delete[] cs_buffer;
+}
 
 int RsUdpListener::start_listen() {
     int ret = ERROR_SUCCESS;

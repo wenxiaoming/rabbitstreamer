@@ -63,6 +63,13 @@ RsCsSpProtocol::RsCsSpProtocol(st_netfd_t stfd)
 RsCsSpProtocol::~RsCsSpProtocol() {
     if (read_buffer)
         delete[] read_buffer;
+
+    if (io_socket)
+        delete io_socket;
+
+    if (cs_buffer)
+        delete cs_buffer;
+
 #ifdef DUMP_MEDIA_DATA_FROM_CS
     if (dump_file)
         fclose(dump_file);
