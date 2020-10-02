@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define PROTOCOL_TRACKER_SP_PROTOCOL_H_
 
 #include "core/core_struct.h"
-#include "core/core_utility.h"
+#include "core/system_time.h"
 #include "core/socket.h"
 #include "core/struct_define.h"
 #include "core/thread.h"

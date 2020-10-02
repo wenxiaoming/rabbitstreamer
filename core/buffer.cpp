@@ -22,7 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #include "buffer.h"
-#include "core_utility.h"
+#include "system_time.h"
 #include "debug_utility.h"
 #include "error_code.h"
 #include <assert.h>
@@ -58,7 +58,7 @@ void RsBuffer::set_buffer(int size) {
     }
 
     // the user-space buffer size limit to a max value.
-    int nb_resize_buf = rs_min(size, MAX_SOCKET_BUFFER);
+    int nb_resize_buf = std::min(size, MAX_SOCKET_BUFFER);
 
     // only realloc when buffer changed bigger
     if (nb_resize_buf <= buffer_size) {

@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 RabbitStreamer
+Copyright (c) 2016-2020 RabbitStreamer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -20,19 +20,29 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#include "core_utility.h"
+
+#include "system_time.h"
 #include <stdio.h>
 #include <sys/time.h>
+
+#define rs_min(a, b) (((a) < (b)) ? (a) : (b))
+#define rs_max(a, b) (((a) < (b)) ? (b) : (a))
 
 namespace rs {
 namespace core {
 
-#define SYS_TIME_RESOLUTION_US 300 * 1000
+SystemTime *SystemTime::p = new SystemTime;
+SystemTime *SystemTime::instance() { return p; }
 
-static int64_t _srs_system_time_us_cache = 0;
-static int64_t _srs_system_time_startup_time = 0;
+constexpr uint64_t kSystemTime_Resolution_us = 300 * 1000;
 
-int64_t update_system_time_ms() {
+SystemTime::SystemTime() {
+
+}
+
+SystemTime::~SystemTime() {}
+
+int64_t SystemTime::update_system_time_ms() {
     timeval now;
 
     if (gettimeofday(&now, NULL) < 0) {
@@ -41,38 +51,38 @@ int64_t update_system_time_ms() {
 
     int64_t now_us = ((int64_t)now.tv_sec) * 1000 * 1000 + (int64_t)now.tv_usec;
 
-    if (_srs_system_time_us_cache <= 0) {
-        _srs_system_time_us_cache = now_us;
-        _srs_system_time_startup_time = now_us;
-        return _srs_system_time_us_cache / 1000;
+    if (system_time_us_cache <= 0) {
+        system_time_us_cache = now_us;
+        system_time_startup_time = now_us;
+        return system_time_us_cache / 1000;
     }
 
     // use relative time.
-    int64_t diff = now_us - _srs_system_time_us_cache;
+    int64_t diff = now_us - system_time_us_cache;
     diff = rs_max(0, diff);
-    if (diff < 0 || diff > 1000 * SYS_TIME_RESOLUTION_US) {
-        _srs_system_time_startup_time += diff;
+    if (diff < 0 || diff > 1000 * kSystemTime_Resolution_us) {
+        system_time_startup_time += diff;
     }
 
-    _srs_system_time_us_cache = now_us;
+    system_time_us_cache = now_us;
 
-    return _srs_system_time_us_cache / 1000;
+    return system_time_us_cache / 1000;
 }
 
-int64_t get_system_time_ms() {
-    if (_srs_system_time_us_cache <= 0) {
+int64_t SystemTime::get_system_time_ms() {
+    if (system_time_us_cache <= 0) {
         update_system_time_ms();
     }
 
-    return _srs_system_time_us_cache / 1000;
+    return system_time_us_cache / 1000;
 }
 
-int64_t get_system_startup_time_ms() {
-    if (_srs_system_time_startup_time <= 0) {
+int64_t SystemTime::get_system_startup_time_ms() {
+    if (system_time_startup_time <= 0) {
         update_system_time_ms();
     }
 
-    return _srs_system_time_startup_time / 1000;
+    return system_time_startup_time / 1000;
 }
 
 } // namespace core

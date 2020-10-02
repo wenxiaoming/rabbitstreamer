@@ -23,7 +23,7 @@
    */
 
 #include "server_base.h"
-#include "core/core_utility.h"
+#include "core/system_time.h"
 #include "protocol/sp/sp_source_manager.h"
 #include <st.h>
 
@@ -43,7 +43,7 @@ void RsBaseServer::loop() {
     while (true) {
         st_usleep(SYS_CYCLE_INTERVAL * 1000);
 
-        update_system_time_ms();
+        SystemTime::instance()->update_system_time_ms();
         if (servertype == ServerType::SUPER_PEER)
             RsSourceManager::instance()->write_source_channel_list_txt();
     }

@@ -21,7 +21,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "timer.h"
-#include "core_utility.h"
+#include "system_time.h"
 #include "error_code.h"
 #include <algorithm>
 #include <assert.h>
@@ -97,7 +97,7 @@ void RsTimer::delete_timer(int64_t timeout, int64_t timerid,
 }
 
 void RsTimer::check_timeout() {
-    int64_t curr = get_system_time_ms();
+    int64_t curr = SystemTime::instance()->get_system_time_ms();
 
     vector<timer_item>::iterator iter = timer_vector.begin();
     // init the first signal time
