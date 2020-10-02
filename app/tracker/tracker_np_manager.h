@@ -44,7 +44,7 @@ class TrackerNpManager : public IUdpHandler {
   public:
     // implement interface IUdpHandler
     virtual int handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from,
-                                  char *buf, int nb_buf);
+                                  char *buf, int nb_buf) override final;
 
   private:
     std::unique_ptr<RsUdpListener> udp_listener = nullptr;

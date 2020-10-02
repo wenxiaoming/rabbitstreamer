@@ -52,7 +52,7 @@ void RsBufferQueue::reserve_buffer(int size) {
     }
 }
 
-media_buffer *RsBufferQueue::queue_buffer() {
+RsBufferQueue::media_buffer *RsBufferQueue::queue_buffer() {
     media_buffer *buf = buffer_vector[queue_index];
     buf->flag = BUFFER_WRITING;
 
@@ -79,7 +79,7 @@ int RsBufferQueue::update_buffer_attr(int block_id, BUFFER_FLAG flag) {
     return ret;
 }
 
-media_buffer *RsBufferQueue::dequeue_buffer(int block_id) {
+RsBufferQueue::media_buffer *RsBufferQueue::dequeue_buffer(int block_id) {
     int curr_buf_size = buffer_full_flag ? buffer_number : queue_index;
     if ((min_block_id > block_id) ||
         (block_id >= (min_block_id + curr_buf_size))) { // TODO:confirm >= or >

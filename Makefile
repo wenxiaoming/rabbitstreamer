@@ -37,5 +37,6 @@ rabbitstreamertests: $(TESTSOBJS)
 clean:
 	$(CLEAN) *.o $(PROGS)
 	rm -rf lib
+	rm -rf objs
 	rm $(OBJS)
 

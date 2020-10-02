@@ -49,11 +49,11 @@ class RsSpTracker : public RsThread, public virtual ITimerHandler {
 
   public:
     // implement rs_thread's virtual function
-    virtual int on_thread_start();
-    virtual int on_before_loop();
-    virtual int loop();
-    virtual int on_end_loop();
-    virtual int on_thread_stop();
+    virtual int on_thread_start() override final;
+    virtual int on_before_loop() override final;
+    virtual int loop() override final;
+    virtual int on_end_loop() override final;
+    virtual int on_thread_stop() override final;
 
   private:
     void generate_uuid(map_str &digits);
@@ -61,7 +61,7 @@ class RsSpTracker : public RsThread, public virtual ITimerHandler {
 
   public:
     // implement ITimerHandler
-    virtual int handle_timeout(int64_t timerid);
+    virtual int handle_timeout(int64_t timerid) override final;
 
   public:
     int handle_udp_packet(st_netfd_t st_fd, sockaddr_in *from, char *buf,

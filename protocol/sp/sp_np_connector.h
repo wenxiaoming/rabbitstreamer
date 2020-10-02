@@ -51,11 +51,11 @@ class RsNpSpProtocol : public RsThread {
 
   public:
     // implement rs_thread's virtual function
-    virtual int on_thread_start();
-    virtual int on_before_loop();
-    virtual int loop();
-    virtual int on_end_loop();
-    virtual int on_thread_stop();
+    virtual int on_thread_start() override final;
+    virtual int on_before_loop() override final;
+    virtual int loop() override final;
+    virtual int on_end_loop() override final;
+    virtual int on_thread_stop() override final;
 
   private:
     int send_one_block(char *resource_hash, uint8_t count, uint32_t id);

@@ -46,8 +46,7 @@ RsUdpListener::RsUdpListener(string ip, int port, IUdpHandler *handler)
 }
 
 RsUdpListener::~RsUdpListener() {
-    if (cs_buffer)
-        delete[] cs_buffer;
+
 }
 
 int RsUdpListener::start_listen() {

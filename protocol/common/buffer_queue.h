@@ -53,7 +53,7 @@ class RsBufferQueue {
     struct media_type_header {
       char *media_type;
       int header_size;
-  };
+    };
 
   public:
     RsBufferQueue(const MD5_Hash_Str &hash, const string &name, bool source);

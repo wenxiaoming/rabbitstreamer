@@ -149,7 +149,7 @@ int RsSourceManager::set_block_available(const MD5_Hash_Str &chnl_hash,
     if (!buffer_queue) {
         return ERROR_SOURCE_MGR_NOT_FOUND;
     }
-    buffer_queue->update_buffer_attr(block_id, BUFFER_AVAILABLE);
+    buffer_queue->update_buffer_attr(block_id, RsBufferQueue::BUFFER_AVAILABLE);
     return ret;
 }
 
